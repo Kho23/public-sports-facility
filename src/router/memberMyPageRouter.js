@@ -1,4 +1,6 @@
-import React, { lazy, Suspense } from "react";
+import React, { Children, lazy, Suspense } from "react";
+import memberSupportRouter from "./memberSupportRouter";
+
 const MemberEdit = lazy(() =>
   import("../pages/member/memberEdit/MemberEditPage")
 );
@@ -6,7 +8,7 @@ const PwEditPage = lazy(() => import("../pages/member/pwEdit/PwEditPage"));
 const Reservation = lazy(() =>
   import("../pages/member/myReservation/MyReservationPage")
 );
-const Inquiry = lazy(() => import("../pages/member/inquiry/InquiryPage"));
+const Support = lazy(() => import("../pages/member/support/SupportPage"));
 const PartnerRequest = lazy(() =>
   import("../pages/member/partnerRequest/PartnerRequestPage")
 );
@@ -15,7 +17,7 @@ const Loading = () => <div>Loading...</div>;
 const memberMyPageRouter = () => {
   return [
     {
-      path: "memberEdit/:id",
+      path: "memberEdit",
       element: (
         <Suspense fallback={<Loading />}>
           <MemberEdit />
@@ -23,7 +25,7 @@ const memberMyPageRouter = () => {
       ),
     },
     {
-      path: "pwEditPage/:id",
+      path: "pwEditPage",
       element: (
         <Suspense fallback={<Loading />}>
           <PwEditPage />
@@ -31,7 +33,7 @@ const memberMyPageRouter = () => {
       ),
     },
     {
-      path: "reservation/:id",
+      path: "reservation",
       element: (
         <Suspense fallback={<Loading />}>
           <Reservation />
@@ -39,12 +41,18 @@ const memberMyPageRouter = () => {
       ),
     },
     {
-      path: "inquiry/:id",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <Inquiry />
-        </Suspense>
-      ),
+      path: "support",
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Support />
+            </Suspense>
+          ),
+        },
+        ...memberSupportRouter(),
+      ],
     },
     {
       path: "partnerRequest/:id",

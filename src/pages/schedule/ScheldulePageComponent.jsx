@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import React, { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
 // 아까 만든 API 함수
-import { getScheduleByDate } from '../../api/scheduleApi'; 
+import { getScheduleByDate } from "../../api/scheduleApi";
 
 const SchedulePage = () => {
-  const [events, setEvents] = useState([]); 
-  const [currentMonthStr, setCurrentMonthStr] = useState(""); 
+  const [events, setEvents] = useState([]);
+  const [currentMonthStr, setCurrentMonthStr] = useState("");
 
   const handleDatesSet = async (dateInfo) => {
     const startStr = dateInfo.startStr.substring(0, 10);
@@ -17,14 +17,14 @@ const SchedulePage = () => {
 
     try {
       const data = await getScheduleByDate(startStr, endStr);
-      
+
       const mappedEvents = data.map((item) => ({
         id: item.scheduleId,
         title: item.title,
-        start: item.startDate, 
-        end: item.endDate,     
+        start: item.startDate,
+        end: item.endDate,
         extendedProps: { content: item.content },
-        color: '#3b82f6' 
+        color: "#3b82f6",
       }));
 
       setEvents(mappedEvents);
@@ -39,7 +39,6 @@ const SchedulePage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      
       <style>{`
         /* 1. 기본 폰트 및 버튼 스타일 */
         .fc-toolbar-title { font-size: 1.5rem !important; font-weight: 700 !important; }
@@ -81,20 +80,19 @@ const SchedulePage = () => {
           initialView="dayGridMonth"
           locale="ko"
           headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: '' 
+            left: "prev,next today",
+            center: "title",
+            right: "",
           }}
           events={events}
           datesSet={handleDatesSet}
           eventClick={handleEventClick}
           height="auto"
           dayMaxEvents={true}
-
           /* ⭐ 날짜 숫자에서 '일' 제거하는 핵심 설정 ⭐ */
           dayCellContent={(info) => {
             // '23일' -> '일'을 빈 문자열로 치환하여 숫자만 남김
-            return info.dayNumberText.replace('일', '');
+            return info.dayNumberText.replace("일", "");
           }}
         />
       </div>
@@ -107,7 +105,9 @@ const SchedulePage = () => {
           </h3>
         </div>
         {events.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">해당 월에는 등록된 일정이 없습니다.</div>
+          <div className="p-12 text-center text-gray-500">
+            해당 월에는 등록된 일정이 없습니다.
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -125,14 +125,18 @@ const SchedulePage = () => {
                         <span className="font-medium">{evt.start}</span>
                         {evt.start !== evt.end && (
                           <>
-                             <span className="hidden sm:inline text-gray-400">~</span>
-                             <span className="font-medium">{evt.end}</span>
+                            <span className="hidden sm:inline text-gray-400">
+                              ~
+                            </span>
+                            <span className="font-medium">{evt.end}</span>
                           </>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-base font-semibold text-gray-800 block mb-1">{evt.title}</span>
+                      <span className="text-base font-semibold text-gray-800 block mb-1">
+                        {evt.title}
+                      </span>
                     </td>
                   </tr>
                 ))}

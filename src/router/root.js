@@ -94,6 +94,10 @@ const root = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <Schedule />
+          </Suspense>
+        ),
+      },
+      {
         path: "/reservation/dailyUse",
         element: (
           <Suspense fallback={<Loading />}>

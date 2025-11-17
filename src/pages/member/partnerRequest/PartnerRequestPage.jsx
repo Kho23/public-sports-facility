@@ -102,7 +102,7 @@ const PartnerRequestPage = () => {
   const cancelHandler = () => {
     if (window.confirm("파트너 신청을 취소하시겠습니까?")) {
       alert("신청이 취소되었습니다.");
-      navigate("/member");
+      navigate("/member/:id");
     }
   };
 

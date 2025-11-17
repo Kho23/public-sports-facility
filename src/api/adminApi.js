@@ -10,6 +10,7 @@ export const programModify = async (programId, data) => {
 };
 
 export const modifyNotice = async (notice) => {
+  console.log("notice!!!!!!!!!", notice);
   const res = await axios.put(
     `${API_SERVER_HOST}/notice/${notice.noticeId}`,
     notice

@@ -1,6 +1,6 @@
 import React from "react";
 
-const InquiryComponent = ({ submitHandler }) => {
+const SupportComponent = ({ submitHandler }) => {
   return (
     <div className="container mx-auto max-w-5xl p-6 md:p-10">
       <h1 className="text-4xl font-extrabold mb-8 pb-3 border-b-4 border-blue-900 text-gray-900 inline-block pb-1">
@@ -52,4 +52,4 @@ const InquiryComponent = ({ submitHandler }) => {
   );
 };
 
-export default InquiryComponent;
+export default SupportComponent;

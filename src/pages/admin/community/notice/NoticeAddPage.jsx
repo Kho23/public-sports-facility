@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerNotice } from "../../../../api/adminApi";
+import { fileRegister } from "../../../../api/fileApi";
 
 const initstate = {
   content: "",
@@ -19,7 +20,7 @@ const NoticeAddPage = () => {
   };
 
   const fileChangeHandler = (e) => {
-    const files = Array.from(e.target.files);
+    const files = [...e.target.files];
     setFileList(files);
   };
 
@@ -29,13 +30,28 @@ const NoticeAddPage = () => {
       try {
         const formData = new FormData();
         fileList.forEach((file) => {
-          formData.append("files", file);
+          formData.append("file", file);
         });
-        formData.append("title", noticeData.title);
-        formData.append("content", noticeData.content);
+        const fileRes = await fileRegister(formData, "notice");
+        const addFiles = fileRes.fileData.map((fileData, idx) => {
+          const savedName = fileData.imageUrl.substring(
+            fileData.imageUrl.lastIndexOf("/") + 1
+          );
+          return {
+            originalName: fileList[idx].name,
+            savedName: savedName,
+            filePath: fileData.imageUrl,
+            thumbnailPath: fileData.thumbnailUrl,
+          };
+        });
+        const noticeDataWithFiles = {
+          ...noticeData,
+          fileList: addFiles,
+        };
+        const noticeRes = await registerNotice(noticeDataWithFiles);
 
-        const res = await registerNotice(formData);
-        console.log("backend에 전달", res);
+        console.log("backend에 파일 내용 전달", fileRes);
+        console.log("backend에 공지 내용 전달", noticeRes);
 
         alert("공지 등록 완료");
 
@@ -110,9 +126,6 @@ const NoticeAddPage = () => {
               {fileList.map((file, index) => (
                 <li key={index} className="bg-gray-100 px-3 py-1 rounded-md">
                   {file.name}{" "}
-                  <span className="text-gray-500 text-xs">
-                    ({(file.size / 1024).toFixed(1)} KB)
-                  </span>
                 </li>
               ))}
             </ul>

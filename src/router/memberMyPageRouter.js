@@ -1,4 +1,4 @@
-import React, { Children, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import memberSupportRouter from "./memberSupportRouter";
 
 const MemberEdit = lazy(() =>
@@ -55,7 +55,7 @@ const memberMyPageRouter = () => {
       ],
     },
     {
-      path: "partnerRequest/:id",
+      path: "partnerRequest",
       element: (
         <Suspense fallback={<Loading />}>
           <PartnerRequest />

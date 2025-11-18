@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PartnerRequestComponent from "./components/PartnerRequestComponent";
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getOne,
-  partnerReqClassRegister,
-  partnerReqFileRegister,
-} from "../../../api/memberApi";
+import { partnerReqFileRegister } from "../../../api/memberApi";
 import { getPartnerStatus } from "../../../api/partnerApi";
 
 const PartnerRequestPage = () => {
@@ -65,7 +61,7 @@ const PartnerRequestPage = () => {
     const fileCheck =
       fileName.resumeFiles.length > 0 && fileName.bankFiles.length > 0;
     setFileCheck(fileCheck);
-  }, [partnerClass, partnerAgree, fileName]);
+  }, [partnerClass, partnerAgree, fileName, id]);
 
   const checkClassHandler = (e) => {
     const { name } = e.target;
@@ -111,19 +107,19 @@ const PartnerRequestPage = () => {
       const formData = new FormData();
       formData.append("resumeFiles", resumeRef.current.files[0]);
       const certFiles = certRef.current.files;
-      for (let i = 0; i < certFiles.length; i++) {
-        formData.append("certFiles", certFiles[i]);
+      for (let i of certFiles) {
+        formData.append("certFiles", i);
       }
       formData.append("bankFiles", bankRef.current.files[0]);
 
       const selectedClass = Object.keys(partnerClass).filter(
-        (key) => partnerClass[key] == true
+        (key) => partnerClass[key] === true
       );
       formData.append("partnerClass", selectedClass);
       formData.append("memberId", id);
 
       try {
-        const res = await partnerReqFileRegister(formData);
+        await partnerReqFileRegister(id, formData);
         alert("신청이 완료되었습니다.");
         navigate("/");
       } catch (err) {

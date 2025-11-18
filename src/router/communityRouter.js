@@ -8,7 +8,7 @@ const communityRouter = () => {
       path: "notice",
       element: <Suspense fallback={<Loading />}>{/* <Login /> */}</Suspense>,
     },
-     {
+    {
       path: "memberManage",
       element: <Suspense fallback={<Loading />}>{/* <Login /> */}</Suspense>,
     },

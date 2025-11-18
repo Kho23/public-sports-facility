@@ -1,10 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { MdAccountCircle } from "react-icons/md";
 import { VscGear } from "react-icons/vsc";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegCalendarCheck } from "react-icons/fa";
-import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { BsChatLeftText } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
 

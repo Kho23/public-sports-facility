@@ -100,7 +100,7 @@ export const allMenuItems = [
         path: "/community/notice",
       },
       {
-        id: "",
+        id: "schedule",
         title: "일정",
         path: "/community/schedule",
       },
@@ -110,7 +110,7 @@ export const allMenuItems = [
         path: "/community/faq",
       },
       {
-        id: "",
+        id: "gallery",
         title: "갤러리",
         path: "/community/gallery",
       },

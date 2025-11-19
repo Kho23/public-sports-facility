@@ -6,7 +6,8 @@ import NoticeAddPage from "../pages/admin/community/notice/NoticeAddPage";
 import FaqListPage from "../pages/faq/FaqListPage";
 import NoticeListPage from "../pages/admin/community/notice/NoticeListPage";
 import NoticeReadPage from "../pages/admin/community/notice/NoticeReadPage";
-
+import PartnerRequestPage from "../pages/admin/member/partnerRequest/PartnerRequestPage";
+import PartnerRequestList from "../pages/admin/member/partnerRequest/PartnerRequestList";
 const EditorPage = lazy(() => import("../pages/admin/test/EditorPage"));
 
 const Loading = () => <div>Loading...</div>;
@@ -66,6 +67,22 @@ const adminRouter = () => {
         <Suspense fallback={<Loading />}>
           <FaqListPage />
         </Suspense>
+      ),
+    },
+    {
+      path: "member/partnerRequest",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PartnerRequestList />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/partnerRequest/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PartnerRequestPage />
+         </Suspense>
       ),
     },
     {

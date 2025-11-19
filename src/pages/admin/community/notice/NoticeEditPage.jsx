@@ -3,6 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getOneNotice } from "../../../../api/noticeApi";
 import { modifyNotice } from "../../../../api/adminApi";
 import { fileRegister } from "../../../../api/fileApi";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "../../../../styles/ckeditor-custom.css";
+import { MyCustomUploadPlugin } from "./myUploadAdapter";
 
 const initstate = {
   noticeId: 0,
@@ -121,12 +125,26 @@ const NoticeEditPage = () => {
         </div>
       </div>
 
-      <textarea
+      {/* <textarea
         name="content"
         onChange={changeHandler}
         value={getOne.content}
         className="min-h-[400px] border border-black bg-white p-8 flex flex-col justify-center w-full items-center  text-xl font-semibold text-gray-800 mb-6"
-      />
+      /> */}
+      <div className="mb-6">
+        <CKEditor
+          key={getOne.noticeId}
+          editor={ClassicEditor}
+          data={getOne.content}
+          config={{
+            extraPlugins: [MyCustomUploadPlugin],
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setGetOne({ ...getOne, content: data });
+          }}
+        />
+      </div>
 
       <div className="border-t border-gray-300 pt-4 mt-6">
         <h3 className="font-semibold text-gray-800 mb-3">첨부파일</h3>

@@ -29,3 +29,28 @@ export const registerNotice = async (notice) => {
   console.log("백엔드에 보낸 notice 등록 데이터", res.data);
   return res.data;
 };
+export const getListPartnerRequest = async () => {
+  const res = await axios.get(`${API_SERVER_HOST}/member/partnerRequest`);
+  console.log("백엔드에 보낸 partnerRequest 전체데이터", res.data);
+  return res.data;
+};
+export const getOnePartnerRequest = async (RequestId) => {
+  const res = await axios.get(
+    `${API_SERVER_HOST}/member/partnerRequest/${RequestId}`
+  );
+  console.log("백엔드에 보낸 partnerRequest 상세 데이터", res.data);
+  return res.data;
+};
+export const changePartnerStatus = async (RequestId, status) => {
+  const res = await axios.post(
+    `${API_SERVER_HOST}/member/partnerRequest/${RequestId}`,
+    status,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      transformRequest: [(data) => JSON.stringify(data)],
+    }
+  );
+  return res.data;
+};

@@ -107,6 +107,14 @@ const root = createBrowserRouter([
         ),
       },
       {
+        path: `guide/:guideId`,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Guide />
+          </Suspense>
+        ),
+      },
+      {
         path: "member/:id",
         children: [
           {
@@ -140,14 +148,6 @@ const root = createBrowserRouter([
         ],
       },
     ],
-  },
-  {
-    path: `guide/:guideId`,
-    element: (
-      <Suspense fallback={<Loading />}>
-        <Guide />
-      </Suspense>
-    ),
   },
 ]);
 

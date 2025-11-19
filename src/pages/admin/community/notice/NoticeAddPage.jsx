@@ -4,6 +4,7 @@ import { registerNotice } from "../../../../api/adminApi";
 import { fileRegister } from "../../../../api/fileApi";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import "../../../../styles/ckeditor-custom.css";
 
 const initstate = {
   content: "",
@@ -30,29 +31,33 @@ const NoticeAddPage = () => {
     e.preventDefault();
     const f = async () => {
       try {
-        const formData = new FormData();
-        fileList.forEach((file) => {
-          formData.append("file", file);
-        });
-        const fileRes = await fileRegister(formData, "notice");
-        const addFiles = fileRes.fileData.map((fileData, idx) => {
-          const savedName = fileData.imageUrl.substring(
-            fileData.imageUrl.lastIndexOf("/") + 1
-          );
-          return {
-            originalName: fileList[idx].name,
-            savedName: savedName,
-            filePath: fileData.imageUrl,
-            thumbnailPath: fileData.thumbnailUrl,
-          };
-        });
+        let addFiles = [];
+        if (fileList && fileList.length > 0) {
+          const formData = new FormData();
+          fileList.forEach((file) => {
+            formData.append("file", file);
+          });
+          const fileRes = await fileRegister(formData, "notice");
+          addFiles = fileRes.fileData.map((fileData, idx) => {
+            const savedName = fileData.imageUrl.substring(
+              fileData.imageUrl.lastIndexOf("/") + 1
+            );
+            return {
+              originalName: fileList[idx].name,
+              savedName: savedName,
+              filePath: fileData.imageUrl,
+              thumbnailPath: fileData.thumbnailUrl,
+            };
+          });
+          console.log("backend에 파일 내용 전달", fileRes);
+        }
+
         const noticeDataWithFiles = {
           ...noticeData,
           fileList: addFiles,
         };
         const noticeRes = await registerNotice(noticeDataWithFiles);
 
-        console.log("backend에 파일 내용 전달", fileRes);
         console.log("backend에 공지 내용 전달", noticeRes);
 
         alert("공지 등록 완료");

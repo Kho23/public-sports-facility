@@ -26,9 +26,9 @@ export const adminAllMenuItems = [
         path: "",
       },
       {
-        id: "",
-        title: "할인/환불/연기",
-        path: "",
+        id: "partnerRequest",
+        title: "파트너 승급 신청",
+        path: `/admin/member/partnerRequest`,
       },
     ],
   },

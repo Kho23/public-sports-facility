@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerNotice } from "../../../../api/adminApi";
 import { fileRegister } from "../../../../api/fileApi";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 
 const initstate = {
   content: "",
@@ -89,11 +91,21 @@ const NoticeAddPage = () => {
       </div>
 
       {/* 내용 입력 */}
-      <textarea
+      {/* <textarea
         name="content"
         onChange={changeHandler}
         className="min-h-[400px] border border-black bg-white p-8 w-full text-xl font-semibold text-gray-800 mb-6 rounded"
-      />
+      // /> */}
+      <div className="mb-6">
+        <CKEditor
+          editor={ClassicEditor}
+          data={noticeData.content}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setNoticeData({ ...noticeData, content: data });
+          }}
+        />
+      </div>
 
       <div className="border-t border-gray-300 pt-4 mt-6">
         <h3 className="font-semibold text-gray-800 mb-3">첨부파일</h3>

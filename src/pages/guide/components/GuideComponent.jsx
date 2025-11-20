@@ -1,6 +1,6 @@
 import React from "react";
 
-const GuideComponent = ({ cleanHtml, finalName, Createddate }) => {
+const GuideComponent = ({ cleanHtml, finalName, Createddate, guideList }) => {
   return (
     <div className="bg-white">
       <div className="max-w-5xl flex gap-10 py-4 px-4">
@@ -32,6 +32,23 @@ const GuideComponent = ({ cleanHtml, finalName, Createddate }) => {
               "
               dangerouslySetInnerHTML={{ __html: cleanHtml }}
             />
+            {guideList && (
+              <div className="mt-10 space-y-10">
+                {guideList?.uploadFiles?.map((i) => (
+                  <div
+                    key={i.fileId}
+                    className="max-w-[500px] bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm"
+                  >
+                    <img
+                      alt={i.fileName}
+                      src={`http://localhost:8080/api/guide/view/${i.savedName}`}
+                      className="w-full h-auto rounded-lg object-cover mb-2"
+                    />
+                    <p className="mt-3 text-center text-sm text-gray-600"></p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </main>
       </div>

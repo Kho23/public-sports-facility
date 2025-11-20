@@ -3,33 +3,39 @@ import DOMPurify from "dompurify";
 import axios from "axios";
 import GuideComponent from "./components/GuideComponent";
 import { useParams } from "react-router-dom";
+import { getCategory } from "../../api/guideApi";
 
 const GuidePage = () => {
   const [html, setHtml] = useState("");
   const { category } = useParams();
   const [categoryName, setCategoryName] = useState({
-    time: "운영시간",
-    rent: "상품대여",
-    car: "차량등록",
-    price: "요금안내",
-    refund: "할인/환불/연기",
+    TIME: "운영시간",
+    RENT: "상품대여",
+    CAR: "차량등록",
+    PRICE: "요금안내",
+    REFUND: "할인/환불/연기",
   });
-  const [finalName, setFinalName] = useState("");
+  const [categoryFinalName, setcategoryFinalName] = useState("");
   const [Createddate, setCreatedDate] = useState("");
+  const [guideList, setGuideList] = useState({});
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`/api/guide/${category}`);
-      console.log("res.data", res.data);
-      setCreatedDate(res.data.updatedDate.slice(0, 10));
-      setHtml(res.data.html || "");
+      const res = await getCategory(category.toUpperCase());
+      setGuideList(res);
+      setCreatedDate(res.updatedDate.slice(0, 10));
+      setHtml(res.html ?? "");
     };
     f();
   }, [category]);
 
   useEffect(() => {
+    console.log("guideList", guideList);
+  }, [guideList]);
+
+  useEffect(() => {
     const changeCategory = () => {
-      setFinalName(categoryName[category]);
+      setcategoryFinalName(categoryName[category.toUpperCase()]);
     };
     changeCategory();
   }, [category]);
@@ -42,8 +48,9 @@ const GuidePage = () => {
     <div>
       <GuideComponent
         cleanHtml={cleanHtml}
-        finalName={finalName}
+        categoryFinalName={categoryFinalName}
         Createddate={Createddate}
+        guideList={guideList}
       />
     </div>
   );

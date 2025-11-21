@@ -1,6 +1,11 @@
 import React from "react";
 
-const GuideComponent = ({ cleanHtml, nowCategory, Createddate, guideList }) => {
+const GuideViewComponent = ({
+  cleanHtml,
+  nowCategory,
+  Createddate,
+  guideList,
+}) => {
   return (
     <div className="bg-white">
       <div className="max-w-5xl flex gap-10 py-4 px-4">
@@ -56,4 +61,4 @@ const GuideComponent = ({ cleanHtml, nowCategory, Createddate, guideList }) => {
   );
 };
 
-export default GuideComponent;
+export default GuideViewComponent;

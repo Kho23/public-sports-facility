@@ -14,14 +14,34 @@ const GuideEditComponent = ({
   guideFiles,
   savedFile,
   deleteHandler,
+  cancelHandler,
   fileName,
 }) => {
   return (
     <div className="container mx-auto max-w-5xl p-4 md:p-8">
-      <div className="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-800">
-        <h1 className="text-3xl font-bold"> {categoryFinalName} 수정</h1>
-        <div className="flex text-sm pt-4 text-gray-500 space-x-4">
+      <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-gray-800">
+        <h1 className="text-3xl mt-8 font-bold">
+          {categoryFinalName} 페이지 수정
+        </h1>
+
+        <div className="flex flex-col items-end text-sm text-gray-500 space-y-3">
           <span>작성자 : 관리자</span>
+
+          <div className="flex gap-x-4">
+            <button
+              type="submit"
+              onClick={saveHandler}
+              className="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-800 transition-colors"
+            >
+              완료
+            </button>
+            <button
+              onClick={cancelHandler}
+              className="bg-gray-600 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
+            >
+              취소
+            </button>
+          </div>
         </div>
       </div>
 
@@ -66,6 +86,29 @@ const GuideEditComponent = ({
 
       <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
         <h3 className="text-sm font-semibold text-gray-700 mb-3">
+          새로 추가한 이미지
+        </h3>
+        {fileName && (
+          <div className="mt-3 space-y-1">
+            {fileName.map((i, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-3 text-sm text-gray-700
+                px-3 py-2 bg-gray-50 rounded-lg border border-gray-200
+                hover:bg-gray-100 transition"
+              >
+                <span className="font-semibold text-blue-700">{idx + 1}.</span>
+                <span className="truncate">{i.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <br />
+
+      <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">
           기존 업로드된 이미지
         </h3>
         {savedFile && (
@@ -86,42 +129,6 @@ const GuideEditComponent = ({
             ))}
           </div>
         )}
-      </div>
-      <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">
-          새로 추가한 이미지
-        </h3>
-        {fileName && (
-          <div className="mt-3 space-y-1">
-            {fileName.map((i, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3 text-sm text-gray-700
-                px-3 py-2 bg-gray-50 rounded-lg border border-gray-200
-                hover:bg-gray-100 transition"
-              >
-                <span className="font-semibold text-blue-700">{idx + 1}.</span>
-                <span className="truncate">{i.name}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-end mt-8 gap-x-4">
-        <button
-          type="submit"
-          onClick={saveHandler}
-          className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
-        >
-          수정
-        </button>
-        <Link
-          to={-1}
-          className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
-        >
-          취소
-        </Link>
       </div>
     </div>
   );

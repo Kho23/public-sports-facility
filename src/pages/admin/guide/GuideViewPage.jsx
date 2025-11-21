@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DOMPurify from "dompurify";
-import axios from "axios";
-import GuideComponent from "./components/GuideComponent";
 import { useParams } from "react-router-dom";
-import { getCategory } from "../../api/guideApi";
+import GuideViewComponent from "./components/GuideViewComponent";
+import { getCategory } from "../../../api/guideApi";
 
-const GuidePage = () => {
+const GuideViewPage = () => {
   const [html, setHtml] = useState("");
   const { category } = useParams();
   const [categoryName, setCategoryName] = useState({
@@ -42,7 +41,7 @@ const GuidePage = () => {
 
   return (
     <div>
-      <GuideComponent
+      <GuideViewComponent
         cleanHtml={cleanHtml}
         nowCategory={nowCategory}
         Createddate={Createddate}
@@ -52,4 +51,4 @@ const GuidePage = () => {
   );
 };
 
-export default GuidePage;
+export default GuideViewPage;

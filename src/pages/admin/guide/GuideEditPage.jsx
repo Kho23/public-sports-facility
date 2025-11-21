@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import GuideEditComponent from "./components/GuideEditComponent";
 import { getCategory, upload } from "../../../api/guideApi";
 
@@ -18,6 +18,7 @@ const GuideEditPage = () => {
   const [categoryFinalName, setcategoryFinalName] = useState("");
   const [fileName, setFilelName] = useState([]);
   const [deletedFileIds, setDeletedFileIds] = useState([]);
+  const navigate = useNavigate();
 
   const guideFiles = useRef(null);
 
@@ -71,7 +72,15 @@ const GuideEditPage = () => {
     formData.append("deletedNo", deletedFileIds);
 
     await upload(formData);
-    alert("저장 완료");
+    alert("수정한 내용이 저장되었습니다.");
+    window.location.reload();
+  };
+
+  const cancelHandler = () => {
+    if (window.confirm("수정하신 내용을 취소하시겠습니까?")) {
+      alert("수정 중인 내용이 취소되었습니다");
+      window.location.reload();
+    }
   };
 
   const EditorChangeHandler = (_, editor) => {
@@ -123,6 +132,7 @@ const GuideEditPage = () => {
         fileUploadHandler={fileUploadHandler}
         guideFiles={guideFiles}
         deleteHandler={deleteHandler}
+        cancelHandler={cancelHandler}
         fileName={fileName}
         savedFile={savedFile}
       />

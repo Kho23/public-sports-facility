@@ -11,6 +11,8 @@ const useCustomMove = () => {
   const moveToAdminNoticeDetail = (id) => navigate(`/admin/notice/${id}`);
   const moveToAdminPartnerRequestDetail = (id) =>
     navigate(`/admin/member/partnerRequest/${id}`);
+  const moveToAdminSupportDetail = (id) =>
+    navigate(`/admin/member/support/${id}`);
 
   return {
     moveToLogin,
@@ -20,6 +22,7 @@ const useCustomMove = () => {
     moveToGalleryDetail,
     moveToAdminNoticeDetail,
     moveToAdminPartnerRequestDetail,
+    moveToAdminSupportDetail,
   };
 };
 

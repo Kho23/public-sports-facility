@@ -58,7 +58,7 @@ const SupportDetailComponent = ({ supportList, toListHandler }) => {
         </div>
       </div>
 
-      <SupportAnsweredComponent />
+      <SupportAnsweredComponent supportList={supportList} />
       <div className="text-center mt-12">
         <button
           className="bg-blue-700 hover:bg-blue-900 text-white font-semibold py-3 px-8 rounded-lg transition duration-200 shadow-md"

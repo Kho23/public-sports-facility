@@ -9,6 +9,8 @@ import NoticeReadPage from "../pages/admin/community/notice/NoticeReadPage";
 import PartnerRequestPage from "../pages/admin/member/partnerRequest/PartnerRequestPage";
 import PartnerRequestList from "../pages/admin/member/partnerRequest/PartnerRequestList";
 import GuideEditPage from "../pages/admin/guide/GuideEditPage";
+import SupportListPage from "../pages/admin/member/support/SupportListPage";
+import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -82,6 +84,22 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <PartnerRequestPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/support",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <SupportListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/support/:no",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <SupportDetailPage />
         </Suspense>
       ),
     },

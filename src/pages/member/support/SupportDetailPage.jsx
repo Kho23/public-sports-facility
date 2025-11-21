@@ -11,7 +11,7 @@ const SupportDetailPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const getOne = await supportGetOne(id, no);
+      const getOne = await supportGetOne(no);
       setSupportList(getOne);
     };
     f();

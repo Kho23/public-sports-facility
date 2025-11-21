@@ -21,9 +21,9 @@ export const adminAllMenuItems = [
         path: "",
       },
       {
-        id: "",
-        title: "요금안내",
-        path: "",
+        id: "support",
+        title: "1:1 문의내역",
+        path: "/admin/member/support",
       },
       {
         id: "partnerRequest",
@@ -149,33 +149,4 @@ export const adminAllMenuItems = [
       },
     ],
   },
-  // {
-  //   id: "admin",
-  //   title: "관리자페이지",
-  //   path: "/admin", // 1차 메뉴의 기본 경로
-  //   hideInHeader: true,
-  //   subMenus: [
-  //     // 2차 메뉴 (사이드바 내용)
-  //     {
-  //       id: "",
-  //       title: "공지사항",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "일정",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "자주묻질문",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "갤러리",
-  //       path: "",
-  //     },
-  //   ],
-  // },
 ];

@@ -54,3 +54,16 @@ export const changePartnerStatus = async (RequestId, status) => {
   );
   return res.data;
 };
+export const getAllListSupport = async () => {
+  const res = await axios.get(`${API_SERVER_HOST}/member/support`);
+  console.log("백엔드에 보낸 support 전체데이터", res.data);
+  return res.data;
+};
+export const registerSupportResponse = async (no, response) => {
+  const res = await axios.post(
+    `${API_SERVER_HOST}/member/support/${no}`,
+    response
+  );
+  console.log("백엔드에 보낸 Response 데이터", res.data);
+  return res.data;
+};

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
+import { useLocation, useParams } from "react-router-dom";
 import { getOne } from "../../api/programApi";
-import remarkGfm from "remark-gfm";
+import ProgramListPageComponent from "./ProgramListPageComponent";
 
 const initState = {
   content: "",
@@ -29,15 +28,12 @@ const ProgramListPage = () => {
   }, [programId]);
 
   return (
-    <div className="prose pl-40 whitespace-nowrap">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{data.content}</ReactMarkdown>
-      {adminPage ? (
-        <Link to={`/admin/program/update/${programId}`} className="pl-20">
-          수정하기
-        </Link>
-      ) : (
-        <></>
-      )}
+    <div>
+      <ProgramListPageComponent
+        data={data}
+        adminPage={adminPage}
+        programId={programId}
+      />
     </div>
   );
 };

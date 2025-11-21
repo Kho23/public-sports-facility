@@ -36,9 +36,7 @@ export const supportGetList = async (id) => {
   return res.data;
 };
 
-export const supportGetOne = async (id, no) => {
-  const res = await axios.get(
-    `http://localhost:8080/api/member/${id}/support/${no}`
-  );
+export const supportGetOne = async (no) => {
+  const res = await axios.get(`http://localhost:8080/api/member/support/${no}`);
   return res.data;
 };

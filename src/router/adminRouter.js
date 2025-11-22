@@ -9,6 +9,7 @@ import NoticeReadPage from "../pages/admin/community/notice/NoticeReadPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
+ 
   return [
     {
       path: "program/:programId",

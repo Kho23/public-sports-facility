@@ -19,6 +19,9 @@ const Gallery = lazy(() => import("../pages/gallery/GalleryListPage"));
 const GalleryDetail = lazy(() => import("../pages/gallery/GalleryReadPage"));
 const Schedule = lazy(() => import("../pages/schedule/ScheldulePage"));
 const DailyUse = lazy(() => import("../pages/dailyUse/DailyUsePage"));
+const Register = lazy(() => import("../pages/auth/RegisterPage"));
+const FindId = lazy(() => import("../pages/auth/FindIdpage"));
+const FindPw = lazy(() => import("../pages/auth/FindPwPage"));
 
 const root = createBrowserRouter([
   {
@@ -42,7 +45,7 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: "login",
+        path: "/auth/login",
         element: (
           <Suspense fallback={<Loading />}>
             <Login />
@@ -95,6 +98,30 @@ const root = createBrowserRouter([
           <Suspense fallback={<Loading />}>
             <Schedule />
           </Suspense>
+        )
+      },
+      {
+        path: "/auth/find-pw",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <FindPw />
+          </Suspense>
+        )
+      },
+      {
+        path: "/auth/register",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Register />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/auth/find-id",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <FindId />
+          </Suspense>
         ),
       },
       {
@@ -106,7 +133,7 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: "member/:id",
+        path: "member",
         children: [
           {
             index: true,

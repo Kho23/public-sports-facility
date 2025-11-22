@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_HOST_URL="http://localhost:8080/api/gallery"
+const API_HOST_URL="http://localhost:8080/api/community/gallery"
 
 export const register=async(dto)=>{
     const res = await axios.post(`${API_HOST_URL}/gallery`,dto)

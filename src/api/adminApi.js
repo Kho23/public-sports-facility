@@ -11,8 +11,7 @@ export const programModify = async (programId, data) => {
 
 export const modifyNotice = async (notice) => {
   console.log("notice!!!!!!!!!", notice);
-  const res = await axios.put(
-    `${API_SERVER_HOST}/notice/${notice.noticeId}`,
+  const res = await axios.put(`${API_SERVER_HOST}/community/notice/${notice.noticeId}/admin`,
     notice
   );
   console.log("백엔드에 보내는 notice 수정데이터 ", res.notice);
@@ -20,12 +19,12 @@ export const modifyNotice = async (notice) => {
 };
 
 export const deleteNotice = async (id) => {
-  const res = await axios.delete(`${API_SERVER_HOST}/notice/${id}`);
+  const res = await axios.delete(`${API_SERVER_HOST}/community/notice/${id}/admin`);
   console.log("삭제 데이터 ", res);
   return res.data;
 };
 export const registerNotice = async (notice) => {
-  const res = await axios.post(`${API_SERVER_HOST}/notice/register`, notice);
+  const res = await axios.post(`${API_SERVER_HOST}/community/notice/register`, notice);
   console.log("백엔드에 보낸 notice 등록 데이터", res.data);
   return res.data;
 };

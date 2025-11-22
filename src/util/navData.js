@@ -100,7 +100,7 @@ export const allMenuItems = [
         path: "/community/notice",
       },
       {
-        id: "",
+        id: "schedule",
         title: "일정",
         path: "/community/schedule",
       },
@@ -110,10 +110,22 @@ export const allMenuItems = [
         path: "/community/faq",
       },
       {
-        id: "",
+        id: "gallery",
         title: "갤러리",
         path: "/community/gallery",
       },
+    ],
+  },
+  {
+    id: "member",
+    title: "회원서비스",
+    path: "/auth", // 클릭 시 기본 이동 경로 (보통 로그인으로 설정)
+    hideInHeader: true, // 상단 메뉴바에는 표시하지 않음
+    subMenus: [
+      { id: "login", title: "로그인", path: "/auth/login" },
+      { id: "register", title: "회원가입", path: "/auth/register" },
+      { id: "findId", title: "아이디찾기", path: "/auth/find-id" },
+      { id: "findPw", title: "비밀번호찾기", path: "/auth/find-pw" },
     ],
   },
   // {

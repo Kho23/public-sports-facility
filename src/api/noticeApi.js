@@ -1,7 +1,7 @@
 import axios from "axios";
 import { format, parseISO } from "date-fns";
 
-const API_HOST_URL = "http://localhost:8080/api/notice";
+const API_HOST_URL = "http://localhost:8080/api/community/notice";
 
 export const getNoticeList = async () => {
   const res = await axios.get(`${API_HOST_URL}/list`);

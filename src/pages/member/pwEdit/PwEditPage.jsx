@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PwEditComponent from "./components/PwEditComponent";
 import { useNavigate, useParams } from "react-router-dom";
-import { getOne, register } from "../../../api/memberApi";
+import { getOne, modify } from "../../../api/memberApi";
 
 const PwEditPage = () => {
   const { id } = useParams();
@@ -19,7 +19,8 @@ const PwEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne(id);
+      const data = await getOne();
+      //더이상 멤버 아이디로 가져오지 않아서 id 인자 제거
       setData(data);
     };
     f();
@@ -36,7 +37,7 @@ const PwEditPage = () => {
   const clickHandler = (e) => {
     e.preventDefault();
     if (pwCheckFn(formCheck)) {
-      register(id, data);
+      modify(data);
       alert("비밀번호 변경이 완료되었습니다");
       navigate("/");
     } else {

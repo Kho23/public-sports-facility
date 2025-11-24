@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const MemberEditComponent = ({
+const PartnerEditComponent = ({
   data,
   changeHandler,
   clickHandler,
@@ -183,4 +183,4 @@ const MemberEditComponent = ({
   );
 };
 
-export default MemberEditComponent;
+export default PartnerEditComponent;

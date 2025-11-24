@@ -15,6 +15,14 @@ export const register = async (id, userData) => {
   return res.data;
 };
 
+export const changePassword = async (id, data) => {
+  const res = await axios.post(
+    `http://localhost:8080/api/member/${id}/passwordEdit`,
+    data
+  );
+  return res.data;
+};
+
 export const partnerReqFileRegister = async (id, formData) => {
   const res = await axios.post(
     `http://localhost:8080/api/member/${id}/partnerRequest`,

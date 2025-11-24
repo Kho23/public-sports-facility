@@ -67,3 +67,18 @@ export const registerSupportResponse = async (no, response) => {
   console.log("백엔드에 보낸 Response 데이터", res.data);
   return res.data;
 };
+export const updateFaq = async (id, data) => {
+  const res = await axios.put(`${API_SERVER_HOST}/faq/${id}`, data);
+  console.log("백엔드에 보낸 faq 수정데이터", res.data);
+  return res.data;
+};
+export const deleteFaq = async (id) => {
+  const res = await axios.delete(`${API_SERVER_HOST}/faq/${id}`);
+  console.log("백엔드에 보낸 faq 삭제데이터", res.data);
+  return res.data;
+};
+export const createFaq = async (data) => {
+  const res = await axios.post(`${API_SERVER_HOST}/faq/register`, data);
+  console.log("백엔드에 보낸 faq 추가데이터", res.data);
+  return res.data;
+};

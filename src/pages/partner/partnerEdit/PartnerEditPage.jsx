@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOne, register } from "../../../api/memberApi";
-import MemberEditComponent from "./components/MemberEditComponent";
+import PartnerEditComponent from "./components/PartnerEditComponent";
 
-const MemberEditPage = () => {
+const PartnerEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [formCheck, setFormCheck] = useState(data);
@@ -18,10 +18,6 @@ const MemberEditPage = () => {
   };
 
   useEffect(() => {
-    console.log("data", data);
-  }, [data]);
-
-  useEffect(() => {
     const f = async () => {
       const data = await getOne(id);
       setData(data);
@@ -34,6 +30,10 @@ const MemberEditPage = () => {
     };
     f();
   }, [id]);
+
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -64,7 +64,7 @@ const MemberEditPage = () => {
   };
 
   return (
-    <MemberEditComponent
+    <PartnerEditComponent
       data={data}
       openAddress={openAddress}
       changeHandler={changeHandler}
@@ -75,4 +75,4 @@ const MemberEditPage = () => {
   );
 };
 
-export default MemberEditPage;
+export default PartnerEditPage;

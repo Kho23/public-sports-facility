@@ -3,6 +3,7 @@ import Layout from "../components/layouts/Layout";
 import adminRouter from "./adminRouter";
 import memberMyPageRouter from "./memberMyPageRouter";
 import AdminLayout from "../components/layouts/AdminLayout";
+import partnerMyPageRouter from "./partnerMyPageRouter";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -20,6 +21,9 @@ const GalleryDetail = lazy(() => import("../pages/gallery/GalleryReadPage"));
 const Schedule = lazy(() => import("../pages/schedule/ScheldulePage"));
 const DailyUse = lazy(() => import("../pages/dailyUse/DailyUsePage"));
 const Guide = lazy(() => import("../pages/guide/GuidePage"));
+const PartnerMyPage = lazy(() =>
+  import("../pages/partner/partnerPage/PartnerMyPage")
+);
 
 const root = createBrowserRouter([
   {
@@ -126,6 +130,20 @@ const root = createBrowserRouter([
             ),
           },
           ...memberMyPageRouter(),
+        ],
+      },
+      {
+        path: "partner/:id",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <PartnerMyPage />
+              </Suspense>
+            ),
+          },
+          ...partnerMyPageRouter(),
         ],
       },
     ],

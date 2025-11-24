@@ -2,7 +2,12 @@ import { FaRegCheckSquare } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
+const PwEditComponent = ({
+  changeHandler,
+  clickHandler,
+  checkHandler,
+  pwCorrect,
+}) => {
   return (
     <div className="max-w-xl mx-auto p-6 sm:p-8 bg-white rounded-2xl shadow-xl border border-gray-100 mt-10">
       <h2 className="text-3xl font-extrabold mb-8 pb-4 text-gray-900 border-b border-gray-200">
@@ -10,6 +15,21 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
       </h2>
 
       <ul className="space-y-6">
+        <li className="flex flex-col">
+          <label className="font-semibold mb-2 text-gray-700">
+            현재 비밀번호
+          </label>
+          <div className="flex gap-2">
+            <input
+              className="w-full border border-gray-300 rounded-lg p-3 transition duration-150 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              type="password"
+              name="memberCurrentPassword"
+              onChange={checkHandler}
+              placeholder="영문/숫자/특수문자 포함"
+            />
+          </div>
+        </li>
+
         <li className="flex flex-col">
           <label className="font-semibold mb-2 text-gray-700">
             새 비밀번호

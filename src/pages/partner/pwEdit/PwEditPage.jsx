@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import PwEditComponent from "./components/PwEditComponent";
+
 import { useNavigate, useParams } from "react-router-dom";
-import { changePassword, getOne, register } from "../../../api/memberApi";
+import { changePassword, getOne } from "../../../api/memberApi";
+import PwEditComponent from "./components/PwEditComponent";
 
 const PwEditPage = () => {
   const { id } = useParams();
@@ -25,11 +26,21 @@ const PwEditPage = () => {
     f();
   }, [id]);
 
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
+
   const changeHandler = (e) => {
     const { name, value } = e.target;
     const newForm = { ...formCheck, [name]: value };
     setPwCorrect(pwCheckFn(newForm));
     setFormCheck(newForm);
+    setData({ ...data, [name]: value });
+  };
+
+  const checkHandler = (e) => {
+    const { name, value } = e.target;
+    console.log("name", name, "value", value);
     setData({ ...data, [name]: value });
   };
 
@@ -49,6 +60,7 @@ const PwEditPage = () => {
       changeHandler={changeHandler}
       clickHandler={clickHandler}
       pwCorrect={pwCorrect}
+      checkHandler={checkHandler}
     />
   );
 };

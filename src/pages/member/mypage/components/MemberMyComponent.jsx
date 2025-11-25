@@ -8,6 +8,7 @@ import { BsChatLeftText } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
 
 const MemberMyComponent = ({ data }) => {
+ 
   return (
     <div className="max-w-lg mx-auto p-6 sm:p-8 bg-white rounded-2xl shadow-xl border border-gray-100 mt-10">
       <h2 className="text-3xl sm:text-4xl font-extrabold text-black mb-8 pb-4 border-b border-blue-100">
@@ -30,7 +31,7 @@ const MemberMyComponent = ({ data }) => {
       <ul className="space-y-4">
         <li>
           <Link
-            to="/member/:id/memberEdit"
+            to="/member/memberEdit"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -57,7 +58,7 @@ const MemberMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/member/:id/PwEditPage"
+            to="/member/PwEditPage"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -84,7 +85,7 @@ const MemberMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/member/:id/reservation"
+            to="/member/reservation"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -111,7 +112,7 @@ const MemberMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/member/:id/support"
+            to="/member/support"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -138,7 +139,7 @@ const MemberMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/member/:id/partnerRequest"
+            to="/member/partnerRequest"
             className="
               group block 
               bg-white hover:bg-blue-50 

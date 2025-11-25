@@ -19,7 +19,8 @@ const PwEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne(id);
+      const data = await getOne();
+      //더이상 멤버 아이디로 가져오지 않아서 id 인자 제거
       setData(data);
     };
     f();

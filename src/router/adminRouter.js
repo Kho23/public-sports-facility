@@ -14,6 +14,7 @@ import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
+ 
   return [
     {
       path: "program/:programId",

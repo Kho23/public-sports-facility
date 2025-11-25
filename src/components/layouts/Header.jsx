@@ -1,43 +1,66 @@
 import useCustomMove from "../../hooks/useCustomMove";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { allMenuItems } from "../../util/navData";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/auth/authSlice";
 
 const Header = () => {
-  const { moveToLogin, moveToMain } = useCustomMove();
+  const { moveToLogin, moveToMain, moveToAdmin } = useCustomMove();
   const location = useLocation();
-  // 마우스가 올라간 1차 메뉴의 ID를 저장 (드롭다운 제어)
   const [hoveredMenuId, setHoveredMenuId] = useState(null);
+  const { isLoggedIn, memberRole, memberId } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())//로그아웃 버튼이 눌리면 logout 실행됨
+    alert("로그아웃 되었습니다.")
+    moveToMain()
+  }
 
   return (
     <header className="bg-white shadow border-b">
-      {/* 상단 로그인/회원가입/마이페이지 */}
       <div className="bg-blue-950 flex space-x-8 justify-end px-8 py-3 text-sm text-white border-b border-gray-200">
-        <Link to="/login" className="hover:underline mr-2">
-          로그인
-        </Link>
-        <Link to="/register" className="hover:underline mr-2">
-          회원가입
-        </Link>
-        {/* 마이페이지는 ALL_NAV_MENUS에 있지만, 여기서 별도 Link로 처리 */}
-        <Link to="/member" className="hover:underline">
-          마이페이지
-        </Link>
-      </div>
+        {isLoggedIn ? (
+          <div className="flex items-center space-x-4">
+            {memberRole === "ROLE_ADMIN" && (
+              <button
+                onClick={moveToAdmin}
+                className="hover:underline font-bold text-yellow-400"
+              >
+                관리자 페이지
+              </button>
+            )}
 
-      {/* 메인 네비게이션 (Sub Menu 드롭다운을 위해 relative 설정) */}
+            {/* 관리자(ROLE_ADMIN)가 아닐 때만 "마이페이지" 링크가 보입니다. */}
+            {memberRole !== "ROLE_ADMIN" && (
+              <Link to={`/member`} className="hover:underline">
+                마이페이지
+              </Link>
+            )}
+
+            <button onClick={handleLogout} className="hover:underline"> 로그아웃 </button>
+          </div>
+        ) : (
+          <div>
+            <Link to="/auth/login" className="hover:underline mr-2">
+              로그인
+            </Link>
+            <Link to="/auth/register" className="hover:underline mr-2">
+              회원가입
+            </Link>
+          </div>
+        )}
+      </div>
 
       <nav
         className="relative flex justify-between items-center max-w-7xl mx-auto px-10 py-7 border-gray-200"
-        onMouseLeave={() => setHoveredMenuId(null)} // NAV 영역 벗어나면 드롭다운 닫기
+        onMouseLeave={() => setHoveredMenuId(null)}
       >
-        {/* 로고 */}
-
         <Link to="/" className="text-[30px] font-bold text-gray-800">
           그린체육관
         </Link>
 
-        {/* GNB 메뉴 영역 */}
         <ul className="flex-1 flex justify-center space-x-16 text-lg font-bold">
           {allMenuItems.map((menu) => {
             if (menu.hideInHeader) {
@@ -49,34 +72,27 @@ const Header = () => {
               <li
                 key={menu.id}
                 className="relative"
-                onMouseEnter={() => setHoveredMenuId(menu.id)} // 마우스 올리면 ID 저장
+                onMouseEnter={() => setHoveredMenuId(menu.id)}
               >
                 <Link
-                  to={menu.subMenus[0].path} // 1차 메뉴의 기본 경로로 연결
-                  className={`
-                    py-2 transition duration-150 ease-in-out block
-                    ${
-                      isActive
-                        ? "text-blue-600 border-b-4 border-blue-600" // 활성 상태 스타일
-                        : "text-gray-800 hover:text-blue-500" // 비활성 상태 스타일
-                    }
-                  `}
+                  to={menu.subMenus[0].path}
+                  className={`py-2 transition duration-150 ease-in-out block ${isActive
+                      ? "text-blue-600 border-b-4 border-blue-600"
+                      : "text-gray-800 hover:text-blue-500"
+                    }`}
                 >
                   {menu.title}
                 </Link>
 
                 {menu.subMenus && (
                   <div
-                    className={`
-                      absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 
+                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 
                       bg-white shadow-lg border border-gray-200 rounded-b-lg w-60 min-w-max
                       transition-all duration-300 opacity-0 pointer-events-none 
-                      ${
-                        hoveredMenuId === menu.id
-                          ? "opacity-100 pointer-events-auto"
-                          : ""
-                      }
-                    `}
+                      ${hoveredMenuId === menu.id
+                        ? "opacity-100 pointer-events-auto"
+                        : ""
+                      }`}
                   >
                     {menu.subMenus.map((subMenu) => (
                       <Link
@@ -94,7 +110,6 @@ const Header = () => {
             );
           })}
         </ul>
-        {/* 오른쪽 여백을 위해 빈 div 추가 */}
         <div className="w-[100px]"></div>
       </nav>
     </header>

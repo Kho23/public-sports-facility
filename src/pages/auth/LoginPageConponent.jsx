@@ -1,152 +1,171 @@
-import React, { useState } from 'react';
-// TODO: 로그인 성공 후 페이지 이동을 위해 import
-// import { useNavigate } from 'react-router-dom';
-// TODO: Redux state 변경을 위해 import
-// import { useDispatch } from 'react-redux';
-// import { loginAction } from '../../slices/authSlice'; 
-// TODO: API 호출 함수 import
-// import { loginPost } from '../../api/userApi'; 
+import React, { useEffect, useState } from 'react';
+import { login } from '../../api/authApi';
+import useCustomMove from '../../hooks/useCustomMove';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAsync } from '../../store/auth/authSlice';
+
 const initData = {
-  id:'',
-  password:''
+  id: '',
+  password: ''
 }
+
 const LoginPage = () => {
+  const { moveToMain } = useCustomMove();
   const [loginInfo, setLoginInfo] = useState(initData);
-
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
-
-  // 토큰 만료 등 특정 상황에만 안내 메시지를 보여주기 위한 상태 (임시)
-  // 예: const showTokenWarning = new URLSearchParams(window.location.search).get('error') === 'token_expired';
-  const showTokenWarning = false; // 우선 false로 둡니다.
-  const handleChange = (e)=>{
-    const {name, value}=e.target
-    setLoginInfo({...loginInfo,[name]:value})
+  const dispatch = useDispatch();
+  const { isLoading, error, isLoggedIn } = useSelector((state) => state.auth)
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setLoginInfo({ ...loginInfo, [name]: value })
   }
-  /**
-   * 일반 로그인 버튼 클릭 시 실행될 함수
-   */
-  const handleClickLogin = async (e) => {
-    e.preventDefault(); // 폼 기본 동작(새로고침) 방지
-    // console.log('로그인 시도:', { id, password });
 
-    // --- TODO: 2~4단계 로직 구현 ---
-    // try {
-    //   // 2단계: API 호출
-    //   const data = await loginPost({ id, password }); 
-    //
-    //   // 3단계: Redux 상태 업데이트
-    //   dispatch(loginAction(data)); // (data에 토큰이 있다고 가정)
-    //
-    //   // 4단계: 페이지 이동
-    //   navigate('/'); // 메인 페이지로 이동
-    //
-    // } catch (error) {
-    //   console.error(error);
-    //   alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-    // }
-    // ------------------------------
+  useEffect(() => {
+    // 로그인 상태를 확인하여 이미 로그인되어있으면 메인페이지로 이동시킴
+    if (isLoggedIn) {
+      alert("이미 로그인 되어 있습니다. 메인페이지로 이동합니다.")
+      moveToMain();
+    } else return;
+  }, [])
+
+  const handleClickLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await dispatch(loginAsync(loginInfo))
+      if (loginAsync.fulfilled.match(result)) {
+        console.log("로그인 성공")
+        alert("로그인 성공!")
+        moveToMain()
+      } else {
+        console.error("로그인 실패", result.payload)
+        alert("아이디 또는 패스워드가 일치하지 않습니다.")
+      }
+    } catch (error) {
+      console.error(error)
+      alert("로그인 중 오류가 발생했습니다.")
+    }
   };
 
-  /**
-   * 소셜 로그인 버튼 클릭 시 실행될 함수
-   */
   const handleSocialLogin = (provider) => {
     console.log(`${provider} 로그인 시도`);
-    // TODO: 각 소셜 로그인(OAuth) API 호출
     // window.location.href = `백엔드_소셜로그인_URL/${provider}`;
   };
 
   return (
-    // 페이지 전체를 감싸고, 로그인 박스를 수직/수평 중앙에 배치
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div className="flex flex-col items-center min-h-screen bg-white pt-10 md:pt-20">
       
-      {/* 흰색 로그인 박스 */}
-      <div className="w-full max-w-4xl bg-white shadow-2xl rounded-lg p-8 md:p-12">
+      {/* 상단 타이틀 및 안내 문구 (이미지 스타일) */}
+      <div className="w-full max-w-4xl px-4 mb-8">
+        <div className="flex justify-between items-end border-b-2 border-gray-300 pb-4 mb-6">
+          <h1 className="text-4xl font-bold text-gray-900">로그인</h1>
+          {/* 우측 상단 아이콘 영역 (프린트/공유 등 - 이미지 연출용) */}
+          <div className="flex space-x-2 text-gray-400">
+             <span className="border p-1 rounded-full cursor-pointer hover:bg-gray-100">🖨️</span>
+             <span className="border p-1 rounded-full cursor-pointer hover:bg-gray-100">🔗</span>
+          </div>
+        </div>
         
-        {/* 1. 토큰 만료 시간 안내 (조건부 렌더링) */}
-        {showTokenWarning && (
-          <div className="mb-8 p-4 bg-red-100 text-red-700 rounded-md text-center font-bold">
-            토큰이 만료되었습니다. 다시 로그인해주세요.
+        <div className="text-center text-sm text-gray-600 mb-10 leading-relaxed">
+          회원 로그인 정보는 <span className="text-orange-500 font-bold">60분</span> 동안 유지되며 (<span className="text-orange-500">60분</span> 경과 시 자동로그아웃),<br />
+          자리를 비우실 때는 보안을 위해 반드시 로그아웃을 하거나 사용 중이던 모든 인터넷 창을 닫으시기 바랍니다.
+        </div>
+      </div>
+
+      {/* 메인 로그인 박스 */}
+      <div className="w-full max-w-2xl border border-gray-300 bg-white p-8 md:p-12 shadow-sm">
+        <h2 className="text-2xl font-bold text-center mb-10 text-gray-800">회원 로그인</h2>
+
+        <form onSubmit={handleClickLogin} className="flex flex-row items-stretch gap-4">
+          
+          {/* 왼쪽: 입력 필드 영역 */}
+          <div className="flex-1 flex flex-col justify-center space-y-6">
+            {/* 아이디 입력 */}
+            <div className="flex items-center border-b border-gray-300 py-2">
+              <div className="text-gray-400 mr-3">
+                {/* 사람 아이콘 SVG */}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                name='id'
+                value={loginInfo.id}
+                onChange={(e) => handleChange(e)}
+                placeholder="아이디"
+                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                required
+              />
+            </div>
+
+            {/* 비밀번호 입력 */}
+            <div className="flex items-center border-b border-gray-300 py-2">
+              <div className="text-gray-400 mr-3">
+                {/* 자물쇠/전화기 아이콘 SVG */}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <input
+                type="password"
+                name='password'
+                value={loginInfo.password}
+                onChange={(e) => handleChange(e)}
+                placeholder="비밀번호"
+                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                required
+              />
+            </div>
+          </div>
+
+          {/* 오른쪽: 로그인 버튼 */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-32 md:w-40 bg-[#263c79] hover:bg-[#1e3161] text-white font-medium text-lg flex items-center justify-center transition-colors disabled:bg-gray-400"
+          >
+            {isLoading ? '...' : '로그인'}
+          </button>
+        </form>
+
+        {/* 에러 메시지 */}
+        {error && (
+          <div className="mt-4 text-center text-red-600 text-sm">
+            로그인 실패: {error.message || '정보를 확인해주세요.'}
           </div>
         )}
 
-        {/* 2. 로그인 메인 컨텐츠 (좌우 분리) */}
-        {/* 모바일에서는 세로로, 데스크탑에서는 가로로 배치 */}
-        <div className="flex flex-col md:flex-row md:space-x-12">
-          
-          {/* 2-1. 회원 로그인 (왼쪽 영역) */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">회원 로그인</h2>
-            
-            <form onSubmit={handleClickLogin} className="flex space-x-4">
-              {/* 아이디/비밀번호 입력부 */}
-              <div className="flex-1">
-                <input
-                  type="text"
-                  name='id'
-                  value={loginInfo.id}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="아이디"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-                <input
-                  type="password"
-                  name='password'
-                  value={loginInfo.password}
-                  onChange={(e) => handleChange(e)}
-                  placeholder="비밀번호"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              
-              {/* 로그인 버튼 (세로로 길게) */}
-              <button 
-                type="submit" 
-                className="px-6 py-3 bg-gray-700 text-white rounded-md font-bold text-lg self-stretch hover:bg-gray-800 transition-colors"
-              >
-                로그인
-              </button>
-            </form>
+        {/* 하단 링크 (회원가입 / 아이디찾기 / 비밀번호찾기) */}
+        <div className="mt-8 flex justify-center items-center space-x-4 text-sm text-gray-600">
+          <a href="/register" className="hover:text-gray-900">회원가입</a>
+          <span className="text-gray-300">|</span>
+          <a href="/find-id" className="hover:text-gray-900">아이디찾기</a>
+          <span className="text-gray-300">|</span>
+          <a href="/find-pw" className="hover:text-gray-900">비밀번호찾기</a>
+        </div>
+      </div>
 
-            {/* 하단 링크 (회원가입, 찾기) */}
-            <div className="mt-6 flex space-x-4 text-gray-600">
-              {/* TODO: react-router-dom의 Link 컴포넌트로 변경 */}
-              <a href="/register" className="hover:underline text-sm">회원가입</a>
-              <a href="/find-id" className="hover:underline text-sm">아이디찾기</a>
-              <a href="/find-pw" className="hover:underline text-sm">비밀번호찾기</a>
-            </div>
-          </div>
-
-          {/* 수직 구분선 (데스크탑에서만 보임) */}
-          <div className="hidden md:block border-l border-gray-200"></div>
-
-          {/* 2-2. 소셜 로그인 (오른쪽 영역) */}
-          <div className="flex-1 mt-8 md:mt-0">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">소셜 로그인</h2>
-            <div className="flex flex-col space-y-4">
-              <button 
+      {/* 소셜 로그인 (이미지엔 없지만 로직 보존을 위해 하단에 배치) */}
+      <div className="w-full max-w-2xl mt-8 px-8 md:px-12">
+        <div className="border-t border-gray-200 pt-6">
+          <div className="flex gap-3 justify-center">
+             <button
                 onClick={() => handleSocialLogin('kakao')}
-                className="w-full py-3 bg-yellow-400 text-black font-semibold rounded-md flex items-center justify-center space-x-2 hover:bg-yellow-500 transition-colors"
+                className="px-4 py-2 bg-yellow-400 text-black text-sm font-medium rounded shadow-sm hover:bg-yellow-500"
               >
-                {/* TODO: 카카오 아이콘 추가 */}
-                <span>카카오 로그인</span>
+                카카오 로그인
               </button>
-              <button 
+              <button
                 onClick={() => handleSocialLogin('naver')}
-                className="w-full py-3 bg-green-500 text-white font-semibold rounded-md flex items-center justify-center space-x-2 hover:bg-green-600 transition-colors"
+                className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded shadow-sm hover:bg-green-600"
               >
-                {/* TODO: 네이버 아이콘 추가 */}
-                <span>네이버 로그인</span>
+                네이버 로그인
               </button>
-            </div>
           </div>
-          
-        </div> {/* flex end */}
-      </div> {/* main box end */}
-    </div> // page wrapper end
+        </div>
+      </div>
+
+    </div>
   );
 };
 

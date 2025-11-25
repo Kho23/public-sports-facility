@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getOne, register } from "../../../api/memberApi";
+import { getOne, modify } from "../../../api/memberApi";
 import MemberEditComponent from "./components/MemberEditComponent";
 
 const MemberEditPage = () => {
@@ -11,7 +11,7 @@ const MemberEditPage = () => {
   const [userBirth, setUserBirth] = useState("");
   const navigate = useNavigate();
 
-  const isCheck = (formCheck) => {
+  const isCheck = ( ) => {
     const { memberEmail, memberPhoneNumber } = formCheck;
     if (memberEmail === "" || memberPhoneNumber === "") return false;
     else return true;
@@ -23,9 +23,9 @@ const MemberEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne(id);
+      const data = await getOne();
+      //더이상 멤버 아이디로 가져오지 않아 id 인자 제거
       setData(data);
-
       if (data.memberBirthDate)
         setUserBirth(data.memberBirthDate.substring(0, 10));
 
@@ -55,7 +55,7 @@ const MemberEditPage = () => {
   const clickHandler = (e) => {
     e.preventDefault();
     if (isCheck(formCheck)) {
-      register(id, data);
+      modify(data);
       alert("수정이 완료되었습니다");
       navigate("/");
     } else {

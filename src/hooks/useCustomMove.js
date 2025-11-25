@@ -13,6 +13,12 @@ const useCustomMove = () => {
   const moveToFindId=()=>navigate("/auth/find-id")
   const moveToFindPw=()=>navigate("/auth/find-pw")
   const moveToRegister=()=>navigate("/auth/register")
+  const moveToAdminNoticeDetail = (id) => navigate(`/admin/notice/${id}`);
+  const moveToAdminPartnerRequestDetail = (id) =>
+    navigate(`/admin/member/partnerRequest/${id}`);
+  const moveToAdminSupportDetail = (id) =>
+    navigate(`/admin/member/support/${id}`);
+
   return {
     moveToRegister,
     moveToFindId,
@@ -24,6 +30,8 @@ const useCustomMove = () => {
     moveToGalleryDetail,
     moveToAdminNoticeDetail,
     moveToAdmin,
+    moveToAdminPartnerRequestDetail,
+    moveToAdminSupportDetail,
   };
 };
 

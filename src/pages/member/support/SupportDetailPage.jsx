@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
 import SupportDetailComponent from "./components/SupportDetailComponent";
-import { useParams } from "react-router-dom";
-import { supportGetList } from "../../../api/memberApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { supportGetOne } from "../../../api/memberApi";
 
 const SupportDetailPage = () => {
   const { id } = useParams();
+  const { no } = useParams();
   const [supportList, setSupportList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const f = async () => {
-      const res = await supportGetList(id);
-      setSupportList(res);
+      const getOne = await supportGetOne(no);
+      setSupportList(getOne);
     };
     f();
   }, [id]);
 
-  return <SupportDetailComponent supportList={supportList} />;
+  const toListHandler = () => {
+    navigate(`/member/${id}/support`);
+  };
+
+  return (
+    <SupportDetailComponent
+      supportList={supportList}
+      toListHandler={toListHandler}
+    />
+  );
 };
 
 export default SupportDetailPage;

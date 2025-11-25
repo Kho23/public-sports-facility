@@ -21,14 +21,14 @@ export const adminAllMenuItems = [
         path: "",
       },
       {
-        id: "",
-        title: "요금안내",
-        path: "",
+        id: "support",
+        title: "1:1 문의내역",
+        path: "/admin/member/support",
       },
       {
-        id: "",
-        title: "할인/환불/연기",
-        path: "",
+        id: "partnerRequest",
+        title: "파트너 승급 신청",
+        path: `/admin/member/partnerRequest`,
       },
     ],
   },
@@ -39,29 +39,29 @@ export const adminAllMenuItems = [
     subMenus: [
       // 2차 메뉴 (사이드바 내용)
       {
-        id: "",
+        id: "time",
         title: "운영시간", //운영시간수정
-        path: "",
+        path: "/admin/guide/time",
       },
       {
-        id: "",
+        id: "rent",
         title: "상품대여",
-        path: "",
+        path: "/admin/guide/rent",
       },
       {
-        id: "",
+        id: "car",
         title: "차량등록",
-        path: "",
+        path: "/admin/guide/car",
       },
       {
-        id: "",
+        id: "price",
         title: "요금안내",
-        path: "",
+        path: "/admin/guide/price",
       },
       {
-        id: "",
+        id: "refund",
         title: "할인/환불/연기",
-        path: "",
+        path: "/admin/guide/refund",
       },
     ],
   },
@@ -149,33 +149,4 @@ export const adminAllMenuItems = [
       },
     ],
   },
-  // {
-  //   id: "admin",
-  //   title: "관리자페이지",
-  //   path: "/admin", // 1차 메뉴의 기본 경로
-  //   hideInHeader: true,
-  //   subMenus: [
-  //     // 2차 메뉴 (사이드바 내용)
-  //     {
-  //       id: "",
-  //       title: "공지사항",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "일정",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "자주묻질문",
-  //       path: "",
-  //     },
-  //     {
-  //       id: "",
-  //       title: "갤러리",
-  //       path: "",
-  //     },
-  //   ],
-  // },
 ];

@@ -13,6 +13,7 @@ const SupportWritePage = () => {
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
+    console.log(value);
     setSupport({ ...support, [name]: value });
   };
 
@@ -39,8 +40,8 @@ const SupportWritePage = () => {
       for (let i of supportFile) {
         formData.append("supportFiles", i);
       }
-      formData.append("supportTitle", JSON.stringify(support.title));
-      formData.append("supportContent", JSON.stringify(support.content));
+      formData.append("supportTitle", support.title);
+      formData.append("supportContent", support.content);
       formData.append("memberId", id);
 
       for (let pair of formData.entries()) {

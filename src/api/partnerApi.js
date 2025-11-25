@@ -5,4 +5,4 @@ export const getPartnerStatus = async (id) => {
     `http://localhost:8080/api/member/${id}/partnerRequest`
   );
   return res.data;
-};
+}; // 파트너 신청서 제출 상태 확인

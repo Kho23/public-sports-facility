@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const MemberEditComponent = ({
   data,
@@ -145,10 +146,11 @@ const MemberEditComponent = ({
         </ul>
       </form>
 
-      <button
-        onClick={clickHandler}
-        className="
-          mt-10 w-full 
+      <div className="mt-10 flex gap-4">
+        <button
+          onClick={clickHandler}
+          className="
+          flex-1
           bg-blue-600 text-white 
           py-4 rounded-lg 
           font-extrabold text-lg
@@ -156,9 +158,27 @@ const MemberEditComponent = ({
           shadow-lg hover:shadow-xl
           transition duration-150
         "
-      >
-        개인 정보 수정 완료
-      </button>
+        >
+          개인 정보 수정 완료
+        </button>
+
+        <Link
+          to={-1}
+          className="
+          flex-1
+          bg-white text-blue-600
+          border border-blue-600
+          py-4 rounded-lg 
+          font-extrabold text-lg
+          hover:bg-blue-50
+          shadow-sm hover:shadow
+          transition duration-150
+          text-center
+        "
+        >
+          취소
+        </Link>
+      </div>
     </div>
   );
 };

@@ -18,6 +18,10 @@ const MemberEditPage = () => {
   };
 
   useEffect(() => {
+    console.log("data", data);
+  }, [data]);
+
+  useEffect(() => {
     const f = async () => {
       const data = await getOne();
       //더이상 멤버 아이디로 가져오지 않아 id 인자 제거
@@ -39,8 +43,11 @@ const MemberEditPage = () => {
 
   const openAddress = () => {
     new window.daum.Postcode({
-      oncomplete: (data) => {
-        setData({ ...data, ["memberAddress"]: data.address });
+      oncomplete: (addressData) => {
+        setData((data) => ({
+          ...data,
+          ["memberAddress"]: addressData.address,
+        }));
       },
     }).open();
   };

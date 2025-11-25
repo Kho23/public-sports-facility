@@ -98,7 +98,7 @@ const PartnerRequestPage = () => {
   const cancelHandler = () => {
     if (window.confirm("파트너 신청을 취소하시겠습니까?")) {
       alert("신청이 취소되었습니다.");
-      navigate("/member/:id");
+      navigate(`/member/${id}`);
     }
   };
 
@@ -121,7 +121,7 @@ const PartnerRequestPage = () => {
       try {
         await partnerReqFileRegister(id, formData);
         alert("신청이 완료되었습니다.");
-        navigate("/");
+        navigate(`/member/${id}`);
       } catch (err) {
         alert("신청 중 오류가 발생했습니다.");
       }

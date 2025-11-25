@@ -3,6 +3,7 @@ import Layout from "../components/layouts/Layout";
 import adminRouter from "./adminRouter";
 import memberMyPageRouter from "./memberMyPageRouter";
 import AdminLayout from "../components/layouts/AdminLayout";
+import partnerMyPageRouter from "./partnerMyPageRouter";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -22,6 +23,10 @@ const DailyUse = lazy(() => import("../pages/dailyUse/DailyUsePage"));
 const Register = lazy(() => import("../pages/auth/RegisterPage"));
 const FindId = lazy(() => import("../pages/auth/FindIdpage"));
 const FindPw = lazy(() => import("../pages/auth/FindPwPage"));
+const Guide = lazy(() => import("../pages/guide/GuidePage"));
+const PartnerMyPage = lazy(() =>
+  import("../pages/partner/partnerPage/PartnerMyPage")
+);
 
 const root = createBrowserRouter([
   {
@@ -133,7 +138,15 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: "member",
+        path: `guide/:category`,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Guide />
+          </Suspense>
+        ),
+      },
+      {
+        path: "member/:id",
         children: [
           {
             index: true,
@@ -144,6 +157,20 @@ const root = createBrowserRouter([
             ),
           },
           ...memberMyPageRouter(),
+        ],
+      },
+      {
+        path: "partner/:id",
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <PartnerMyPage />
+              </Suspense>
+            ),
+          },
+          ...partnerMyPageRouter(),
         ],
       },
     ],

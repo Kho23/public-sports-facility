@@ -3,6 +3,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { VscGear } from "react-icons/vsc";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegCalendarCheck } from "react-icons/fa";
+import { FaRegPenToSquare } from "react-icons/fa6";
 import { BsChatLeftText } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
 
@@ -153,7 +154,7 @@ const MemberMyComponent = ({ data }) => {
           >
             <span className="flex items-center gap-3">
               <span className="text-blue-500 group-hover:text-blue-700 transition">
-                <PiNotePencil className="w-4 h-4 sm:w-7 sm:h-7 fill-blue-950" />
+                <FaRegPenToSquare className="w-4 h-4 sm:w-7 sm:h-7 fill-blue-950" />
               </span>
               파트너 신청
             </span>

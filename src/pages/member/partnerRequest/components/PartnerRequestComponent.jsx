@@ -328,6 +328,7 @@ const PartnerRequestComponent = ({
             >
               취소
             </button>
+
             <button
               onClick={requestHandler}
               className="

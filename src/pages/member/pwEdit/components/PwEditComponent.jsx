@@ -1,5 +1,6 @@
 import { FaRegCheckSquare } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
   return (
@@ -61,10 +62,11 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
         </li>
       </ul>
 
-      <button
-        onClick={clickHandler}
-        className="
-          mt-10 w-full 
+      <div className="mt-10 flex gap-4">
+        <button
+          onClick={clickHandler}
+          className="
+          flex-1
           bg-blue-600 text-white 
           py-4 rounded-lg 
           font-extrabold text-lg
@@ -72,9 +74,27 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
           shadow-lg hover:shadow-xl
           transition duration-150
         "
-      >
-        비밀번호 변경 완료
-      </button>
+        >
+          비밀번호 변경 완료
+        </button>
+
+        <Link
+          to={-1}
+          className="
+          flex-1
+          bg-white text-blue-600
+          border border-blue-600
+          py-4 rounded-lg 
+          font-extrabold text-lg
+          hover:bg-blue-50
+          shadow-sm hover:shadow
+          transition duration-150
+          text-center
+        "
+        >
+          취소
+        </Link>
+      </div>
     </div>
   );
 };

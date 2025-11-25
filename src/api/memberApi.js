@@ -28,6 +28,14 @@ export const modify = async (userData) => {
   return res.data;
 };
 
+export const changePassword = async (id, data) => {
+  const res = await axios.post(
+    `http://localhost:8080/api/member/${id}/passwordEdit`,
+    data
+  );
+  return res.data;
+};
+
 export const partnerReqFileRegister = async (id, formData) => {
   const res = await axios.post(
     `http://localhost:8080/api/member/${id}/partnerRequest`,
@@ -46,5 +54,10 @@ export const supportReqRegister = async (id, formData) => {
 
 export const supportGetList = async (id) => {
   const res = await axios.get(`http://localhost:8080/api/member/${id}/support`);
+  return res.data;
+};
+
+export const supportGetOne = async (no) => {
+  const res = await axios.get(`http://localhost:8080/api/member/support/${no}`);
   return res.data;
 };

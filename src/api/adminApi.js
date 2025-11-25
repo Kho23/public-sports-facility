@@ -11,38 +11,44 @@ export const programModify = async (programId, data) => {
 
 export const modifyNotice = async (notice) => {
   console.log("notice!!!!!!!!!", notice);
-  const res = await axios.put(`${API_SERVER_HOST}/community/notice/${notice.noticeId}/admin`,
+  const res = await axios.put(
+    `${API_SERVER_HOST}/community/notice/admin/${notice.noticeId}`,
     notice
   );
   console.log("백엔드에 보내는 notice 수정데이터 ", res.notice);
   return res.data;
 };
 
-export const deleteNotice = async (id) => {
-  const res = await axios.delete(`${API_SERVER_HOST}/community/notice/${id}/admin`);
+export const deleteNotice = async (no) => {
+  const res = await axios.delete(
+    `${API_SERVER_HOST}/community/notice/admin/${no}`
+  );
   console.log("삭제 데이터 ", res);
   return res.data;
 };
 export const registerNotice = async (notice) => {
-  const res = await axios.post(`${API_SERVER_HOST}/community/notice/register`, notice);
+  const res = await axios.post(
+    `${API_SERVER_HOST}/community/notice/admin/register`,
+    notice
+  );
   console.log("백엔드에 보낸 notice 등록 데이터", res.data);
   return res.data;
 };
 export const getListPartnerRequest = async () => {
-  const res = await axios.get(`${API_SERVER_HOST}/member/partnerRequest`);
+  const res = await axios.get(`${API_SERVER_HOST}/partner/partnerRequest`);
   console.log("백엔드에 보낸 partnerRequest 전체데이터", res.data);
   return res.data;
 };
 export const getOnePartnerRequest = async (RequestId) => {
   const res = await axios.get(
-    `${API_SERVER_HOST}/member/partnerRequest/${RequestId}`
+    `${API_SERVER_HOST}/partner/partnerRequest/${RequestId}`
   );
   console.log("백엔드에 보낸 partnerRequest 상세 데이터", res.data);
   return res.data;
 };
 export const changePartnerStatus = async (RequestId, status) => {
   const res = await axios.post(
-    `${API_SERVER_HOST}/member/partnerRequest/${RequestId}`,
+    `${API_SERVER_HOST}/partner/partnerRequest/status/${RequestId}`,
     status,
     {
       headers: {
@@ -54,30 +60,35 @@ export const changePartnerStatus = async (RequestId, status) => {
   return res.data;
 };
 export const getAllListSupport = async () => {
-  const res = await axios.get(`${API_SERVER_HOST}/member/support`);
+  const res = await axios.get(`${API_SERVER_HOST}/support/all`);
   console.log("백엔드에 보낸 support 전체데이터", res.data);
   return res.data;
 };
 export const registerSupportResponse = async (no, response) => {
-  const res = await axios.post(
-    `${API_SERVER_HOST}/member/support/${no}`,
-    response
-  );
+  const res = await axios.post(`${API_SERVER_HOST}/support/${no}`, response);
   console.log("백엔드에 보낸 Response 데이터", res.data);
   return res.data;
 };
-export const updateFaq = async (id, data) => {
-  const res = await axios.put(`${API_SERVER_HOST}/faq/${id}`, data);
+export const updateFaq = async (no, data) => {
+  const res = await axios.put(
+    `${API_SERVER_HOST}/community/faq/admin/${no}`,
+    data
+  );
   console.log("백엔드에 보낸 faq 수정데이터", res.data);
   return res.data;
 };
-export const deleteFaq = async (id) => {
-  const res = await axios.delete(`${API_SERVER_HOST}/faq/${id}`);
+export const deleteFaq = async (no) => {
+  const res = await axios.delete(
+    `${API_SERVER_HOST}/community/faq/admin/${no}`
+  );
   console.log("백엔드에 보낸 faq 삭제데이터", res.data);
   return res.data;
 };
 export const createFaq = async (data) => {
-  const res = await axios.post(`${API_SERVER_HOST}/faq/register`, data);
+  const res = await axios.post(
+    `${API_SERVER_HOST}/community/faq/admin/register`,
+    data
+  );
   console.log("백엔드에 보낸 faq 추가데이터", res.data);
   return res.data;
 };

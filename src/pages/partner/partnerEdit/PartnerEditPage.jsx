@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getOne, register } from "../../../api/memberApi";
+import { getOne, modify, register } from "../../../api/memberApi";
 import PartnerEditComponent from "./components/PartnerEditComponent";
 
 const PartnerEditPage = () => {
-  const { id } = useParams();
   const [data, setData] = useState({});
   const [formCheck, setFormCheck] = useState(data);
   const [userGender, setUserGender] = useState([false, false]);
@@ -19,7 +18,7 @@ const PartnerEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne(id);
+      const data = await getOne();
       setData(data);
 
       if (data.memberBirthDate)
@@ -29,11 +28,7 @@ const PartnerEditPage = () => {
       else setUserGender([false, true]);
     };
     f();
-  }, [id]);
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+  }, []);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -55,7 +50,7 @@ const PartnerEditPage = () => {
   const clickHandler = (e) => {
     e.preventDefault();
     if (isCheck(formCheck)) {
-      register(id, data);
+      modify(data);
       alert("수정이 완료되었습니다");
       navigate("/");
     } else {

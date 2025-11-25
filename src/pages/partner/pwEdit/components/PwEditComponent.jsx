@@ -2,12 +2,7 @@ import { FaRegCheckSquare } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const PwEditComponent = ({
-  changeHandler,
-  clickHandler,
-  checkHandler,
-  pwCorrect,
-}) => {
+const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
   return (
     <div className="max-w-xl mx-auto p-6 sm:p-8 bg-white rounded-2xl shadow-xl border border-gray-100 mt-10">
       <h2 className="text-3xl font-extrabold mb-8 pb-4 text-gray-900 border-b border-gray-200">
@@ -24,7 +19,7 @@ const PwEditComponent = ({
               className="w-full border border-gray-300 rounded-lg p-3 transition duration-150 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               type="password"
               name="memberCurrentPassword"
-              onChange={checkHandler}
+              onChange={changeHandler}
               placeholder="영문/숫자/특수문자 포함"
             />
           </div>

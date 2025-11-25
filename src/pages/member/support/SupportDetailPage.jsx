@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { supportGetOne } from "../../../api/memberApi";
 
 const SupportDetailPage = () => {
-  const { id } = useParams();
   const { no } = useParams();
   const [supportList, setSupportList] = useState([]);
   const navigate = useNavigate();
@@ -15,10 +14,10 @@ const SupportDetailPage = () => {
       setSupportList(getOne);
     };
     f();
-  }, [id]);
+  }, []);
 
   const toListHandler = () => {
-    navigate(`/member/${id}/support`);
+    navigate(`/member/support`);
   };
 
   return (

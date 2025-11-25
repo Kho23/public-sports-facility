@@ -103,7 +103,7 @@ const root = createBrowserRouter([
           <Suspense fallback={<Loading />}>
             <Schedule />
           </Suspense>
-        )
+        ),
       },
       {
         path: "/auth/find-pw",
@@ -111,7 +111,7 @@ const root = createBrowserRouter([
           <Suspense fallback={<Loading />}>
             <FindPw />
           </Suspense>
-        )
+        ),
       },
       {
         path: "/auth/register",
@@ -146,7 +146,7 @@ const root = createBrowserRouter([
         ),
       },
       {
-        path: "member/:id",
+        path: "/member",
         children: [
           {
             index: true,

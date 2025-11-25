@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_SERVER_HOST } from "./commonApi";
+const API_SERVER_HOST = "http://localhost:8080";
 const host = `${API_SERVER_HOST}/api/program`;
 
 export const getOne = async (programId) => {

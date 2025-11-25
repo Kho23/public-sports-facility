@@ -11,15 +11,11 @@ const MemberEditPage = () => {
   const [userBirth, setUserBirth] = useState("");
   const navigate = useNavigate();
 
-  const isCheck = ( ) => {
+  const isCheck = () => {
     const { memberEmail, memberPhoneNumber } = formCheck;
     if (memberEmail === "" || memberPhoneNumber === "") return false;
     else return true;
   };
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
 
   useEffect(() => {
     const f = async () => {

@@ -10,13 +10,13 @@ export const getNoticeList = async () => {
   return res.data;
 };
 
-export const increaseViewCount = async (id) => {
-  const res = await axios.post(`${API_HOST_URL}/${id}/view`);
+export const increaseViewCount = async (no) => {
+  const res = await axios.post(`${API_HOST_URL}/${no}/view`);
   return res.data;
 };
 
-export const getOneNotice = async (id) => {
-  const res = await axios.get(`${API_HOST_URL}/${id}`);
+export const getOneNotice = async (no) => {
+  const res = await axios.get(`${API_HOST_URL}/${no}`);
   console.log("백엔드에서 가져온 notice 한개", res.data);
   return res.data;
 };

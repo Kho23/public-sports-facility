@@ -5,7 +5,6 @@ import { changePassword, getOne } from "../../../api/memberApi";
 import PwEditComponent from "./components/PwEditComponent";
 
 const PwEditPage = () => {
-  const { id } = useParams();
   const [data, setData] = useState({});
   const [formCheck, setFormCheck] = useState(data);
   const [pwCorrect, setPwCorrect] = useState(false);
@@ -20,15 +19,11 @@ const PwEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne(id);
+      const data = await getOne();
       setData(data);
     };
     f();
-  }, [id]);
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+  }, []);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -38,16 +33,10 @@ const PwEditPage = () => {
     setData({ ...data, [name]: value });
   };
 
-  const checkHandler = (e) => {
-    const { name, value } = e.target;
-    console.log("name", name, "value", value);
-    setData({ ...data, [name]: value });
-  };
-
   const clickHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await changePassword(id, data);
+      const res = await changePassword(data);
       alert("비밀번호 변경이 완료되었습니다");
       navigate("/");
     } catch (err) {
@@ -60,7 +49,6 @@ const PwEditPage = () => {
       changeHandler={changeHandler}
       clickHandler={clickHandler}
       pwCorrect={pwCorrect}
-      checkHandler={checkHandler}
     />
   );
 };

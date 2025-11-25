@@ -12,6 +12,21 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
       <ul className="space-y-6">
         <li className="flex flex-col">
           <label className="font-semibold mb-2 text-gray-700">
+            현재 비밀번호
+          </label>
+          <div className="flex gap-2">
+            <input
+              className="w-full border border-gray-300 rounded-lg p-3 transition duration-150 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              type="password"
+              name="memberCurrentPassword"
+              onChange={changeHandler}
+              placeholder="영문/숫자/특수문자 포함"
+            />
+          </div>
+        </li>
+
+        <li className="flex flex-col">
+          <label className="font-semibold mb-2 text-gray-700">
             새 비밀번호
           </label>
           <div className="flex gap-2">

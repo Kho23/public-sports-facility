@@ -5,28 +5,27 @@ import { supportGetList } from "../../../api/memberApi";
 import SupportDetailComponent from "./components/SupportDetailComponent";
 
 const SupportPage = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [supportList, setSupportList] = useState([]);
 
   useEffect(() => {
     const f = async () => {
-      const res = await supportGetList(id);
+      const res = await supportGetList();
       setSupportList(res);
     };
     f();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     console.log("supportList", supportList);
   }, [supportList]);
 
   const supportPageHandler = () => {
-    navigate(`/member/${id}/support/write`);
+    navigate(`/member/support/write`);
   };
 
   const detailPageHandler = () => {
-    navigate(`/member/${id}/support/detail`);
+    navigate(`/member/support/detail`);
   };
 
   return (

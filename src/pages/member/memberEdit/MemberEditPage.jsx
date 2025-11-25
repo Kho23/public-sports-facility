@@ -11,7 +11,7 @@ const MemberEditPage = () => {
   const [userBirth, setUserBirth] = useState("");
   const navigate = useNavigate();
 
-  const isCheck = ( ) => {
+  const isCheck = () => {
     const { memberEmail, memberPhoneNumber } = formCheck;
     if (memberEmail === "" || memberPhoneNumber === "") return false;
     else return true;
@@ -39,8 +39,11 @@ const MemberEditPage = () => {
 
   const openAddress = () => {
     new window.daum.Postcode({
-      oncomplete: (data) => {
-        setData({ ...data, ["memberAddress"]: data.address });
+      oncomplete: (addressData) => {
+        setData((data) => ({
+          ...data,
+          ["memberAddress"]: addressData.address,
+        }));
       },
     }).open();
   };

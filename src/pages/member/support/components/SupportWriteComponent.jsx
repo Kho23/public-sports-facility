@@ -6,6 +6,7 @@ const SupportWriteComponent = ({
   fileHandler,
   cancelHandler,
   submitHandler,
+  support,
   files,
 }) => {
   return (
@@ -22,6 +23,7 @@ const SupportWriteComponent = ({
           <input
             name="title"
             type="text"
+            value={support.title}
             onChange={changeHandler}
             placeholder="제목을 입력해 주세요."
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-blue-950 focus:border-blue-950 transition duration-150 shadow-sm"
@@ -35,6 +37,7 @@ const SupportWriteComponent = ({
           <textarea
             name="content"
             rows="6"
+            value={support.content}
             onChange={changeHandler}
             placeholder="문의하실 내용을 입력해 주세요."
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-blue-950 focus:border-blue-950 transition duration-150 shadow-sm resize-y"

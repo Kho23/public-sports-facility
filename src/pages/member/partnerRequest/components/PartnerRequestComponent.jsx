@@ -17,7 +17,7 @@ const PartnerRequestComponent = ({
 }) => {
   return (
     <>
-      {statusCheck.status == "PENDING" ? (
+      {statusCheck[0]?.status == "PENDING" ? (
         <div className="text-center mt-20 text-3xl font-extrabold text-blue-700 p-10 bg-white rounded-2xl max-w-3xl mx-auto shadow-2xl border border-blue-100">
           <PiNoteDuotone className="mx-auto text-6xl text-blue-950 mb-4" />
           <span className="text-3xl font-extrabold text-gray-900 block">
@@ -328,6 +328,7 @@ const PartnerRequestComponent = ({
             >
               취소
             </button>
+
             <button
               onClick={requestHandler}
               className="

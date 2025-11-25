@@ -9,14 +9,16 @@ const Header = () => {
   const { moveToLogin, moveToMain, moveToAdmin } = useCustomMove();
   const location = useLocation();
   const [hoveredMenuId, setHoveredMenuId] = useState(null);
-  const { isLoggedIn, memberRole, memberId } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const { isLoggedIn, memberRole, memberId } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logout())//로그아웃 버튼이 눌리면 logout 실행됨
-    alert("로그아웃 되었습니다.")
-    moveToMain()
-  }
+    dispatch(logout()); //로그아웃 버튼이 눌리면 logout 실행됨
+    alert("로그아웃 되었습니다.");
+    moveToMain();
+  };
 
   return (
     <header className="bg-white shadow border-b">
@@ -39,7 +41,10 @@ const Header = () => {
               </Link>
             )}
 
-            <button onClick={handleLogout} className="hover:underline"> 로그아웃 </button>
+            <button onClick={handleLogout} className="hover:underline">
+              {" "}
+              로그아웃{" "}
+            </button>
           </div>
         ) : (
           <div>
@@ -76,10 +81,11 @@ const Header = () => {
               >
                 <Link
                   to={menu.subMenus[0].path}
-                  className={`py-2 transition duration-150 ease-in-out block ${isActive
+                  className={`py-2 transition duration-150 ease-in-out block ${
+                    isActive
                       ? "text-blue-600 border-b-4 border-blue-600"
                       : "text-gray-800 hover:text-blue-500"
-                    }`}
+                  }`}
                 >
                   {menu.title}
                 </Link>
@@ -89,9 +95,10 @@ const Header = () => {
                     className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 z-10 
                       bg-white shadow-lg border border-gray-200 rounded-b-lg w-60 min-w-max
                       transition-all duration-300 opacity-0 pointer-events-none 
-                      ${hoveredMenuId === menu.id
-                        ? "opacity-100 pointer-events-auto"
-                        : ""
+                      ${
+                        hoveredMenuId === menu.id
+                          ? "opacity-100 pointer-events-auto"
+                          : ""
                       }`}
                   >
                     {menu.subMenus.map((subMenu) => (

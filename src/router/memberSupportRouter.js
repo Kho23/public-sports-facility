@@ -7,7 +7,7 @@ const Loading = () => <div>Loading...</div>;
 const memberSupportRouter = () => {
   return [
     {
-      path: "detail",
+      path: "detail/:no",
       element: (
         <Suspense fallback={<Loading />}>
           <Detail />

@@ -3,9 +3,14 @@ import ProgramListPage from "../pages/program/ProgramListPage";
 import ProgramEditPage from "../pages/admin/program/ProgramEditPage";
 import NoticeEditPage from "../pages/admin/community/notice/NoticeEditPage";
 import NoticeAddPage from "../pages/admin/community/notice/NoticeAddPage";
-import FaqListPage from "../pages/faq/FaqListPage";
 import NoticeListPage from "../pages/admin/community/notice/NoticeListPage";
 import NoticeReadPage from "../pages/admin/community/notice/NoticeReadPage";
+import PartnerRequestPage from "../pages/admin/member/partnerRequest/PartnerRequestPage";
+import PartnerRequestList from "../pages/admin/member/partnerRequest/PartnerRequestList";
+import SupportListPage from "../pages/admin/member/support/SupportListPage";
+import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
+import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
+import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -64,6 +69,46 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <FaqListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/partnerRequest",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PartnerRequestList />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/partnerRequest/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <PartnerRequestPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/support",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <SupportListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/support/:no",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <SupportDetailPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "guide/:category",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GuideAdminPage />
         </Suspense>
       ),
     },

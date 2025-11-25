@@ -7,12 +7,12 @@ const SupportWritePage = () => {
   const [support, setSupport] = useState({ title: "", content: "" });
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const supportFiles = useRef(null);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
+    console.log(value);
     setSupport({ ...support, [name]: value });
   };
 
@@ -28,7 +28,7 @@ const SupportWritePage = () => {
   const cancelHandler = () => {
     setSupport({ title: "", content: "" });
     setFiles([]);
-    navigate(`/member/${id}`);
+    navigate(`/member`);
   };
 
   const submitHandler = async () => {
@@ -39,17 +39,16 @@ const SupportWritePage = () => {
       for (let i of supportFile) {
         formData.append("supportFiles", i);
       }
-      formData.append("supportTitle", JSON.stringify(support.title));
-      formData.append("supportContent", JSON.stringify(support.content));
-      formData.append("memberId", id);
+      formData.append("supportTitle", support.title);
+      formData.append("supportContent", support.content);
 
       for (let pair of formData.entries()) {
-        console.log(pair);
+        console.log("이거 확인!!", pair);
       }
       try {
-        await supportReqRegister(id, formData);
+        await supportReqRegister(formData);
         alert("문의가 제출되었습니다. 빠른 시일 내에 답변드리겠습니다.");
-        navigate(`/member/${id}`);
+        navigate(`/member`);
       } catch (err) {
         alert("제출 중 오류가 발생했습니다");
       }
@@ -70,6 +69,7 @@ const SupportWritePage = () => {
       files={files}
       cancelHandler={cancelHandler}
       submitHandler={submitHandler}
+      support={support}
     />
   );
 };

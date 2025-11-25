@@ -41,13 +41,11 @@ const PartnerRequestPage = () => {
   const certRef = useRef(null);
   const bankRef = useRef(null);
 
-  const { id } = useParams();
-
   const [statusCheck, setStatusCheck] = useState("");
 
   useEffect(() => {
     const status = async () => {
-      const res = await getPartnerStatus(id);
+      const res = await getPartnerStatus();
       setStatusCheck(res);
     };
     status();
@@ -61,7 +59,7 @@ const PartnerRequestPage = () => {
     const fileCheck =
       fileName.resumeFiles.length > 0 && fileName.bankFiles.length > 0;
     setFileCheck(fileCheck);
-  }, [partnerClass, partnerAgree, fileName, id]);
+  }, [partnerClass, partnerAgree, fileName]);
 
   const checkClassHandler = (e) => {
     const { name } = e.target;
@@ -98,7 +96,7 @@ const PartnerRequestPage = () => {
   const cancelHandler = () => {
     if (window.confirm("파트너 신청을 취소하시겠습니까?")) {
       alert("신청이 취소되었습니다.");
-      navigate("/member/:id");
+      navigate(`/member`);
     }
   };
 
@@ -116,12 +114,11 @@ const PartnerRequestPage = () => {
         (key) => partnerClass[key] === true
       );
       formData.append("partnerClass", selectedClass);
-      formData.append("memberId", id);
 
       try {
-        await partnerReqFileRegister(id, formData);
+        await partnerReqFileRegister(formData);
         alert("신청이 완료되었습니다.");
-        navigate("/");
+        navigate(`/member`);
       } catch (err) {
         alert("신청 중 오류가 발생했습니다.");
       }

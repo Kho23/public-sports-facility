@@ -4,17 +4,16 @@ import SupportAnsweredComponent from "./SupportAnsweredComponent";
 const SupportComponent = ({
   supportPageHandler,
   supportList,
-  listCheck,
   detailPageHandler,
 }) => {
   return (
     <>
       <div className="container mx-auto max-w-5xl p-6 md:p-10">
-        <h1 className="text-4xl font-extrabold mb-8 pb-3 border-b-4 border-blue-900 text-gray-900 inline-block pb-1">
+        <h1 className="text-4xl font-extrabold mb-8 pb-3 border-b-4 border-blue-900 text-gray-900 inline-block">
           1:1 문의 내역
         </h1>
 
-        {listCheck ? (
+        {supportList.length === 0 ? (
           <div className="bg-white shadow-lg rounded-xl p-10 text-center text-gray-600">
             문의 내역이 없습니다.
           </div>

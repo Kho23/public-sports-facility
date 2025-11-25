@@ -12,7 +12,9 @@ const useCustomMove = () => {
   const moveToAdmin = () => navigate("/admin")
   const moveToFindId=()=>navigate("/auth/find-id")
   const moveToFindPw=()=>navigate("/auth/find-pw")
+  const moveToRegister=()=>navigate("/auth/register")
   return {
+    moveToRegister,
     moveToFindId,
     moveToFindPw,
     moveToLogin,

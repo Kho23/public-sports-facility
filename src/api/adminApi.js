@@ -92,3 +92,31 @@ export const createFaq = async (data) => {
   console.log("백엔드에 보낸 faq 추가데이터", res.data);
   return res.data;
 };
+export const getScheduleList = async () => {
+  const res = await axios.get(`${API_SERVER_HOST}/community/schedule/admin`);
+  console.log("백엔드에 보낸 schedule 전체데이터", res.data);
+  return res.data;
+};
+export const createSchedule = async (data) => {
+  const res = await axios.post(
+    `${API_SERVER_HOST}/community/schedule/admin/register`,
+    data
+  );
+  console.log("백엔드에 보낸 schedule 생성데이터", res.data);
+  return res.data;
+};
+export const updateSchedule = async (no, data) => {
+  const res = await axios.put(
+    `${API_SERVER_HOST}/community/schedule/admin/${no}`,
+    data
+  );
+  console.log("백엔드에 보낸 schedule 수정데이터", res.data);
+  return res.data;
+};
+export const deleteSchedule = async (no) => {
+  const res = await axios.delete(
+    `${API_SERVER_HOST}/community/schedule/admin/${no}`
+  );
+  console.log("백엔드에 보낸 schedule 삭제데이터", res.data);
+  return res.data;
+};

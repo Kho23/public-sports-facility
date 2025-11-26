@@ -11,10 +11,10 @@ import SupportListPage from "../pages/admin/member/support/SupportListPage";
 import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
 import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
 import FaqListPage from "../pages/admin/community/faq/FaqListPage";
+import ScheduleListPage from "../pages/admin/community/schedule/ScheduleListPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
- 
   return [
     {
       path: "program/:programId",
@@ -69,6 +69,14 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <FaqListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "schedule",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ScheduleListPage />
         </Suspense>
       ),
     },

@@ -133,9 +133,9 @@ export const adminAllMenuItems = [
         path: "/admin/notice",
       },
       {
-        id: "",
+        id: "schedule",
         title: "일정",
-        path: "",
+        path: "/admin/schedule",
       },
       {
         id: "faq",

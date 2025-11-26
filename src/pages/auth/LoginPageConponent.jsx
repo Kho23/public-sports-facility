@@ -137,11 +137,11 @@ const LoginPage = () => {
 
         {/* 하단 링크 (회원가입 / 아이디찾기 / 비밀번호찾기) */}
         <div className="mt-8 flex justify-center items-center space-x-4 text-sm text-gray-600">
-          <a href="/register" className="hover:text-gray-900">회원가입</a>
+          <a href="/auth/register" className="hover:text-gray-900">회원가입</a>
           <span className="text-gray-300">|</span>
-          <a href="/find-id" className="hover:text-gray-900">아이디찾기</a>
+          <a href="/auth/find-id" className="hover:text-gray-900">아이디찾기</a>
           <span className="text-gray-300">|</span>
-          <a href="/find-pw" className="hover:text-gray-900">비밀번호찾기</a>
+          <a href="/auth/find-pw" className="hover:text-gray-900">비밀번호찾기</a>
         </div>
       </div>
 

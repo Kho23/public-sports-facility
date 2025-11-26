@@ -48,7 +48,7 @@ axios.interceptors.response.use(
       store.dispatch(logout());
       //로그아웃 함수 실행하여 쿠키 제거
       alert("토큰이 만료되었습니다. 다시 로그인해주세요.");
-      window.location.href = "/login";
+      window.location.href = "/auth/login";
       //index.js 는 리액트 컴포넌트의 생명주기 밖에 있어 훅 사용이 불가
       //그래서 위 코드로 로그인 페이지로 이동하도록 함
     }

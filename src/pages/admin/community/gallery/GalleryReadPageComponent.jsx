@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 // 1. useNavigate 임포트
 import { useParams, useNavigate } from "react-router-dom";
-import { getOneGallery } from "../../api/galleryApi";
+import { deleteGallery, getOneGallery } from '../../../../api/galleryApi'
+import useCustomMove from "../../../../hooks/useCustomMove";
 
 const GalleryReadPageComponent = () => {
   const { id } = useParams();
   // 2. navigate 함수 초기화
-  const navigate = useNavigate();
+  const { moveToAdminGallery } = useCustomMove
   const [gallery, setGallery] = useState(null);
 
   useEffect(() => {
@@ -21,15 +22,14 @@ const GalleryReadPageComponent = () => {
     };
     getOne();
   }, [id]);
-
-  // 3. 목록으로 이동하는 핸들러 함수
-  const moveToList = () => {
-    // 갤러리 목록 페이지 경로로 이동
-    navigate("/community/gallery");
-  };
-
+    
   if (gallery == null) {
     return <div>Loading....</div>;
+  }
+  const handleClickDelete = async () => {
+    const data = await deleteGallery(id);
+    console.log(data)
+    moveToAdminGallery()
   }
 
   return (
@@ -63,7 +63,7 @@ const GalleryReadPageComponent = () => {
           {gallery.images &&
             gallery.images.length > 0 &&
             gallery.images.map((image) => (
-            
+
               <img
                 key={image.imageUrl}
                 src={image.imageUrl}
@@ -87,9 +87,17 @@ const GalleryReadPageComponent = () => {
           type="button"
           // 버튼 스타일 (테일윈드)
           className="px-6 py-3 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 transition-colors duration-200"
-          onClick={moveToList} // 3번에서 만든 핸들러 연결
+          onClick={()=>moveToAdminGallery()} // 3번에서 만든 핸들러 연결
         >
           목록으로
+        </button>
+        <button
+          type="button"
+          // 버튼 스타일 (테일윈드)
+          className="px-6 py-3 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 transition-colors duration-200"
+          onClick={() => handleClickDelete(id)} // 3번에서 만든 핸들러 연결
+        >
+          삭제하기
         </button>
       </div>
     </div>

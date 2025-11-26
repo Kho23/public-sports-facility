@@ -24,6 +24,7 @@ const Register = lazy(() => import("../pages/auth/RegisterPage"));
 const FindId = lazy(() => import("../pages/auth/FindIdpage"));
 const FindPw = lazy(() => import("../pages/auth/FindPwPage"));
 const Guide = lazy(() => import("../pages/guide/GuidePage"));
+const RegistrationList = lazy(() => import("../pages/registration/RegistrationListPage"));
 const PartnerMyPage = lazy(() =>
   import("../pages/partner/partnerPage/PartnerMyPage")
 );
@@ -126,6 +127,14 @@ const root = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <FindId />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/reservation/registration",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <RegistrationList />
           </Suspense>
         ),
       },

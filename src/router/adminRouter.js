@@ -11,10 +11,13 @@ import SupportListPage from "../pages/admin/member/support/SupportListPage";
 import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
 import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
 import FaqListPage from "../pages/admin/community/faq/FaqListPage";
+import GalleryListPage from "../pages/admin/community/gallery/GalleryListPage";
+import GalleryReadPage from "../pages/admin/community/gallery/GalleryReadPage";
+import GalleryRegisterPage from "../pages/admin/community/gallery/GalleryRegisterPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
- 
+
   return [
     {
       path: "program/:programId",
@@ -109,6 +112,30 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <GuideAdminPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryReadPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/register",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryRegisterPage />
         </Suspense>
       ),
     },

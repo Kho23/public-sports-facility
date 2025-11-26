@@ -143,9 +143,9 @@ export const adminAllMenuItems = [
         path: "/admin/faq",
       },
       {
-        id: "",
+        id: "gallery",
         title: "갤러리",
-        path: "",
+        path: "/admin/gallery",
       },
     ],
   },

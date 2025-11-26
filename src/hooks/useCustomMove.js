@@ -8,6 +8,9 @@ const useCustomMove = () => {
   const moveToNoticeDetail = (id) => navigate(`/community/notice/${id}`);
   const moveToGallery = () => navigate("/community/gallery");
   const moveToGalleryDetail = (id) => navigate(`/community/gallery/${id}`);
+  const moveToAdminGallery = () => navigate("/admin/gallery");
+  const moveToAdminGalleryRegister = () => navigate("/admin/gallery/register");
+  const moveToAdminGalleryDetail = (id) => navigate(`/admin/gallery/${id}`);
   const moveToAdmin = () => navigate("/admin");
   const moveToFindId = () => navigate("/auth/find-id");
   const moveToFindPw = () => navigate("/auth/find-pw");
@@ -19,6 +22,9 @@ const useCustomMove = () => {
     navigate(`/admin/member/support/${id}`);
 
   return {
+    moveToAdminGalleryRegister,
+    moveToAdminGallery,
+    moveToAdminGalleryDetail,
     moveToRegister,
     moveToFindId,
     moveToFindPw,

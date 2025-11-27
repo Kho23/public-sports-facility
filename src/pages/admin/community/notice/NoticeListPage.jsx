@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  formatter,
-  getNoticeList,
-  increaseViewCount,
-} from "../../../../api/noticeApi";
+import { formatter, getNoticeList } from "../../../../api/noticeApi";
 
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import useCustomMove from "../../../../hooks/useCustomMove";
 
 const NoticeListPage = () => {
@@ -117,7 +113,7 @@ const NoticeListPage = () => {
         <thead className="bg-gray-50 border-b">
           <tr>
             <th className="p-3">번호</th>
-            <th className="p-3 text-left w-3/5">제목</th>
+            <th className="p-3">제목</th>
             <th className="p-3">등록일</th>
             <th className="p-3">조회수</th>
           </tr>
@@ -138,7 +134,7 @@ const NoticeListPage = () => {
                 className="border-b hover:bg-gray-50 cursor-pointer"
               >
                 <td className="p-3 text-sm text-gray-600">{i.noticeId}</td>
-                <td className="p-3 text-left">{i.title}</td>
+                <td className="p-3 text-sm text-gray-600">{i.title}</td>
                 <td className="p-3 text-sm text-gray-600">{formatter(i)}</td>
                 <td className="p-3 text-sm text-gray-600">{i.viewCount}</td>
               </tr>

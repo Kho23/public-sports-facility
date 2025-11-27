@@ -2,24 +2,42 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { adminAllMenuItems } from "../../util/adminData";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/auth/authSlice";
+import useCustomMove from "../../hooks/useCustomMove";
 
 const AdminHeader = () => {
-  const location = useLocation();
-  const [hoveredMenuId, setHoveredMenuId] = useState(null);
+  const dispatch = useDispatch();
+  const { moveToMain } = useCustomMove();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    alert("로그아웃 되었습니다.");
+  };
 
   return (
     <header className="bg-white text-black shadow-md border-b border-gray-300">
       <div className="flex justify-between items-center px-8 py-5">
+        {/* 왼쪽 영역 */}
         <div className="flex items-center gap-3">
           <MdOutlineManageAccounts className="w-10 h-10 fill-black" />
-          <div className="text-2xl font-bold text-black tracking-wide">
+          <Link
+            to={"/admin"}
+            className="text-2xl font-bold text-black tracking-wide"
+          >
             그린체육관 [관리자페이지]
-          </div>
+          </Link>
         </div>
 
-        <Link to="/" className="hover:underline">
-          로그아웃
-        </Link>
+        {/* 오른쪽 영역 */}
+        <div className="flex items-center gap-6">
+          <Link to={"/"} className="hover:underline">
+            메인페이지
+          </Link>
+          <button onClick={handleLogout} className="hover:underline">
+            로그아웃
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -12,6 +12,7 @@ import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
 import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
 import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 import ScheduleListPage from "../pages/admin/community/schedule/ScheduleListPage";
+import MemberListPage from "../pages/admin/member/memberInfo/MemberListPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -109,6 +110,14 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <SupportDetailPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "member/memberInfo",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MemberListPage />
         </Suspense>
       ),
     },

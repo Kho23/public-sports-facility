@@ -120,3 +120,18 @@ export const deleteSchedule = async (no) => {
   console.log("백엔드에 보낸 schedule 삭제데이터", res.data);
   return res.data;
 };
+export const modifyMemberInfo = async (data) => {
+  const res = await axios.put(
+    `${API_SERVER_HOST}/member/admin/memberEdit`,
+    data
+  );
+  console.log("백엔드에 보낸 member 상세데이터", res.data);
+  return res.data;
+};
+export const searchMemberList = async (param) => {
+  const res = await axios.get(`${API_SERVER_HOST}/member/admin/search`, {
+    params: param,
+  });
+  console.log("백엔드에 보낸 member 검색데이터", res.data);
+  return res.data;
+};

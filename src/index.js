@@ -25,7 +25,6 @@ axios.interceptors.request.use(
     if (config.data instanceof FormData) {
       delete config.headers["Content-Type"];
     }
-
     return config;
     //백엔드에 config를 담아서 보내준다
   },

@@ -10,7 +10,9 @@ export const register = async (dto) => {
 export const fileRegister = async (file) => {
   const formData = new FormData();
   //FormData 객체 생성, axios 에서 FormData 로 post 하면 자동으로 Content-Type 이 multipart/form-data로 설정된다
-  formData.append("file", file);
+  for (let i = 0; i < file.length; i++) {
+    formData.append("file", file[i]);
+  }
   const res = await axios.post(`http://localhost:8080/api/upload/gallery`, formData);
   return res.data;
 };
@@ -32,13 +34,19 @@ export const increaseViewCount = async (no) => {
 };
 
 export const updateGallery = async (id, dto) => {
-  const res = await axios.put(`${API_HOST_URL}/admin/update`)
+  const res = await axios.put(`${API_HOST_URL}/admin/${id}`, dto)
   console.log("수정된 데이터=", res.data)
   return res.data
 }
 
-export const deleteGallery = async(id) => {
+export const deleteGallery = async (id) => {
   const res = await axios.delete(`${API_HOST_URL}/admin/${id}`)
   console.log("갤러리 삭제 완료")
+  return res.data
+}
+
+export const deleteFile = async (id) => {
+  const res = await axios.delete(`http://localhost:8080/api/upload/gallery/${id}`)
+  console.log("갤러리 파일 삭제 완료")
   return res.data
 }

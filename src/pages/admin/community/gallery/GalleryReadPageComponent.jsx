@@ -7,8 +7,9 @@ import useCustomMove from "../../../../hooks/useCustomMove";
 const GalleryReadPageComponent = () => {
   const { id } = useParams();
   // 2. navigate 함수 초기화
-  const { moveToAdminGallery } = useCustomMove
+  const { moveToAdminGallery } = useCustomMove()
   const [gallery, setGallery] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getOne = async () => {
@@ -63,7 +64,6 @@ const GalleryReadPageComponent = () => {
           {gallery.images &&
             gallery.images.length > 0 &&
             gallery.images.map((image) => (
-
               <img
                 key={image.imageUrl}
                 src={image.imageUrl}
@@ -82,20 +82,29 @@ const GalleryReadPageComponent = () => {
       </div>
 
       {/* --- 5. (추가) 목록 버튼 --- */}
-      <div className="flex justify-center mt-12">
+     <div className="flex justify-center gap-4 mt-12">
         <button
           type="button"
-          // 버튼 스타일 (테일윈드)
-          className="px-6 py-3 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 transition-colors duration-200"
-          onClick={()=>moveToAdminGallery()} // 3번에서 만든 핸들러 연결
+          className="px-6 py-3 bg-gray-500 text-white font-bold rounded-md hover:bg-gray-600 transition-colors duration-200"
+          onClick={() => moveToAdminGallery()}
         >
           목록으로
         </button>
+        
+        {/* 수정하기 버튼 (보통 파란색 계열 사용) */}
         <button
           type="button"
-          // 버튼 스타일 (테일윈드)
-          className="px-6 py-3 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 transition-colors duration-200"
-          onClick={() => handleClickDelete(id)} // 3번에서 만든 핸들러 연결
+          className="px-6 py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors duration-200"
+          onClick={() => navigate(`/admin/gallery/edit/${id}`)}
+        >
+          수정하기
+        </button>
+
+        {/* 삭제하기 버튼 (보통 빨간색 계열 사용) */}
+        <button
+          type="button"
+          className="px-6 py-3 bg-red-600 text-white font-bold rounded-md hover:bg-red-700 transition-colors duration-200"
+          onClick={() => handleClickDelete(id)}
         >
           삭제하기
         </button>

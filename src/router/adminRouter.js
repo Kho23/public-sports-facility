@@ -14,6 +14,7 @@ import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 import GalleryListPage from "../pages/admin/community/gallery/GalleryListPage";
 import GalleryReadPage from "../pages/admin/community/gallery/GalleryReadPage";
 import GalleryRegisterPage from "../pages/admin/community/gallery/GalleryRegisterPage";
+import GalleryEditPage from "../pages/admin/community/gallery/GalleryEditPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -136,6 +137,14 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <GalleryRegisterPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/edit/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryEditPage />
         </Suspense>
       ),
     },

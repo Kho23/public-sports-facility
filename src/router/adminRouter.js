@@ -12,9 +12,16 @@ import SupportDetailPage from "../pages/admin/member/support/SupportDetailPage";
 import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
 import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 import ScheduleListPage from "../pages/admin/community/schedule/ScheduleListPage";
+import MemberListPage from "../pages/admin/member/memberInfo/MemberListPage";
 
+import GalleryListPage from "../pages/admin/community/gallery/GalleryListPage";
+import GalleryReadPage from "../pages/admin/community/gallery/GalleryReadPage";
+import GalleryRegisterPage from "../pages/admin/community/gallery/GalleryRegisterPage";
+import GalleryEditPage from "../pages/admin/community/gallery/GalleryEditPage";
+import AgeGenderStatPage from "../pages/admin/statistic/AgeGenderStatPage";
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
+
   return [
     {
       path: "program/:programId",
@@ -113,10 +120,58 @@ const adminRouter = () => {
       ),
     },
     {
+      path: "member/memberInfo",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MemberListPage />
+        </Suspense>
+      ),
+    },
+    {
       path: "guide/:category",
       element: (
         <Suspense fallback={<Loading />}>
           <GuideAdminPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryListPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryReadPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/register",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryRegisterPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "gallery/edit/:id",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <GalleryEditPage />
+        </Suspense>
+      ),
+    },
+     {
+      path: "stat/ageGender",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <AgeGenderStatPage />
         </Suspense>
       ),
     },

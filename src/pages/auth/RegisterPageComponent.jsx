@@ -163,7 +163,7 @@ const RegisterPageComponent = () => {
             const result = await dispatch(registerAsync(memberData));
             if (registerAsync.fulfilled.match(result)) {
                 alert("회원가입에 성공했습니다. 로그인 페이지로 이동합니다.");
-                navigate("/login");
+                navigate("/auth/login");
             } else {
                 alert("회원가입 실패: " + (result.payload?.message || "입력 내용을 확인해주세요."));
             }
@@ -438,7 +438,7 @@ const RegisterPageComponent = () => {
                                 </span>
                                 <input 
                                     name="memberBirthDate" 
-                                    type="datetime-local"
+                                    type="date"
                                     value={registerInfo.memberBirthDate} 
                                     onChange={handleChange} 
                                     className="flex-1 appearance-none bg-transparent border-none text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" 

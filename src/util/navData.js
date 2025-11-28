@@ -72,9 +72,9 @@ export const allMenuItems = [
     subMenus: [
       // 2차 메뉴 (사이드바 내용)
       {
-        id: "",
+        id: "registration",
         title: "수강신청",
-        path: "",
+        path: "/reservation/registration",
       },
       {
         id: "rental",

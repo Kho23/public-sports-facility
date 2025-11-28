@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 // 1. useNavigate 임포트
 import { useParams, useNavigate } from "react-router-dom";
-import { getOneGallery } from "../../api/galleryApi";
+import { deleteGallery, getOneGallery } from '../../../../api/galleryApi'
+import useCustomMove from "../../../../hooks/useCustomMove";
 
 const GalleryReadPageComponent = () => {
   const { id } = useParams();
   // 2. navigate 함수 초기화
-  const navigate = useNavigate();
+  const { moveToAdminGallery } = useCustomMove()
   const [gallery, setGallery] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getOne = async () => {
@@ -21,15 +23,15 @@ const GalleryReadPageComponent = () => {
     };
     getOne();
   }, [id]);
-
-  // 3. 목록으로 이동하는 핸들러 함수
-  const moveToList = () => {
-    // 갤러리 목록 페이지 경로로 이동
-    navigate("/community/gallery");
-  };
-
+    
   if (gallery == null) {
     return <div>Loading....</div>;
+  }
+  const handleClickDelete = async () => {
+    const data = await deleteGallery(id);
+    console.log(data)
+    alert("삭제가 완료되었습니다.")
+    moveToAdminGallery()
   }
 
   return (
@@ -63,7 +65,6 @@ const GalleryReadPageComponent = () => {
           {gallery.images &&
             gallery.images.length > 0 &&
             gallery.images.map((image) => (
-            
               <img
                 key={image.imageUrl}
                 src={image.imageUrl}
@@ -82,14 +83,31 @@ const GalleryReadPageComponent = () => {
       </div>
 
       {/* --- 5. (추가) 목록 버튼 --- */}
-      <div className="flex justify-center mt-12">
+     <div className="flex justify-center gap-4 mt-12">
         <button
           type="button"
-          // 버튼 스타일 (테일윈드)
-          className="px-6 py-3 bg-gray-800 text-white font-bold rounded-md hover:bg-gray-700 transition-colors duration-200"
-          onClick={moveToList} // 3번에서 만든 핸들러 연결
+          className="px-6 py-3 bg-gray-500 text-white font-bold rounded-md hover:bg-gray-600 transition-colors duration-200"
+          onClick={() => moveToAdminGallery()}
         >
           목록으로
+        </button>
+        
+        {/* 수정하기 버튼 (보통 파란색 계열 사용) */}
+        <button
+          type="button"
+          className="px-6 py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors duration-200"
+          onClick={() => navigate(`/admin/gallery/edit/${id}`)}
+        >
+          수정하기
+        </button>
+
+        {/* 삭제하기 버튼 (보통 빨간색 계열 사용) */}
+        <button
+          type="button"
+          className="px-6 py-3 bg-red-600 text-white font-bold rounded-md hover:bg-red-700 transition-colors duration-200"
+          onClick={() => handleClickDelete(id)}
+        >
+          삭제하기
         </button>
       </div>
     </div>

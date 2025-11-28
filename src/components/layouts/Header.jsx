@@ -6,12 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/auth/authSlice";
 
 const Header = () => {
-  const { moveToLogin, moveToMain, moveToAdmin } = useCustomMove();
+  const { moveToMain, moveToAdmin } = useCustomMove();
   const location = useLocation();
   const [hoveredMenuId, setHoveredMenuId] = useState(null);
-  const { isLoggedIn, memberRole, memberId } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoggedIn, memberRole } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -33,11 +31,15 @@ const Header = () => {
                 관리자 페이지
               </button>
             )}
-
             {/* 관리자(ROLE_ADMIN)가 아닐 때만 "마이페이지" 링크가 보입니다. */}
-            {memberRole !== "ROLE_ADMIN" && (
+            {memberRole == "ROLE_USER" && (
               <Link to={`/member`} className="hover:underline">
                 마이페이지
+              </Link>
+            )}
+            {memberRole == "ROLE_PARTNER" && (
+              <Link to={`/partner`} className="hover:underline">
+                파트너 페이지
               </Link>
             )}
 

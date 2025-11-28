@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// API 함수들이 정의된 경로 (실제 프로젝트에 맞게 확인 필요)
 import { getFaqList, getFaqCategory } from "../../../../api/faqApi";
 import { createFaq, updateFaq, deleteFaq } from "../../../../api/adminApi";
 
@@ -70,26 +69,15 @@ const FaqListPage = () => {
       return;
     }
 
-    // 백엔드 DTO에 맞춘 데이터 객체 생성
-    // select value는 문자열일 수 있으므로 Number()로 안전하게 형변환
-    const payload = {
-      question: data.question,
-      answer: data.answer,
-      faqCategoryId: data.faqCategoryId,
-    };
-
     try {
       if (currentFaq) {
-        // [수정 로직] Service의 update(dto, id) 호출
-        await updateFaq(currentFaq.faqId, payload);
+        await updateFaq(currentFaq.faqId, data);
         alert("수정되었습니다.");
       } else {
-        // [등록 로직] Service의 register(dto) 호출
-        await createFaq(payload);
+        await createFaq(data);
         alert("등록되었습니다.");
       }
-
-      setIsModalOpen(false); // 모달 닫기
+      setIsModalOpen(false);
       window.location.reload();
     } catch (err) {
       console.error("저장 실패:", err);
@@ -97,7 +85,6 @@ const FaqListPage = () => {
     }
   };
 
-  // 4. 입력값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });

@@ -14,3 +14,8 @@ export const lessonRequest = async (form) => {
   );
   return res.data;
 }; // 강좌 개설 신청 폼 제출
+
+export const getMyLessons = async () => {
+  const res = await axios.get(`http://localhost:8080/api/lesson/myLessons`);
+  return res.data;
+}; // 파트너 내 레슨 가져오기

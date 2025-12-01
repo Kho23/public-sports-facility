@@ -11,16 +11,6 @@ export const adminAllMenuItems = [
         path: "/admin/member/memberInfo",
       },
       {
-        id: "",
-        title: "상품대여",
-        path: "",
-      },
-      {
-        id: "",
-        title: "차량등록",
-        path: "",
-      },
-      {
         id: "support",
         title: "1:1 문의내역",
         path: "/admin/member/support",
@@ -160,7 +150,6 @@ export const adminAllMenuItems = [
         title: "연령별 통계",
         path: "/admin/stat/ageGender",
       },
-      
     ],
   },
 ];

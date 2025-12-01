@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import partnerMyLessonRouter from "./partnerMyLessonRouter";
 
 const PartnerEdit = lazy(() =>
   import("../pages/partner/partnerEdit/PartnerEditPage")
@@ -36,14 +37,20 @@ const partnerMyPageRouter = () => {
     },
     {
       path: "myLessons",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <MyLessons />
-        </Suspense>
-      ),
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <MyLessons />
+            </Suspense>
+          ),
+        },
+        ...partnerMyLessonRouter(),
+      ],
     },
     {
-      path: "lessonsRequest",
+      path: "lessonRequest",
       element: (
         <Suspense fallback={<Loading />}>
           <LessonsRequest />

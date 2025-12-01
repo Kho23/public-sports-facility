@@ -22,7 +22,7 @@ const MemberEditComponent = ({
               회원 유형
             </label>
             <input
-              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 cursor-not-allowed transition"
+              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 transition"
               type="text"
               name="memberRole"
               value={data.memberRole}
@@ -33,7 +33,7 @@ const MemberEditComponent = ({
           <li className="flex flex-col">
             <label className="font-semibold mb-2 text-gray-700">아이디</label>
             <input
-              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 cursor-not-allowed transition"
+              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 transition"
               type="text"
               name="memberLoginId"
               value={data.memberLoginId}
@@ -44,7 +44,7 @@ const MemberEditComponent = ({
           <li className="flex flex-col">
             <label className="font-semibold mb-2 text-gray-700">이름</label>
             <input
-              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 cursor-not-allowed transition"
+              className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 transition"
               type="text"
               name="memberName"
               value={data.memberName}

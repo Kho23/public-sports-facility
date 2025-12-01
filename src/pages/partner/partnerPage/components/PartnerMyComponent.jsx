@@ -29,7 +29,7 @@ const PartnerMyComponent = ({ data }) => {
       <ul className="space-y-4">
         <li>
           <Link
-            to="/partner/:id/partnerEdit"
+            to="/partner/partnerEdit"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -56,7 +56,7 @@ const PartnerMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/partner/:id/pwEditPage"
+            to="/partner/pwEditPage"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -83,7 +83,7 @@ const PartnerMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/partner/:id/myLessons"
+            to="/partner/myLessons"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -110,7 +110,7 @@ const PartnerMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/partner/:id/attendance"
+            to="/partner/attendance"
             className="
               group block 
               bg-white hover:bg-blue-50 
@@ -137,7 +137,7 @@ const PartnerMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/partner/:id/lessonsRequest"
+            to="/partner/lessonRequest"
             className="
               group block 
               bg-white hover:bg-blue-50 

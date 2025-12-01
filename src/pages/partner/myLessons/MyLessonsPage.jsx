@@ -1,7 +1,8 @@
 import React from "react";
+import MyLessonsComponent from "./components/MyLessonsComponent";
 
 const MyLessonsPage = () => {
-  return <div>MyLessonsPage</div>;
+  return <MyLessonsComponent />;
 };
 
 export default MyLessonsPage;

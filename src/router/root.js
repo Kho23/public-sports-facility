@@ -24,6 +24,7 @@ const Register = lazy(() => import("../pages/auth/RegisterPage"));
 const FindId = lazy(() => import("../pages/auth/FindIdpage"));
 const FindPw = lazy(() => import("../pages/auth/FindPwPage"));
 const Guide = lazy(() => import("../pages/guide/GuidePage"));
+const Rental = lazy(() => import("../pages/rental/RentalReqPage"));
 const RegistrationList = lazy(() => import("../pages/registration/RegistrationListPage"));
 const PartnerMyPage = lazy(() =>
   import("../pages/partner/partnerPage/PartnerMyPage")
@@ -155,6 +156,14 @@ const root = createBrowserRouter([
         ),
       },
       {
+        path: `/reservation/rental`,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Rental />
+          </Suspense>
+        ),
+      },
+      {
         path: "/member",
         children: [
           {
@@ -169,7 +178,7 @@ const root = createBrowserRouter([
         ],
       },
       {
-        path: "partner/:id",
+        path: "partner",
         children: [
           {
             index: true,

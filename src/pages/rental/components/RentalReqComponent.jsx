@@ -1,29 +1,24 @@
-import React, { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../../../styles/calendar.css";
 
-const RentalReqComponent = () => {
-  const facilities = [
-    { id: 1, name: "무용실" },
-    { id: 2, name: "풋살장" },
-  ];
-  const spaces = {
-    1: ["무용실 A", "무용실 B", "무용실 C", "무용실 D"],
-    2: ["풋살장 A", "풋살장 B", "풋살장 C"],
-  };
-
-  const [facility, setFacility] = useState(null);
-  const [space, setSpace] = useState(null);
-
-  const [selectDate, setSelectDate] = useState(null);
-  const [selectTime, setSelectTime] = useState(null);
-
-  const handleDateClick = (i) => {
-    setSelectDate(i.dateStr);
-  };
-
+const RentalReqComponent = ({
+  infoHandler,
+  facilities,
+  selectDate,
+  scheduleData,
+  setSpace,
+  findFacilityFn,
+  facility,
+  handleDateClick,
+  getSpace,
+  spaceName,
+  space,
+  selectTimeFn,
+  selectTime,
+  reservationHandler,
+}) => {
   return (
     <div className="bg-white">
       <div className="max-w-5xl flex gap-10 py-4 px-4">
@@ -34,6 +29,62 @@ const RentalReqComponent = () => {
 
           <div className="flex items-end justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">대관신청</h1>
+          </div>
+
+          <div className="border border-gray-300 rounded-xl p-6 mb-8 bg-white shadow-sm">
+            <h2 className="text-lg font-bold text-gray-900 pb-3 mb-5 border-b border-gray-300">
+              신청자 정보
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+              <div className="flex flex-col">
+                <label className="text-gray-700 font-semibold mb-1">이름</label>
+                <input
+                  type="text"
+                  name="name"
+                  onChange={(e) => infoHandler(e)}
+                  className="
+                    w-full border border-gray-300 rounded-lg px-3 py-2
+                    focus:outline-none focus:ring-1 focus:ring-blue-900
+                  "
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label className="text-gray-700 font-semibold mb-1">
+                  연락처
+                </label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  onChange={(e) => infoHandler(e)}
+                  className="
+                    w-full border border-gray-300 rounded-lg px-3 py-2
+                    focus:outline-none focus:ring-1 focus:ring-blue-900
+                  "
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <label className="text-gray-700 font-semibold mb-1">
+                  특이사항
+                </label>
+                <input
+                  type="text"
+                  name="memo"
+                  onChange={(e) => infoHandler(e)}
+                  className="
+                    w-full border border-gray-300 rounded-lg px-3 py-2
+                    focus:outline-none focus:ring-1 focus:ring-blue-900
+                  "
+                />
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+              ※ 신청자 정보는 대관 승인, 취소 안내 등 주요 연락을 위해
+              사용됩니다.
+            </p>
           </div>
 
           <div className="border-b-2 border-gray-400 mb-6" />
@@ -48,9 +99,7 @@ const RentalReqComponent = () => {
                   {facilities.map((i) => (
                     <div
                       key={i.id}
-                      onClick={() => {
-                        setFacility(i.id);
-                      }}
+                      onClick={() => findFacilityFn(i.id)}
                       className={`p-2 cursor-pointer hover:bg-gray-100 ${
                         facility === i.id ? "bg-blue-900 text-white" : ""
                       }`}
@@ -69,15 +118,15 @@ const RentalReqComponent = () => {
                       시설 먼저 선택하세요.
                     </p>
                   ) : (
-                    spaces[facility].map((i) => (
+                    getSpace?.map((i) => (
                       <div
-                        key={i}
-                        onClick={() => setSpace(i)}
+                        key={i.id}
+                        onClick={() => setSpace(i.id)}
                         className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                          space === i ? "bg-blue-900 text-white" : ""
+                          space === i.id ? "bg-blue-900 text-white" : ""
                         }`}
                       >
-                        {i}
+                        {i.spaceName}
                       </div>
                     ))
                   )}
@@ -132,30 +181,30 @@ const RentalReqComponent = () => {
                     장소: <b>{space}</b>
                   </p>
                   <p className="text-sm font-semibold mt-4">시간 선택</p>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <button
-                      onClick={() => setSelectTime("10:00 ~ 11:00")}
-                      className={`border rounded-md p-2 text-sm hover:bg-gray-100 ${
-                        selectTime === "10:00 ~ 11:00"
-                          ? "bg-blue-900 text-white"
-                          : ""
-                      }`}
-                    >
-                      10:00 ~ 11:00
-                    </button>
-                    <button
-                      onClick={() => setSelectTime("11:00 ~ 12:00")}
-                      className={`border rounded-md p-2 text-sm hover:bg-gray-100 ${
-                        selectTime === "11:00 ~ 12:00"
-                          ? "bg-blue-900 text-white"
-                          : ""
-                      }`}
-                    >
-                      11:00 ~ 12:00
-                    </button>
+
+                  <div>
+                    {scheduleData?.map((i) => (
+                      <div className="grid grid-cols-2 gap-2 mt-2">
+                        <button
+                          key={i}
+                          onClick={() => selectTimeFn(i)}
+                          className={`border rounded-md p-2 text-sm hover:bg-gray-100 ${
+                            selectTime.includes(i)
+                              ? "bg-blue-900 text-white"
+                              : ""
+                          }`}
+                        >
+                          {i}
+                        </button>
+                      </div>
+                    ))}
                   </div>
+
                   {selectTime && (
-                    <button className="w-full mt-4 bg-blue-900 text-white py-2 rounded">
+                    <button
+                      onClick={reservationHandler}
+                      className="w-full mt-4 bg-blue-900 text-white py-2 rounded"
+                    >
                       예약 진행
                     </button>
                   )}

@@ -84,7 +84,7 @@ const MemberMyComponent = ({ data }) => {
 
         <li>
           <Link
-            to="/member/reservation"
+            to="/member/myReservation"
             className="
               group block 
               bg-white hover:bg-blue-50 

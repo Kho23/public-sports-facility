@@ -14,7 +14,7 @@ const LessonRequestComponent = ({
         <div
           className="
             mt-6 
-            p-5 
+            p-5  
             bg-gray-50 
             border border-gray-300 
             rounded-xl 
@@ -231,7 +231,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"MON"}
+              value={"월요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             월
@@ -240,7 +240,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"TUE"}
+              value={"화요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             화
@@ -249,7 +249,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"WED"}
+              value={"수요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             수
@@ -258,7 +258,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"THU"}
+              value={"목요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             목
@@ -267,7 +267,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"FRI"}
+              value={"금요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             금
@@ -276,7 +276,7 @@ const LessonRequestComponent = ({
             <input
               type="checkbox"
               name="days"
-              value={"SAT"}
+              value={"토요일"}
               className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
             />
             토

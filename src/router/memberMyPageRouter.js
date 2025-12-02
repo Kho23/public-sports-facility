@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import memberSupportRouter from "./memberSupportRouter";
+import memberMyReservationRouter from "./memberMyReservationRouter";
 
 const MemberEdit = lazy(() =>
   import("../pages/member/memberEdit/MemberEditPage")
@@ -33,12 +34,18 @@ const memberMyPageRouter = () => {
       ),
     },
     {
-      path: "reservation",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <Reservation />
-        </Suspense>
-      ),
+      path: "myReservation",
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Reservation />
+            </Suspense>
+          ),
+        },
+        ...memberMyReservationRouter(),
+      ],
     },
     {
       path: "support",

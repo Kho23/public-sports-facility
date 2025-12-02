@@ -57,14 +57,19 @@ const LessonRequestPage = () => {
     }
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     if (!form.minPeople) return alert("최소 인원을 입력해주세요.");
     if (!form.maxPeople) return alert("정원을 입력해주세요.");
     if (!form.facilityRoomType) return alert("필요한 시설을 선택해주세요.");
 
-    lessonRequest(form);
-    alert("접수가 완료되었습니다.");
-    navigate("/partner");
+    try {
+      const res = await lessonRequest(form);
+      alert("접수가 완료되었습니다.");
+      navigate("/partner");
+    } catch (err) {
+      console.error("예약 불가능: ", err);
+      alert("이미 예약된 시설입니다. 다른 공간을 선택해 주세요.");
+    }
   };
 
   const nextClickHandler = () => {

@@ -15,3 +15,9 @@ export const registerDailyUse = async (data) => {
   console.log("backend으로부터 온데이터 ", res.data);
   return res.data;
 };
+export const registerGymDailyUse = async (data) => {
+  var str = `${host}/gymDailyUse`;
+  const res = await axios.post(str, data);
+  console.log("backend으로부터 온데이터 ", res.data);
+  return res.data;
+};

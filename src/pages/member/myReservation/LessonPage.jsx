@@ -1,10 +1,10 @@
 import React from "react";
-import LessonComponent from "./components/LessonComponent";
+import MyLessonComponent from "./components/MyLessonComponent";
 
 const LessonPage = () => {
   return (
     <div>
-      <LessonComponent />
+      <MyLessonComponent />
     </div>
   );
 };

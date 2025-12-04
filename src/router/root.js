@@ -25,7 +25,8 @@ const FindId = lazy(() => import("../pages/auth/FindIdpage"));
 const FindPw = lazy(() => import("../pages/auth/FindPwPage"));
 const Guide = lazy(() => import("../pages/guide/GuidePage"));
 const Rental = lazy(() => import("../pages/rental/RentalReqPage"));
-const RegistrationList = lazy(() => import("../pages/registration/RegistrationListPage"));
+const LessonList = lazy(() => import("../pages/lesson/LessonListPage"));
+const LessonDetail = lazy(() => import("../pages/lesson/LessonReadPage"));
 const PartnerMyPage = lazy(() =>
   import("../pages/partner/partnerPage/PartnerMyPage")
 );
@@ -135,7 +136,15 @@ const root = createBrowserRouter([
         path: "/reservation/registration",
         element: (
           <Suspense fallback={<Loading />}>
-            <RegistrationList />
+            <LessonList />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/reservation/registration/:id",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <LessonDetail />
           </Suspense>
         ),
       },

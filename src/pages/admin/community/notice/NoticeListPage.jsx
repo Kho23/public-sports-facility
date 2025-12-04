@@ -24,7 +24,7 @@ const NoticeListPage = () => {
     const getData = async () => {
       try {
         const data = await getNoticeList();
-        setNotices(data);
+        setNotices(data.dtoList);
       } catch (error) {
         console.log("공지사항을 불러올 수 없습니다. 에러내용:", error);
       }

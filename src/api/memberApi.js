@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const API_HOST_URL_REG="http://localhost:8080/api/registration"
 // const getAuthHeader = () => {
 //   const cookie = getCookie("member")
 //   console.log("쿠키는",cookie)
@@ -59,3 +59,21 @@ export const supportGetOne = async (no) => {
   const res = await axios.get(`http://localhost:8080/api/support/${no}`);
   return res.data;
 };
+
+export const getRegistrationList = async () => {
+  const res = await axios.get(`${API_HOST_URL_REG}`)
+  console.log("백엔드에서 받은 유저 수강신청 정보=",res.data)
+  return res.data
+}
+
+export const cancelRegistration = async (registrationId) => {
+  const res = await axios.delete(`${API_HOST_URL_REG}/cancel/${registrationId}`)
+  console.log("수강신청 취소", res.data)
+  return res.data
+}
+
+export const registrationById=async(lessonId)=>{
+  const res = await axios.post(`${API_HOST_URL_REG}/${lessonId}`)
+  console.log("수강신청 하기 = " , res.data)
+  return res.data
+}

@@ -14,9 +14,6 @@ const AgeGenderStatPageComponent = () => {
         // 1. API 호출
         const res = await getAgeGenderStat(); 
         console.log("서버 응답 데이터:", res); // { stats: [...], totalCount: 3 }
-
-        // 2. [수정됨] 데이터 꺼내기
-        // response 안에 있는 'stats' 배열만 뽑아야 합니다!
         if (res && res.stats) {
             const rawData = res.stats;
             setTotalCount(res.totalCount); // 총 인원수 저장

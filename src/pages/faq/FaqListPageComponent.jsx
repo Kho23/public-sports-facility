@@ -112,7 +112,7 @@ const FaqListPageComponent = () => {
                 )) : (
                     // (7) [수정] FAQ가 없을 때의 메시지
                     <div className="text-center text-gray-500 p-8">
-                        {faqCategories.length > 0 ? "해당 카테고리에 등록된 FAQ가 없습니다." : "FAQ를 불러오는 중입니다..."}
+                        {faqCategories.length == 0 ? "해당 카테고리에 등록된 FAQ가 없습니다." : "FAQ를 불러오는 중입니다..."}
                     </div>
                 )}
             </div>

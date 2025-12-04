@@ -204,7 +204,7 @@ const FindIdPageComponent = () => {
 
                         <div className="flex space-x-3 w-full mt-4">
                             <button
-                                onClick={() => navigate('/login')}
+                                onClick={() => navigate('/auth/login')}
                                 className="flex-1 bg-[#2b4075] hover:bg-[#1e3161] text-white font-bold py-3 rounded shadow-sm transition-colors"
                             >
                                 로그인 하러 가기

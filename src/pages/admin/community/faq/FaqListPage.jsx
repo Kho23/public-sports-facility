@@ -77,7 +77,7 @@ const FaqListPage = () => {
         await createFaq(data);
         alert("등록되었습니다.");
       }
-      setIsModalOpen(false);
+      setIsModalOpen(false); 
       window.location.reload();
     } catch (err) {
       console.error("저장 실패:", err);

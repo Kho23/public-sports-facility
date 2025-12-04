@@ -60,23 +60,47 @@ const NoticeReadPageComponent = () => {
       </div>
 
       {/* 내용 영역 (이미지처럼 보이도록 스타일링) */}
-      <div className="min-h-[400px] border border-red-500 bg-red-50 p-8 flex flex-col justify-center items-center text-center text-xl font-semibold text-gray-800 mb-6">
-        {/* content가 HTML이면 dangerouslySetInnerHTML 사용 */}
-        {/* <div dangerouslySetInnerHTML={{ __html: notice.content }}></div> */}
+      <article className="min-h-[400px] border border-gray-300 bg-white p-8 mb-6">
+        <div
+          className="prose prose-gray max-w-none ck-content"
+          dangerouslySetInnerHTML={{ __html: notice.content }}
+        ></div>
+      </article>
 
-        {/* content가 일반 텍스트라면 */}
-        <p className="whitespace-pre-wrap">{notice.content}</p>
-      </div>
-
-      {/* 첨부파일 영역 (임시로 비워둠) */}
-      <div className="border-t border-gray-300 pt-4 mt-6">
-        {/* 첨부파일 정보가 있다면 여기에 렌더링 */}
-        {/* <div className="text-sm text-gray-600 mb-2">
-          📎 11월 임대 사물함001.png [ Size : 105.19KB, Down : 83 ]
-          <button className="ml-2 px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300">미리보기</button>
-          <button className="ml-1 px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300">다운로드</button>
-        </div> */}
-      </div>
+      {notice.fileList && notice.fileList.length > 0 && (
+        <div className="border-t border-gray-300 pt-4 mt-6">
+          <h3 className="font-semibold text-gray-800 mb-3">첨부파일</h3>
+          <ul className="space-y-2">
+            {notice.fileList.map((file) => (
+              <li
+                key={file.id}
+                className="bg-gray-100 px-3 py-2 rounded-md flex justify-between items-center hover:bg-gray-200 transition-colors"
+              >
+                <span className="text-gray-800 text-sm font-medium">
+                  {file.originalName}
+                </span>
+                <div className="flex gap-2">
+                  <a
+                    href={`http://localhost:8080${file.filePath}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
+                  >
+                    미리보기
+                  </a>
+                  <a
+                    href={`http://localhost:8080/download/${file.savedName}`}
+                    className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
+                  >
+                    다운로드
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="border-t-2 border-black my-6"></div>
 
       <div className="flex justify-end mt-1">
         <Link

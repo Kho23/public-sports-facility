@@ -1,6 +1,6 @@
 import useCustomMove from "../../hooks/useCustomMove";
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { allMenuItems } from "../../util/navData";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/auth/authSlice";
@@ -31,13 +31,12 @@ const Header = () => {
                 관리자 페이지
               </button>
             )}
-            {/* 관리자(ROLE_ADMIN)가 아닐 때만 "마이페이지" 링크가 보입니다. */}
-            {memberRole == "ROLE_USER" && (
+            {memberRole === "ROLE_USER" && (
               <Link to={`/member`} className="hover:underline">
                 마이페이지
               </Link>
             )}
-            {memberRole == "ROLE_PARTNER" && (
+            {memberRole === "ROLE_PARTNER" && (
               <Link to={`/partner`} className="hover:underline">
                 파트너 페이지
               </Link>
@@ -119,7 +118,6 @@ const Header = () => {
             );
           })}
         </ul>
-        <div className="w-[100px]"></div>
       </nav>
     </header>
   );

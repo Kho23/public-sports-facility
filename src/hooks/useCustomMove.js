@@ -1,10 +1,10 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const useCustomMove = () => {
   const navigate = useNavigate();
   const moveToLogin = () => navigate("/auth/login");
   const moveToMain = () => navigate("/");
+  const moveToNotice = (id) => navigate(`/community/notice`);
   const moveToNoticeDetail = (id) => navigate(`/community/notice/${id}`);
   const moveToGallery = () => navigate("/community/gallery");
   const moveToGalleryDetail = (id) => navigate(`/community/gallery/${id}`);
@@ -27,6 +27,7 @@ const useCustomMove = () => {
     moveToAdminGalleryDetail,
     moveToRegister,
     moveToFindId,
+    moveToNotice,
     moveToFindPw,
     moveToLogin,
     moveToMain,

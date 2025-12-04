@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow border-b">
+    <header className="bg-white border-b">
       <div className="bg-blue-950 flex space-x-8 justify-end px-8 py-3 text-sm text-white border-b border-gray-200">
         {isLoggedIn ? (
           <div className="flex items-center space-x-4">

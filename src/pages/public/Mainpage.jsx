@@ -48,14 +48,14 @@ const MainPage = () => {
           <div className="grid grid-cols-12 gap-6 h-[462px]">
             {/* 1. 왼쪽 메뉴 (짙은 인디고 배경 + 아이콘) */}
             <aside className="col-span-3 flex flex-col h-full rounded-2xl overflow-hidden shadow-lg">
-              <div className="bg-indigo-800 h-full p-0">
-                <div className="grid grid-cols-2 h-full divide-x divide-y divide-indigo-700">
+              <div className="bg-indigo-900 h-full p-0">
+                <div className="grid grid-cols-2 h-full divide-x divide-y divide-indigo-800">
                   {menuItems.map((item, index) => (
                     <button
                       key={index}
                       onClick={() => navigate(item.link)}
-                      className={`w-full h-full min-h-[90px] flex flex-col items-center justify-center text-white font-semibold text-base md:text-lg 
-                      shadow-none transition-all duration-300 hover:bg-indigo-700 break-keep p-2 text-center`}
+                      className={`w-full h-full min-h-[90px] flex flex-col items-center justify-center text-white font-semibold text-sm md:text-base 
+                      shadow-none transition-all duration-300 hover:bg-indigo-800 break-keep p-2 text-center`}
                     >
                       <div className="mb-2">{item.icon}</div>
                       <span className="leading-tight">{item.title}</span>
@@ -74,16 +74,17 @@ const MainPage = () => {
 
             {/* 3. 오른쪽 공지 및 지도 API */}
             <aside className="col-span-3 flex flex-col gap-4 h-full">
-              {/* 공지사항 영역 */}
-              <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden relative">
+              {/* 공지사항 영역: p-4 제거, overflow-hidden 추가 */}
+              <div className="flex-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden relative">
                 <div className="w-full h-full">
                   <NoticePreview />
                 </div>
               </div>
 
-              {/* 지도 영역 */}
-              <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-3 shadow-sm hover:shadow-md transition-shadow relative">
-                <div className="w-full h-full rounded-xl overflow-hidden bg-slate-200">
+              {/* 지도 영역: p-3 제거, 내부 div의 rounded 제거 (부모가 처리) */}
+              <div className="flex-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+                {/* 내부 여백이 사라졌으므로 지도 컨테이너가 꽉 찹니다 */}
+                <div className="w-full h-full bg-slate-200">
                   <Map
                     center={{ lat: 37.3498095, lng: 127.1069927 }}
                     style={{ width: "100%", height: "100%" }}

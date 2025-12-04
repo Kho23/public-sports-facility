@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   findByFacilityId,
   registerDailyUse,
@@ -53,6 +53,7 @@ const DailyUsePage = () => {
 
   const handleDateClick = async (info) => {
     setSelectedDate(info.dateStr);
+    setSelectedTime([]);
     if (facility === 3) return;
 
     const res = await getAvailableTime(selectedSpace, info.dateStr);

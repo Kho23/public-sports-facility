@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   changePartnerStatus,
   getOnePartnerRequest,
@@ -165,7 +165,7 @@ const PartnerRequestPage = () => {
             ))}
         </div>
       </div>
-      {data.status == "PENDING" ? (
+      {data.status === "PENDING" ? (
         <div className="mt-10 flex justify-center gap-20">
           <button
             className="px-16 py-3 rounded-lg font-semibold
@@ -190,6 +190,14 @@ const PartnerRequestPage = () => {
       ) : (
         <></>
       )}
+      <div className="flex justify-end mt-5 gap-x-4 border-t">
+        <Link
+          to={-1}
+          className="bg-gray-700 text-white font-bold py-2 px-6 mt-5 rounded hover:bg-gray-800 transition-colors"
+        >
+          목록
+        </Link>
+      </div>
     </div>
   );
 };

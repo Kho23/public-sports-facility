@@ -5,11 +5,26 @@ import {
   updateSchedule,
   deleteSchedule,
 } from "../../../../api/adminApi";
+import usePageMove from "../../../../hooks/usePageMove";
+import PageComponent from "../../../../components/common/PageComponent";
 
+const initState = {
+  dtoList: [],
+  pageNumList: [],
+  pageRequestDTO: null,
+  prev: false,
+  next: false,
+  totalCnt: 0,
+  prevPage: 0,
+  nextPage: 0,
+  totalPage: 0,
+  current: 0,
+};
 const ScheduleListPage = () => {
-  const [schedules, setSchedules] = useState([]);
+  const [schedules, setSchedules] = useState(initState);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSchedule, setCurrentSchedule] = useState(null);
+  const { page, size, moveToList } = usePageMove();
 
   const [data, setData] = useState({
     title: "",
@@ -21,14 +36,14 @@ const ScheduleListPage = () => {
   useEffect(() => {
     const f = async () => {
       try {
-        const response = await getScheduleList();
+        const response = await getScheduleList({ page, size });
         setSchedules(response);
       } catch (err) {
         console.error("스케줄 데이터 로딩 실패:", err);
       }
     };
     f();
-  }, []);
+  }, [page, size]);
 
   // 모달 열기
   const openModal = (schedule) => {
@@ -108,7 +123,7 @@ const ScheduleListPage = () => {
         </button>
       </div>
 
-      <div className="text-sm mb-2">총 {schedules.length}건</div>
+      <div className="text-sm mb-2">총 {schedules.totalCnt}건</div>
 
       {/* 리스트 테이블 */}
       <table className="w-full text-center border-t-2 border-gray-700 table-fixed">
@@ -123,19 +138,21 @@ const ScheduleListPage = () => {
         </thead>
 
         <tbody>
-          {schedules.length === 0 ? (
+          {schedules.dtoList.length === 0 ? (
             <tr>
               <td colSpan="5" className="p-8 text-gray-500">
                 등록된 스케줄이 없습니다.
               </td>
             </tr>
           ) : (
-            schedules.map((schedule, idx) => (
+            schedules.dtoList.map((schedule, idx) => (
               <tr
                 key={schedule.scheduleId}
                 className="border-b hover:bg-gray-50"
               >
-                <td className="p-3 text-sm text-gray-600">{idx + 1}</td>
+                <td className="p-3 text-sm text-gray-600">
+                  {(page - 1) * size + (idx + 1)}
+                </td>
                 <td className="p-3 text-sm font-medium text-gray-700">
                   {schedule.title}
                 </td>
@@ -168,6 +185,8 @@ const ScheduleListPage = () => {
           )}
         </tbody>
       </table>
+
+      <PageComponent serverData={schedules} movePage={moveToList} />
 
       {/* 모달 */}
       {isModalOpen && (

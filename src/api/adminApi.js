@@ -34,8 +34,10 @@ export const registerNotice = async (notice) => {
   console.log("백엔드에 보낸 notice 등록 데이터", res.data);
   return res.data;
 };
-export const getListPartnerRequest = async () => {
-  const res = await axios.get(`${API_SERVER_HOST}/partner/partnerRequest`);
+export const getListPartnerRequest = async (params) => {
+  const res = await axios.get(`${API_SERVER_HOST}/partner/partnerRequest`, {
+    params: params,
+  });
   console.log("백엔드에 보낸 partnerRequest 전체데이터", res.data);
   return res.data;
 };
@@ -59,8 +61,10 @@ export const changePartnerStatus = async (RequestId, status) => {
   );
   return res.data;
 };
-export const getAllListSupport = async () => {
-  const res = await axios.get(`${API_SERVER_HOST}/support/all`);
+export const getAllListSupport = async (params) => {
+  const res = await axios.get(`${API_SERVER_HOST}/support/all`, {
+    params: params,
+  });
   console.log("백엔드에 보낸 support 전체데이터", res.data);
   return res.data;
 };
@@ -92,8 +96,10 @@ export const createFaq = async (data) => {
   console.log("백엔드에 보낸 faq 추가데이터", res.data);
   return res.data;
 };
-export const getScheduleList = async () => {
-  const res = await axios.get(`${API_SERVER_HOST}/community/schedule/admin`);
+export const getScheduleList = async (params) => {
+  const res = await axios.get(`${API_SERVER_HOST}/community/schedule/admin`, {
+    params: params,
+  });
   console.log("백엔드에 보낸 schedule 전체데이터", res.data);
   return res.data;
 };

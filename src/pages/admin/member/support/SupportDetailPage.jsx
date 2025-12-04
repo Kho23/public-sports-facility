@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { formatter } from "../../../../api/noticeApi";
+import { Link, useParams } from "react-router-dom";
 import { supportGetOne } from "../../../../api/memberApi";
 import { registerSupportResponse } from "../../../../api/adminApi";
 
@@ -10,8 +9,6 @@ const SupportDetailPage = () => {
   const [response, setResponse] = useState({
     content: "",
   });
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const f = async () => {
@@ -86,8 +83,8 @@ const SupportDetailPage = () => {
               >
                 <p className="text-gray-800 whitespace-pre-wrap">{i.content}</p>
                 <div className="text-right text-sm text-gray-500 mt-2">
-                  작성일자 : {i.createdAt.split("T")[0]}{" "}
-                  {i.createdAt.split("T")[1].slice(0, 8)}
+                  작성일자 : {i.createdAt?.split("T")[0]}{" "}
+                  {i.createdAt?.split("T")[1].slice(0, 8)}
                 </div>
               </div>
             ))}

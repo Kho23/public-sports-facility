@@ -17,8 +17,8 @@ export const fileRegister = async (file) => {
   return res.data;
 };
 
-export const getGalleryList = async () => {
-  const res = await axios.get(`${API_HOST_URL}`);
+export const getGalleryList = async (param) => {
+  const res = await axios.get(`${API_HOST_URL}`, {params:param});
   console.log("백엔드 갤러리 데이터=", res.data);
   return res.data;
 };

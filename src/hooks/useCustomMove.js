@@ -20,8 +20,16 @@ const useCustomMove = () => {
     navigate(`/admin/member/partnerRequest/${id}`);
   const moveToAdminSupportDetail = (id) =>
     navigate(`/admin/member/support/${id}`);
+  const moveToLessonDetail=(id)=>{
+    navigate(`/reservation/registration/${id}`)
+  }
+  const moveToLessonList=()=>{
+    navigate(`/reservation/registration`)
+  }
 
   return {
+    moveToLessonList,
+    moveToLessonDetail,
     moveToAdminGalleryRegister,
     moveToAdminGallery,
     moveToAdminGalleryDetail,

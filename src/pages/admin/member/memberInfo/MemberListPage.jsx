@@ -1,23 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { searchMemberList } from "../../../../api/adminApi";
 import MemberEditModal from "./MemberEditModal";
+import usePageMove from "../../../../hooks/usePageMove";
+import PageComponent from "../../../../components/common/PageComponent";
 
+const initState = {
+  dtoList: [],
+  pageNumList: [],
+  pageRequestDTO: null,
+  prev: false,
+  next: false,
+  totalCnt: 0,
+  prevPage: 0,
+  nextPage: 0,
+  totalPage: 0,
+  current: 0,
+};
 const MemberListPage = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(initState);
   const [selectedMember, setSelectedMember] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [category, setCategory] = useState("name");
   const [keyword, setKeyword] = useState("");
   const [filterUser, setFilterUser] = useState(false);
   const [filterPartner, setFilterPartner] = useState(false);
+  const { page, size, moveToList } = usePageMove();
 
   useEffect(() => {
-    executeSearchAndFilter(keyword, category, null);
-  }, []);
+    executeSearchAndFilter(keyword, category, null, page, size);
+  }, [page, size]);
 
-  const executeSearchAndFilter = async (keyword, category, role) => {
+  const executeSearchAndFilter = async (
+    keyword,
+    category,
+    role,
+    page,
+    size
+  ) => {
     const params = {
-      category,
+      page,
+      size,
+      type: category,
       keyword: keyword.trim(),
       role: role || "",
     };
@@ -46,7 +69,7 @@ const MemberListPage = () => {
     setFilterUser(false);
     setFilterPartner(false);
 
-    await executeSearchAndFilter(keyword, category, null);
+    await executeSearchAndFilter(keyword, category, null, page, size);
   };
 
   const handleFilterChange = (setter, currentValue) => {
@@ -132,7 +155,7 @@ const MemberListPage = () => {
       <div className="p-2">
         <div className="flex items-center justify-between">
           <div className="text-sm font-medium text-gray-700">
-            총 {data.length}건
+            총 {data.totalCnt}건
           </div>
           <div className="flex items-center space-x-4">
             <label className="flex items-center space-x-1 cursor-pointer">
@@ -171,14 +194,14 @@ const MemberListPage = () => {
         </thead>
 
         <tbody>
-          {data.length === 0 ? (
+          {data.dtoList.length === 0 ? (
             <tr>
               <td colSpan="5" className="p-8 text-center text-gray-500">
                 등록된 회원이 없습니다.
               </td>
             </tr>
           ) : (
-            data.map((i, idx) => (
+            data.dtoList.map((i, idx) => (
               <tr
                 key={i.memberId}
                 onClick={() => {
@@ -187,7 +210,9 @@ const MemberListPage = () => {
                 }}
                 className="border-b hover:bg-gray-50 cursor-pointer"
               >
-                <td className="p-3 text-sm text-gray-600">{idx + 1}</td>
+                <td className="p-3 text-sm text-gray-600">
+                  {(page - 1) * size + (idx + 1)}
+                </td>
                 <td className="p-3 text-sm text-gray-600">{i.memberName}</td>
                 <td className="p-3 text-sm text-gray-700">{i.memberLoginId}</td>
                 <td className="p-3 text-sm text-gray-600">
@@ -201,6 +226,8 @@ const MemberListPage = () => {
           )}
         </tbody>
       </table>
+
+      <PageComponent serverData={data} movePage={moveToList} />
 
       {openModal && (
         <MemberEditModal

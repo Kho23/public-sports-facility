@@ -1,4 +1,3 @@
-import React from "react";
 import MyReservationComponent from "./components/MyReservationComponent";
 
 const MyReservationPage = () => {

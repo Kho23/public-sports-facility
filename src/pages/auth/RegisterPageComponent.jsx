@@ -151,13 +151,10 @@ const RegisterPageComponent = () => {
 
         if (registerInfo.memberPassword !== registerInfo.passwordConfirm) {
             alert("비밀번호가 일치하지 않습니다.");
-            return;
+            return; 
         }
         
         const { passwordConfirm, ...memberData } = registerInfo;
-        
-        // (선택) 마케팅 동의 여부 추가
-        // memberData.marketingAgree = agreements.marketing;
 
         try {
             const result = await dispatch(registerAsync(memberData));

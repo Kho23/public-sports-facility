@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { getListPartnerRequest } from "../../../../api/adminApi";
 import useCustomMove from "../../../../hooks/useCustomMove";
+import usePageMove from "../../../../hooks/usePageMove";
+import PageComponent from "../../../../components/common/PageComponent";
 
+const initState = {
+  dtoList: [],
+  pageNumList: [],
+  pageRequestDTO: null,
+  prev: false,
+  next: false,
+  totalCnt: 0,
+  prevPage: 0,
+  nextPage: 0,
+  totalPage: 0,
+  current: 0,
+};
 const PartnerRequestList = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(initState);
   const { moveToAdminPartnerRequestDetail } = useCustomMove();
+  const { page, size, moveToList } = usePageMove();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getListPartnerRequest();
+        const res = await getListPartnerRequest({ page, size });
         setData(res);
       } catch (err) {
         console.error("파트너 리스트 불러오기 실패:", err);
       }
     };
     fetchData();
-  }, []);
+  }, [page, size]);
 
   // 상태 텍스트 + 색상 반환 함수
   const renderStatus = (status) => {
@@ -52,7 +67,7 @@ const PartnerRequestList = () => {
       </h1>
 
       {/* 🔹 총 개수 */}
-      <div className="text-sm mb-2">총 {data.length}건</div>
+      <div className="text-sm mb-2">총 {data.totalCnt}건</div>
 
       {/* 🔹 테이블 */}
       <table className="w-full text-center border-t-2 border-gray-700">
@@ -67,20 +82,23 @@ const PartnerRequestList = () => {
         </thead>
 
         <tbody>
-          {data.length === 0 ? (
+          {data.dtoList.length === 0 ? (
             <tr>
               <td colSpan="5" className="p-8 text-center text-gray-500">
                 등록된 파트너 신청이 없습니다.
               </td>
             </tr>
           ) : (
-            data.map((i) => (
+            data.dtoList.map((i, idx) => (
               <tr
                 key={i.requestNo}
                 onClick={() => moveToAdminPartnerRequestDetail(i.requestNo)}
                 className="border-b hover:bg-gray-50 cursor-pointer"
               >
-                <td className="p-3 text-sm text-gray-600">{i.requestNo}</td>
+                <td className="p-3 text-sm text-gray-600">
+                  {" "}
+                  {(page - 1) * size + (idx + 1)}
+                </td>
                 <td className="p-3 text-sm text-gray-600">
                   {i.member?.memberName}
                 </td>
@@ -96,6 +114,7 @@ const PartnerRequestList = () => {
           )}
         </tbody>
       </table>
+      <PageComponent serverData={data} movePage={moveToList} />
     </div>
   );
 };

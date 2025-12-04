@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getNoticeList, formatter } from "../../api/noticeApi";
-import { useNavigate } from "react-router-dom";
 import useCustomMove from "../../hooks/useCustomMove";
 
 const NoticePreview = () => {
@@ -11,7 +10,7 @@ const NoticePreview = () => {
     const fetchNotice = async () => {
       try {
         const data = await getNoticeList();
-        const sorted = [...data].reverse().slice(0, 4);
+        const sorted = [...data.dtoList].reverse().slice(0, 5);
         setNotices(sorted);
       } catch (err) {
         console.error("공지 미리보기 불러오기 실패:", err);

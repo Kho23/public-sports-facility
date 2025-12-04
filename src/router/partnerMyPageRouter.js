@@ -1,29 +1,32 @@
 import { lazy, Suspense } from "react";
 import partnerMyLessonRouter from "./partnerMyLessonRouter";
+import memberMyReservationRouter from "./memberMyReservationRouter";
 
-const PartnerEdit = lazy(() =>
-  import("../pages/partner/partnerEdit/PartnerEditPage")
+const MemberEdit = lazy(() =>
+  import("../pages/member/memberEdit/MemberEditPage")
 );
-const PwEditPage = lazy(() => import("../pages/partner/pwEdit/PwEditPage"));
+const PwEditPage = lazy(() => import("../pages/member/pwEdit/PwEditPage"));
 const MyLessons = lazy(() =>
   import("../pages/partner/myLessons/MyLessonsPage")
 );
 const LessonsRequest = lazy(() =>
   import("../pages/partner/lessonRequest/LessonRequestPage")
 );
-
 const Attendance = lazy(() =>
   import("../pages/partner/attendance/AttendancePage")
+);
+const Reservation = lazy(() =>
+  import("../pages/member/myReservation/MyReservationPage")
 );
 
 const Loading = () => <div>Loading...</div>;
 const partnerMyPageRouter = () => {
   return [
     {
-      path: "partnerEdit",
+      path: "memberEdit",
       element: (
         <Suspense fallback={<Loading />}>
-          <PartnerEdit />
+          <MemberEdit />
         </Suspense>
       ),
     },
@@ -64,6 +67,20 @@ const partnerMyPageRouter = () => {
           <Attendance />
         </Suspense>
       ),
+    },
+    {
+      path: "myReservation",
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Reservation />
+            </Suspense>
+          ),
+        },
+        ...memberMyReservationRouter(),
+      ],
     },
   ];
 };

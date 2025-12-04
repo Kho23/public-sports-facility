@@ -19,3 +19,8 @@ export const getMyLessons = async () => {
   const res = await axios.get(`http://localhost:8080/api/lesson/myLessons`);
   return res.data;
 }; // 파트너 내 레슨 가져오기
+
+export const getPartnerClassList = async () => {
+  const res = await axios.get(`http://localhost:8080/api/partner/class`);
+  return res.data;
+}; // 파트너 종목만 가져오기

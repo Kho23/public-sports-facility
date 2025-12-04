@@ -2,6 +2,7 @@ import React from "react";
 import { PiNoteDuotone } from "react-icons/pi";
 
 const PartnerRequestComponent = ({
+  partnerAgree,
   checkClassHandler,
   checkAgreeHandler,
   checkFileHandler,
@@ -218,7 +219,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="privacyAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.privacyAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />
@@ -237,7 +238,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="thirdAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.thirdAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />
@@ -254,7 +255,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="serviceAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.serviceAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />
@@ -270,7 +271,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="partnerAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.partnerAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />
@@ -288,7 +289,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="taxAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.taxAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />
@@ -304,7 +305,7 @@ const PartnerRequestComponent = ({
                   <input
                     type="checkbox"
                     name="insuranceAgreement"
-                    checked={allChecked}
+                    checked={partnerAgree.insuranceAgreement}
                     onChange={checkAgreeHandler}
                     className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
                   />

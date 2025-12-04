@@ -2,6 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../../../styles/calendar.css";
+import { useState } from "react";
 
 const RentalReqComponent = ({
   infoHandler,
@@ -12,13 +13,15 @@ const RentalReqComponent = ({
   findFacilityFn,
   facility,
   handleDateClick,
+  priceCalc,
   getSpace,
-  spaceName,
   space,
   selectTimeFn,
   selectTime,
   reservationHandler,
 }) => {
+  const [viewData, setViewData] = useState({});
+
   return (
     <div className="bg-white">
       <div className="max-w-5xl flex gap-10 py-4 px-4">
@@ -67,7 +70,7 @@ const RentalReqComponent = ({
 
               <div className="flex flex-col">
                 <label className="text-gray-700 font-semibold mb-1">
-                  특이사항
+                  요청사항
                 </label>
                 <input
                   type="text"
@@ -87,7 +90,6 @@ const RentalReqComponent = ({
             </p>
           </div>
 
-          <div className="border-b-2 border-gray-400 mb-6" />
           <div className="border rounded-lg p-4 mb-8">
             <p className="text-sm text-gray-600 mb-3">
               대관 예약을 진행할 시설과 장소를 선택하세요.
@@ -121,7 +123,10 @@ const RentalReqComponent = ({
                     getSpace?.map((i) => (
                       <div
                         key={i.id}
-                        onClick={() => setSpace(i.id)}
+                        onClick={() => {
+                          setSpace(i.id);
+                          setViewData(i.spaceName);
+                        }}
                         className={`p-2 cursor-pointer hover:bg-gray-100 ${
                           space === i.id ? "bg-blue-900 text-white" : ""
                         }`}
@@ -158,8 +163,49 @@ const RentalReqComponent = ({
               />
             </div>
 
-            <div className="w-1/3 border rounded-md p-4">
-              <p className="font-semibold border-b pb-2">예약 정보</p>
+            <div className="w-[35%] border rounded-md p-4">
+              <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 shadow-sm">
+                <h3 className="text-lg font-bold text-gray-800 mb-3">
+                  이용 요금 안내
+                </h3>
+
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-gray-800 mb-1">
+                    무용실 (A·B·C·D실)
+                  </p>
+                  <div className="text-xs text-gray-700 space-y-1 ml-1">
+                    <p>
+                      • 06:00 ~ 17:00 :{" "}
+                      <b className="text-gray-900">{facilities[0].AMprice}원</b>
+                    </p>
+                    <p>
+                      • 17:00 ~ 22:00 :{" "}
+                      <b className="text-gray-900">{facilities[0].PMprice}원</b>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mb-2">
+                  <p className="text-sm font-semibold text-gray-800 mb-1">
+                    풋살장 (1·2·3구장)
+                  </p>
+                  <div className="text-xs text-gray-700 space-y-1 ml-1">
+                    <p>
+                      • 06:00 ~ 17:00 :{" "}
+                      <b className="text-gray-900">{facilities[1].AMprice}원</b>
+                    </p>
+                    <p>
+                      • 17:00 ~ 22:00 :{" "}
+                      <b className="text-gray-900">{facilities[1].PMprice}원</b>
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-500 mt-3 leading-relaxed">
+                  ※ 시설 파손 시 추가 요금이 부과될 수 있습니다.
+                </p>
+              </div>
+
               {!facility || !space ? (
                 <p className="text-gray-500 text-sm mt-4">
                   시설과 장소를 먼저 선택해주세요.
@@ -170,21 +216,12 @@ const RentalReqComponent = ({
                 </p>
               ) : (
                 <div className="mt-4">
-                  <p className="text-sm mb-2">
-                    <b>{selectDate}</b>
+                  <p className="text-lg font-bold text-gray-800 mb-3">
+                    시간 선택
                   </p>
-                  <p className="text-sm">
-                    시설:{" "}
-                    <b>{facilities.find((i) => i.id === facility).name}</b>
-                  </p>
-                  <p className="text-sm mb-3">
-                    장소: <b>{space}</b>
-                  </p>
-                  <p className="text-sm font-semibold mt-4">시간 선택</p>
-
                   <div>
-                    {scheduleData?.map((i) => (
-                      <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {scheduleData?.map((i) => (
                         <button
                           key={i}
                           onClick={() => selectTimeFn(i)}
@@ -196,14 +233,63 @@ const RentalReqComponent = ({
                         >
                           {i}
                         </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <div className="border-t border-b border-gray-300 py-4 space-y-3">
+                      <p className="text-lg font-bold text-gray-800 mb-1">
+                        예약 정보
+                      </p>
+
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-700">예약일</span>
+                        <span className="font-semibold">{selectDate}</span>
                       </div>
-                    ))}
+
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-700">시설</span>
+                        <span className="font-semibold">
+                          {facilities.find((i) => i.id === facility).name}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-700">장소</span>
+                        <span className="font-semibold">{viewData}</span>
+                      </div>
+
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-700">선택시간</span>
+                        <span className="font-semibold">
+                          {selectTime.length > 0
+                            ? `${selectTime[0].split("~")[0]} ~ ${
+                                selectTime[selectTime.length - 1].split("~")[1]
+                              }`
+                            : "-"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-sm text-gray-700 font-medium">
+                          총 이용금액
+                        </span>
+                        <span className="text-lg font-extrabold text-blue-900">
+                          {priceCalc().toLocaleString()} 원
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-2 space-y-1 text-[11px] text-gray-500 leading-relaxed">
+                      <p>※ 결제 완료 후 예약이 확정됩니다.</p>
+                    </div>
                   </div>
 
                   {selectTime && (
                     <button
+                      type="button"
                       onClick={reservationHandler}
-                      className="w-full mt-4 bg-blue-900 text-white py-2 rounded"
+                      className="w-full mt-4 bg-blue-900 text-white text-sm font-semibold py-2.5 rounded-md hover:bg-blue-800 transition"
                     >
                       예약 진행
                     </button>

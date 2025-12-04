@@ -2,6 +2,8 @@ import React from "react";
 
 const LessonRequestComponent = ({
   data,
+  className,
+  partnerClass,
   formChangeHandler,
   dateChangeHandler,
 }) => {
@@ -89,48 +91,23 @@ const LessonRequestComponent = ({
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           2. 강좌 분야
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 gap-x-6 mt-4 text-gray-800 text-base">
-          <label className="flex items-center gap-3 cursor-pointer p-1 hover:bg-blue-100 rounded transition">
-            <input
-              type="radio"
-              name="facilityType"
-              value={"POOL"}
-              onClick={(e) => formChangeHandler(e)}
-              className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
-            />
-            수영
-          </label>
-          <label className="flex items-center gap-3 cursor-pointer p-1 hover:bg-blue-100 rounded transition">
-            <input
-              type="radio"
-              name="facilityType"
-              value={"GOLF"}
-              onClick={(e) => formChangeHandler(e)}
-              className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
-            />
-            골프
-          </label>
-          <label className="flex items-center gap-3 cursor-pointer p-1 hover:bg-blue-100 rounded transition">
-            <input
-              type="radio"
-              name="facilityType"
-              value={"DANCE"}
-              onClick={(e) => formChangeHandler(e)}
-              className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
-            />
-            무용
-          </label>
-          <label className="flex items-center gap-3 cursor-pointer p-1 hover:bg-blue-100 rounded transition">
-            <input
-              type="radio"
-              name="facilityType"
-              value={"FUTSAL"}
-              onClick={(e) => formChangeHandler(e)}
-              className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
-            />
-            풋살
-          </label>
-        </div>
+        {partnerClass &&
+          partnerClass
+            .filter((i) => i !== "헬스")
+            .map((i) => (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 gap-x-6 mt-4 text-gray-800 text-base">
+                <label className="flex items-center gap-3 cursor-pointer p-1 hover:bg-blue-100 rounded transition">
+                  <input
+                    type="radio"
+                    name="facilityType"
+                    value={className?.find((j) => j.id == i)?.name}
+                    onClick={(e) => formChangeHandler(e)}
+                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 transition"
+                  />
+                  {i}
+                </label>
+              </div>
+            ))}
       </section>
 
       <section className="mb-12">

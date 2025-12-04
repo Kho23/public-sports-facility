@@ -4,7 +4,7 @@ import { getOne } from "../../../api/memberApi";
 import LessonRequestDetailComponent from "./components/LessonRequestDetailComponent";
 import LessonRequestOperationComponent from "./components/LessonRequestOperationComponent";
 import { useNavigate } from "react-router-dom";
-import { lessonRequest } from "../../../api/partnerApi";
+import { getPartnerClassList, lessonRequest } from "../../../api/partnerApi";
 
 const LessonRequestPage = () => {
   const [form, setForm] = useState({
@@ -27,15 +27,26 @@ const LessonRequestPage = () => {
     facilityRoomType: "",
   });
 
+  const className = [
+    { id: "수영", name: "POOL" },
+    { id: "골프", name: "GOLF" },
+    { id: "무용", name: "DANCE" },
+    { id: "풋살", name: "FUTSAL" },
+  ];
+
   const [page, setPage] = useState(1);
+
   const [data, setData] = useState({});
+  const [partnerClass, setPartnerClass] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const f = async () => {
       const res = await getOne();
+      const res2 = await getPartnerClassList();
       setData(res);
+      setPartnerClass(res2);
     };
     f();
   }, []);
@@ -100,6 +111,8 @@ const LessonRequestPage = () => {
         <LessonRequestComponent
           form={form}
           data={data}
+          className={className}
+          partnerClass={partnerClass}
           formChangeHandler={formChangeHandler}
           dateChangeHandler={dateChangeHandler}
         />

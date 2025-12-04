@@ -135,6 +135,7 @@ const PartnerRequestPage = () => {
 
   return (
     <PartnerRequestComponent
+      partnerAgree={partnerAgree}
       checkClassHandler={checkClassHandler}
       checkAgreeHandler={checkAgreeHandler}
       checkFileHandler={checkFileHandler}

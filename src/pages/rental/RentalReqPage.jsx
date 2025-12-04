@@ -4,12 +4,12 @@ import RentalReqComponent from "./components/RentalReqComponent";
 import { useNavigate } from "react-router-dom";
 import { findByFacilityId } from "../../api/dailyUseApi";
 import { getAvailableTime } from "../../api/commonApi";
-import { lessonRequest } from "../../api/rentalApi";
+import { rentalRequest } from "../../api/rentalApi";
 
 const RentalReqPage = () => {
   const facilities = [
-    { id: 1, name: "무용실" },
-    { id: 2, name: "풋살장" },
+    { id: 1, name: "무용실", AMprice: "10000", PMprice: "15000" },
+    { id: 2, name: "풋살장", AMprice: "20000", PMprice: "25000" },
   ];
 
   const [getSpace, setGetSpace] = useState([]);
@@ -23,9 +23,11 @@ const RentalReqPage = () => {
   const [selectTime, setSelectTime] = useState([]);
 
   const [formData, setFormData] = useState({});
+
   const navigate = useNavigate();
 
   const handleDateClick = (i) => {
+    setSelectTime([]);
     setSelectDate(i.dateStr);
     const f = async () => {
       const res = await getAvailableTime(space, i.dateStr);
@@ -39,6 +41,24 @@ const RentalReqPage = () => {
       setScheduleData(list);
     };
     f();
+  };
+
+  const priceCalc = () => {
+    if (!selectTime) return 0;
+
+    const selected = facilities.find((i) => i.id === facility);
+    const AMprice = selected.AMprice;
+    const PMprice = selected.PMprice;
+
+    const AMCount = selectTime?.filter(
+      (i) => parseInt(i.slice(0, 2)) <= 16
+    ).length;
+
+    const PMCount = selectTime?.filter(
+      (i) => parseInt(i.slice(0, 2)) > 16
+    ).length;
+
+    return AMCount * AMprice + PMCount * PMprice;
   };
 
   const timeCheck = (i) => {
@@ -71,12 +91,26 @@ const RentalReqPage = () => {
   };
 
   const selectTimeFn = (i) => {
-    setSelectTime((j) =>
-      j.includes(i) ? j.filter((t) => t !== i) : [...j, i]
-    );
+    setSelectTime((j) => {
+      let final = j.includes(i) ? j.filter((t) => t !== i) : [...j, i];
+
+      return final.sort(
+        (a, b) => parseInt(a.slice(0, 2)) - parseInt(b.slice(0, 2))
+      );
+    });
   };
 
   const reservationHandler = () => {
+    if (!formData.name) {
+      alert("신청자 이름을 입력해 주세요");
+      return;
+    }
+
+    if (!formData.phoneNumber) {
+      alert("신청자 번호를 입력해 주세요");
+      return;
+    }
+
     if (!timeCheck(selectTime)) {
       alert("연속된 시간만 예약할 수 있습니다");
       return;
@@ -97,13 +131,15 @@ const RentalReqPage = () => {
       spaceId: space,
       startTime: startTime,
       endTime: endTime,
+      price: priceCalc(),
     };
 
     const f = async () => {
-      const res = await lessonRequest(finalData);
+      const res = await rentalRequest(finalData);
     };
     f();
 
+    alert("신청이 완료되었습니다.");
     navigate("/");
   };
 
@@ -113,6 +149,7 @@ const RentalReqPage = () => {
         infoHandler={infoHandler}
         facilities={facilities}
         findFacilityFn={findFacilityFn}
+        priceCalc={priceCalc}
         facility={facility}
         getSpace={getSpace}
         setSpace={setSpace}

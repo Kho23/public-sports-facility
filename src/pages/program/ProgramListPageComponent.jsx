@@ -30,6 +30,23 @@ const ProgramListPageComponent = ({ data, adminPage, programId }) => {
               "
               dangerouslySetInnerHTML={{ __html: data.content }}
             />
+            {data && (
+              <div className="mt-10 space-y-10">
+                {data?.uploadFiles?.map((i) => (
+                  <div
+                    key={i.fileId}
+                    className="max-w-[500px] bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm"
+                  >
+                    <img
+                      alt={i.fileName}
+                      src={`http://localhost:8080/${i.filePath.slice(7)}`}
+                      className="w-full h-auto rounded-lg object-cover mb-2"
+                    />
+                    <p className="mt-3 text-center text-sm text-gray-600"></p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className=" flex justify-center pr-10 pt-10 ">
             {adminPage ? (

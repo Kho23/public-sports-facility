@@ -77,7 +77,7 @@ const FaqListPage = () => {
         await createFaq(data);
         alert("등록되었습니다.");
       }
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
       window.location.reload();
     } catch (err) {
       console.error("저장 실패:", err);
@@ -91,10 +91,10 @@ const FaqListPage = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
+    <div className="container mx-auto max-w-full p-2 md:p-4">
       {/* --- 헤더 영역 --- */}
       <div className="flex justify-between items-end mb-6 pb-4 border-b-2 border-gray-800">
-        <h1 className="text-3xl font-bold">자주 묻는 질문 관리</h1>
+        <h1 className="text-3xl mb-3 font-bold">자주 묻는 질문 관리</h1>
         <button
           onClick={() => openModal(null)}
           className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 font-medium transition-colors"

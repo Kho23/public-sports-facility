@@ -141,3 +141,23 @@ export const searchMemberList = async (param) => {
   console.log("백엔드에 보낸 member 검색데이터", res.data);
   return res.data;
 };
+export const getLessonList = async (param) => {
+  const { data } = await axios.get(`${API_SERVER_HOST}/lesson/admin`, {
+    params: param,
+  });
+  console.log("백엔드에서 온 lesson data=", data);
+  return data;
+};
+export const changeLessonStatus = async (lessonId, status) => {
+  const res = await axios.post(
+    `${API_SERVER_HOST}/lesson/status/${lessonId}`,
+    status,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      transformRequest: [(data) => JSON.stringify(data)],
+    }
+  );
+  return res.data;
+};

@@ -26,7 +26,12 @@ const SupportListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getAllListSupport({ page, size });
+        const res = await getAllListSupport({
+          page,
+          size,
+          keyword,
+          type,
+        });
         setData(res);
       } catch (err) {
         console.error("문의내역 리스트 불러오기 실패:", err);

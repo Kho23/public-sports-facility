@@ -8,9 +8,9 @@ import { getAvailableTime } from "../../api/commonApi";
 import DailyUsePageComponent from "./components/DailyUsePageComponent";
 
 const facilities = [
-  { id: 1, name: "골프장" },
-  { id: 2, name: "수영장" },
-  { id: 3, name: "헬스장" },
+  { id: 1, name: "수영장" },
+  { id: 2, name: "헬스장" },
+  { id: 3, name: "골프장" },
 ];
 
 const DailyUsePage = () => {
@@ -32,7 +32,7 @@ const DailyUsePage = () => {
     setFacility(id);
     resetFn();
 
-    if (id === 3) {
+    if (id === 2) {
       setSpace(null);
       return;
     }
@@ -54,7 +54,7 @@ const DailyUsePage = () => {
   const handleDateClick = async (info) => {
     setSelectedDate(info.dateStr);
     setSelectedTime([]);
-    if (facility === 3) return;
+    if (facility === 2) return;
 
     const res = await getAvailableTime(selectedSpace, info.dateStr);
     const formatted = res.map((t) => {
@@ -86,7 +86,7 @@ const DailyUsePage = () => {
   };
 
   const submitHandler = async () => {
-    if (facility === 3) {
+    if (facility === 2) {
       try {
         await registerGymDailyUse({ date: selectedDate });
         alert("예약이 완료되었습니다.");

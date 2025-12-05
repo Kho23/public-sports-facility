@@ -55,7 +55,7 @@ const DailyUsePageComponent = ({
           <div>
             <p className="font-semibold mb-2">장소</p>
             <div className="border rounded-md h-32 overflow-y-auto">
-              {facility === 3 ? (
+              {facility === 2 ? (
                 <p className="text-xs p-2 text-gray-400">
                   헬스장은 공간 선택이 필요 없습니다.
                 </p>
@@ -108,7 +108,7 @@ const DailyUsePageComponent = ({
         <div className="w-1/3 border rounded-md p-4">
           <p className="font-semibold border-b pb-2">예약 정보</p>
 
-          {facility === 3 ? (
+          {facility === 2 ? (
             !selectedDate ? (
               <p className="text-gray-500 text-sm mt-4">날짜를 선택해주세요.</p>
             ) : (

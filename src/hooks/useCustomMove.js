@@ -20,12 +20,15 @@ const useCustomMove = () => {
     navigate(`/admin/member/partnerRequest/${id}`);
   const moveToAdminSupportDetail = (id) =>
     navigate(`/admin/member/support/${id}`);
-  const moveToLessonDetail=(id)=>{
-    navigate(`/reservation/registration/${id}`)
-  }
-  const moveToLessonList=()=>{
-    navigate(`/reservation/registration`)
-  }
+  const moveToLessonDetail = (id) => {
+    navigate(`/reservation/registration/${id}`);
+  };
+  const moveToLessonList = () => {
+    navigate(`/reservation/registration`);
+  };
+  const moveToAdminLessonDetail = (id) => {
+    navigate(`/admin/lesson/approve/${id}`);
+  };
 
   return {
     moveToLessonList,
@@ -46,6 +49,7 @@ const useCustomMove = () => {
     moveToAdmin,
     moveToAdminPartnerRequestDetail,
     moveToAdminSupportDetail,
+    moveToAdminLessonDetail,
   };
 };
 

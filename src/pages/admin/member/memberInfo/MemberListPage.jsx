@@ -27,8 +27,12 @@ const MemberListPage = () => {
   const { page, size, moveToList } = usePageMove();
 
   useEffect(() => {
-    executeSearchAndFilter(keyword, category, null, page, size);
-  }, [page, size]);
+    let role = null;
+    if (filterUser && !filterPartner) role = "ROLE_USER";
+    else if (!filterUser && filterPartner) role = "ROLE_PARTNER";
+
+    executeSearchAndFilter(keyword, category, role, page, size);
+  }, [page, size, filterUser, filterPartner]);
 
   const executeSearchAndFilter = async (
     keyword,

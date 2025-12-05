@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getListPartnerRequest } from "../../../../api/adminApi";
-import useCustomMove from "../../../../hooks/useCustomMove";
-import usePageMove from "../../../../hooks/usePageMove";
-import PageComponent from "../../../../components/common/PageComponent";
+import { getLessonList } from "../../../api/adminApi";
+import useCustomMove from "../../../hooks/useCustomMove";
+import usePageMove from "../../../hooks/usePageMove";
+import PageComponent from "../../../components/common/PageComponent";
 
 const initState = {
   dtoList: [],
@@ -19,13 +19,13 @@ const initState = {
 const PartnerRequestList = () => {
   const [data, setData] = useState(initState);
   const [statusFilter, setStatusFilter] = useState(null);
-  const { moveToAdminPartnerRequestDetail } = useCustomMove();
+  const { moveToAdminLessonDetail } = useCustomMove();
   const { page, size, moveToList } = usePageMove();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getListPartnerRequest({ page, size });
+        const res = await getLessonList({ page, size });
         setData(res);
       } catch (err) {
         console.error("파트너 리스트 불러오기 실패:", err);
@@ -39,7 +39,7 @@ const PartnerRequestList = () => {
     const newValue = statusFilter === value ? null : value;
     setStatusFilter(newValue);
     try {
-      const res = await getListPartnerRequest({
+      const res = await getLessonList({
         page,
         size,
         role: newValue,
@@ -50,7 +50,6 @@ const PartnerRequestList = () => {
     }
   };
 
-  // 상태 텍스트 + 색상 반환 함수
   const renderStatus = (status) => {
     switch (status) {
       case "PENDING":
@@ -77,10 +76,10 @@ const PartnerRequestList = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
+    <div className="container mx-auto max-w-full p-2 md:p-4">
       {/* 🔹 제목 */}
       <h1 className="text-3xl font-bold mb-6 pb-4 border-b-2 border-gray-800">
-        파트너 신청 목록
+        강좌개설 신청내역
       </h1>
 
       {/* 🔹 총 개수 */}
@@ -127,9 +126,10 @@ const PartnerRequestList = () => {
         <thead className="bg-gray-50 border-b">
           <tr>
             <th className="p-3 w-20">번호</th>
-            <th className="p-3">신청자 이름</th>
-            <th className="p-3">신청 종목</th>
-            <th className="p-3">신청일</th>
+            <th className="p-3">강사 이름</th>
+            <th className="p-3">강의명</th>
+            <th className="p-3">강의 기간</th>
+            <th className="p-3">강의 시간</th>
             <th className="p-3">상태</th>
           </tr>
         </thead>
@@ -144,22 +144,21 @@ const PartnerRequestList = () => {
           ) : (
             data.dtoList.map((i, idx) => (
               <tr
-                key={i.requestNo}
-                onClick={() => moveToAdminPartnerRequestDetail(i.requestNo)}
+                key={i.lessonId}
+                onClick={() => moveToAdminLessonDetail(i.lessonId)}
                 className="border-b hover:bg-gray-50 cursor-pointer"
               >
                 <td className="p-3 text-sm text-gray-600">
                   {" "}
                   {(page - 1) * size + (idx + 1)}
                 </td>
+                <td className="p-3 text-sm text-gray-600">{i.partnerName}</td>
+                <td className="p-3 text-sm text-gray-700">{i.title}</td>
                 <td className="p-3 text-sm text-gray-600">
-                  {i.member?.memberName}
-                </td>
-                <td className="p-3 text-sm text-gray-700">
-                  {i.partnerClass?.join(", ")}
+                  {i.startDate} ~ {i.endDate}
                 </td>
                 <td className="p-3 text-sm text-gray-600">
-                  {new Date(i.requestDate).toLocaleDateString()}
+                  {i.startTime.slice(0, -3)} ~ {i.endTime.slice(0, -3)}
                 </td>
                 <td className="p-3 text-gray-600">{renderStatus(i.status)}</td>
               </tr>

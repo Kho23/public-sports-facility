@@ -1,10 +1,6 @@
 import React from "react";
 
-const LessonRequestDetailComponent = ({
-  form,
-  formChangeHandler,
-  curriculumRef,
-}) => {
+const LessonRequestDetailComponent = ({ form, formChangeHandler }) => {
   return (
     <div className="max-w-3xl mx-auto p-6 sm:p-10">
       <div className="mb-10">
@@ -21,6 +17,7 @@ const LessonRequestDetailComponent = ({
         <textarea
           maxLength={100}
           name="description"
+          value={form?.description}
           onChange={(e) => formChangeHandler(e)}
           className="
             w-full 
@@ -40,7 +37,7 @@ const LessonRequestDetailComponent = ({
           placeholder="강의 내용을 입력하세요"
         />
         <p className="text-right text-sm text-gray-500 mt-1">
-          {form.description?.length} / 100자
+          {form?.description?.length} / 100자
         </p>
       </section>
 
@@ -52,6 +49,7 @@ const LessonRequestDetailComponent = ({
         <textarea
           maxLength={100}
           name="tools"
+          value={form.tools}
           onChange={(e) => formChangeHandler(e)}
           className="
             w-full 
@@ -71,7 +69,7 @@ const LessonRequestDetailComponent = ({
           placeholder="강의 준비물을 입력하세요"
         />
         <p className="text-right text-sm text-gray-500 mt-1">
-          {form.tools?.length} / 100자
+          {form?.tools?.length} / 100자
         </p>
       </section>
 
@@ -83,6 +81,7 @@ const LessonRequestDetailComponent = ({
         <textarea
           maxLength={100}
           name="memo"
+          value={form?.memo}
           onChange={(e) => formChangeHandler(e)}
           className="
             w-full 
@@ -114,6 +113,7 @@ const LessonRequestDetailComponent = ({
         <textarea
           maxLength={100}
           name="curriculum"
+          value={form?.curriculum}
           onChange={(e) => formChangeHandler(e)}
           className="
             w-full  
@@ -133,7 +133,7 @@ const LessonRequestDetailComponent = ({
           placeholder="강의 내용을 입력하세요"
         />
         <p className="text-right text-sm text-gray-500 mt-1">
-          {form.curriculum?.length} / 100자
+          {form?.curriculum?.length} / 100자
         </p>
       </section>
     </div>

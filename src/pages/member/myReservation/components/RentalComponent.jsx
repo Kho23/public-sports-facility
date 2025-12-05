@@ -2,7 +2,7 @@ import { Link } from "lucide-react";
 import React from "react";
 import { PiNoteDuotone } from "react-icons/pi";
 
-const RentalComponent = ({ data, facilityName, cancelHandler }) => {
+const RentalComponent = ({ data, cancelHandler }) => {
   return (
     <>
       {data == "" ? (
@@ -49,12 +49,12 @@ const RentalComponent = ({ data, facilityName, cancelHandler }) => {
                       <span className="font-semibold text-gray-600">
                         예약일
                       </span>
-                      <span>{i.startTime.slice(0, 10)}</span>
+                      <span>{i.startTime?.slice(0, 10)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-semibold text-gray-600">시간</span>
                       <span>
-                        {i.startTime.slice(11, 16)} ~ {i.endTime.slice(11, 16)}
+                        {i.startTime?.slice(11, 16)} ~ {i.endTime.slice(11, 16)}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -62,7 +62,7 @@ const RentalComponent = ({ data, facilityName, cancelHandler }) => {
                         시설·장소
                       </span>
                       <span>
-                        {facilityName.find((j) => j.id == i.spaceId).name}
+                        {data?.find((j) => j.spaceId == i.spaceId)?.spaceName}
                       </span>
                     </div>
                     <div className="flex justify-between">

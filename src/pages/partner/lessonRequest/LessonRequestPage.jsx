@@ -1,43 +1,50 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import LessonRequestComponent from "./components/LessonRequestComponent";
 import { getOne } from "../../../api/memberApi";
 import LessonRequestDetailComponent from "./components/LessonRequestDetailComponent";
 import LessonRequestOperationComponent from "./components/LessonRequestOperationComponent";
 import { useNavigate } from "react-router-dom";
 import { getPartnerClassList, lessonRequest } from "../../../api/partnerApi";
+import { findByFacilityId } from "../../../api/dailyUseApi";
+import { getTime } from "../../../api/commonApi";
+import { useEffect, useState } from "react";
 
 const LessonRequestPage = () => {
   const [form, setForm] = useState({
     title: "",
-    startDate: "",
-    endDate: "",
+    startDate: null,
+    endDate: null,
     days: [],
     level: "",
-    startTime: "",
-    endTime: "",
+    startTime: null,
+    endTime: null,
 
     description: "",
     tools: "",
     memo: "",
     curriculum: "",
 
-    minPeople: "",
-    maxPeople: "",
-    facilityType: "",
-    facilityRoomType: "",
+    minPeople: null,
+    maxPeople: null,
+    facilityType: null,
+    facilityRoomType: null,
   });
 
   const className = [
-    { id: "수영", name: "POOL" },
-    { id: "골프", name: "GOLF" },
-    { id: "무용", name: "DANCE" },
-    { id: "풋살", name: "FUTSAL" },
+    { id: "수영", name: "POOL", facilityId: 1 },
+    { id: "골프", name: "GOLF", facilityId: 3 },
+    { id: "풋살", name: "FUTSAL", facilityId: 4 },
+    { id: "무용", name: "DANCE", facilityId: 5 },
   ];
 
   const [page, setPage] = useState(1);
 
   const [data, setData] = useState({});
   const [partnerClass, setPartnerClass] = useState([]);
+  const [getSpace, setGetSpace] = useState([]);
+  const [availableTimes, setAvailableTimes] = useState([]);
+
+  const [timesForCheck, setTimesForCheck] = useState([]);
 
   const navigate = useNavigate();
 
@@ -50,6 +57,57 @@ const LessonRequestPage = () => {
     };
     f();
   }, []);
+
+  useEffect(() => {
+    if (!className || !form.facilityType) return;
+    const result = className.find((i) => i.name == form.facilityType);
+    if (!result) return;
+
+    const f = async () => {
+      const res = await findByFacilityId(result.facilityId);
+      setGetSpace(res);
+    };
+    f();
+  }, [form.facilityType]);
+
+  useEffect(() => {
+    if (!form.facilityType) return;
+    if (!form.startDate || !form.endDate) return;
+    if (form.days.length === 0) return;
+
+    const result = className.find((i) => i.name === form.facilityType);
+    if (!result) return;
+
+    const forGetTime = {
+      facilityId: result.facilityId,
+      startDate: form.startDate,
+      endDate: form.endDate,
+      days: form.days,
+    };
+
+    const f = async () => {
+      const res2 = await getTime(forGetTime);
+      setAvailableTimes(res2);
+    };
+    f();
+  }, [form.facilityType, form.startDate, form.endDate, form.days]);
+
+  useEffect(() => {
+    if (form.startDate && form.endDate && form.endDate < form.startDate) {
+      alert("종료일은 시작일보다 이후여야 합니다");
+      setForm((i) => ({
+        ...i,
+        endDate: "",
+      }));
+    }
+    if (form.startTime && form.endTime && form.endTime <= form.startTime) {
+      alert("종료시간은 시작시간보다 이후여야 합니다");
+      setForm((i) => ({
+        ...i,
+        endTime: "",
+      }));
+    }
+  }, [form.startDate, form.endDate, form.startTime, form.endTime]);
 
   const formChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -67,6 +125,28 @@ const LessonRequestPage = () => {
       setForm((i) => ({ ...i, days: i.days.filter((j) => j !== value) }));
     }
   };
+
+  useEffect(() => {
+    if (!form.facilityRoomType) {
+      setTimesForCheck([]);
+      return;
+    }
+
+    const selectRoom = availableTimes.find(
+      (i) => i.spaceId === Number(form.facilityRoomType)
+    );
+
+    if (!selectRoom) {
+      setTimesForCheck([]);
+      return;
+    }
+
+    const timeList = selectRoom.schedule
+      .map((i) => i.times)
+      .reduce((i, t) => i.filter((j) => t.includes(j)));
+
+    setTimesForCheck(timeList);
+  }, [form.facilityRoomType, availableTimes]);
 
   const submitHandler = async () => {
     if (!form.minPeople) return alert("최소 인원을 입력해주세요.");
@@ -111,8 +191,12 @@ const LessonRequestPage = () => {
         <LessonRequestComponent
           form={form}
           data={data}
+          getSpace={getSpace}
+          setForm={setForm}
+          availableTimes={availableTimes}
           className={className}
           partnerClass={partnerClass}
+          timesForCheck={timesForCheck}
           formChangeHandler={formChangeHandler}
           dateChangeHandler={dateChangeHandler}
         />
@@ -126,6 +210,7 @@ const LessonRequestPage = () => {
       {page === 3 && (
         <LessonRequestOperationComponent
           form={form}
+          getSpace={getSpace}
           formChangeHandler={formChangeHandler}
         />
       )}

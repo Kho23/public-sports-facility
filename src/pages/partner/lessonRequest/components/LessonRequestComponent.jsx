@@ -1,12 +1,46 @@
 import React from "react";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { jsx } from "react/jsx-runtime";
 
 const LessonRequestComponent = ({
+  form,
   data,
   className,
+  availableTimes,
+  timesForCheck,
   partnerClass,
   formChangeHandler,
   dateChangeHandler,
 }) => {
+  const facilityMap = {
+    POOL: {
+      guide: [
+        "수영 : 한 레인당 최소 1명, 최대 6명 권장.",
+        "시설 배정은 운영 상황에 따라 변경될 수 있으며, 관리자 확인이 필요할 수 있습니다.",
+      ],
+    },
+    GOLF: {
+      guide: [
+        "골프 : 좌석은 1인 사용 원칙이며, 장비 사용 시 안전거리를 확보해 주세요.",
+        "시설 배정은 운영 상황에 따라 변경될 수 있으며, 관리자 확인이 필요할 수 있습니다.",
+      ],
+    },
+    FUTSAL: {
+      guide: [
+        "풋살 : 경기장 1면 기준 약 10~12명 수용 가능하며, 팀 경기 시 보호 장비 착용을 권장합니다.",
+        "시설 배정은 운영 상황에 따라 변경될 수 있으며, 관리자 확인이 필요할 수 있습니다.",
+      ],
+    },
+    DANCE: {
+      guide: [
+        "무용 : 각 무용실 정원은 약 10~15명이며, 실내 전용 신발 착용을 권장합니다.",
+        "시설 배정은 운영 상황에 따라 변경될 수 있으며, 관리자 확인이 필요할 수 있습니다.",
+      ],
+    },
+  };
+
   return (
     <div className="max-w-3xl mx-auto p-6 sm:p-10">
       <div className="mb-10">
@@ -60,7 +94,6 @@ const LessonRequestComponent = ({
           </span>
         </div>
       </div>
-
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           1. 강좌 제목
@@ -69,6 +102,7 @@ const LessonRequestComponent = ({
           <input
             type="text"
             name="title"
+            value={form.title}
             onChange={(e) => formChangeHandler(e)}
             className="
               w-full 
@@ -86,7 +120,6 @@ const LessonRequestComponent = ({
           />
         </div>
       </section>
-
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           2. 강좌 분야
@@ -109,7 +142,6 @@ const LessonRequestComponent = ({
               </div>
             ))}
       </section>
-
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           3. 강좌 난이도
@@ -147,7 +179,6 @@ const LessonRequestComponent = ({
           </label>
         </div>
       </section>
-
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           4. 기간
@@ -158,6 +189,7 @@ const LessonRequestComponent = ({
             <input
               type="date"
               name="startDate"
+              value={form.startDate ?? ""}
               onChange={(e) => formChangeHandler(e)}
               className="
                 w-full 
@@ -178,6 +210,7 @@ const LessonRequestComponent = ({
             <input
               type="date"
               name="endDate"
+              value={form.endDate ?? ""}
               onChange={(e) => formChangeHandler(e)}
               className="
                 w-full 
@@ -195,7 +228,6 @@ const LessonRequestComponent = ({
           </div>
         </div>
       </section>
-
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
           5. 강좌 요일
@@ -260,10 +292,52 @@ const LessonRequestComponent = ({
           </label>
         </div>
       </section>
+      {availableTimes.length > 0 && (
+        <div className="mt-10 overflow-x-auto">
+          <h3 className="text-lg font-bold mb-4 text-blue-900">
+            강의실별 가능 시간표
+          </h3>
 
+          <table className="min-w-max border border-gray-300 text-center text-sm">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-3 py-2 w-32">강의실</th>
+                {availableTimes[0].schedule.map((i, idx) => (
+                  <th key={idx} className="border px-3 py-2 w-32">
+                    {i.date}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {availableTimes.map((i, idx) => (
+                <tr key={idx} className="hover:bg-gray-50">
+                  <td className="border px-3 py-2 font-semibold">
+                    {i.spaceName}
+                  </td>
+
+                  {i.schedule.map((j, dIdx) => (
+                    <td key={dIdx} className="border px-3 py-2">
+                      {j.times.length > 0 ? (
+                        <span className="text-green-600 font-bold">
+                          {j.times.join(", ")}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400">없음</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <br /> <br />
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
-          5. 강좌 시간
+          6. 강좌 시간
         </h3>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -273,6 +347,8 @@ const LessonRequestComponent = ({
             </label>
             <select
               name="startTime"
+              value={form.startTime ?? ""}
+              disabled={!form.facilityRoomType}
               onChange={(e) => formChangeHandler(e)}
               className="
                 w-full 
@@ -290,18 +366,11 @@ const LessonRequestComponent = ({
               <option value="" disabled selected>
                 시간 선택
               </option>
-              <option value="09:00">09:00</option>
-              <option value="10:00">10:00</option>
-              <option value="11:00">11:00</option>
-              <option value="12:00">12:00</option>
-              <option value="13:00">13:00</option>
-              <option value="14:00">14:00</option>
-              <option value="15:00">15:00</option>
-              <option value="16:00">16:00</option>
-              <option value="17:00">17:00</option>
-              <option value="18:00">18:00</option>
-              <option value="19:00">19:00</option>
-              <option value="20:00">20:00</option>
+              {timesForCheck?.map((i) => (
+                <option value={i} key={i}>
+                  {i}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -311,6 +380,8 @@ const LessonRequestComponent = ({
             </label>
             <select
               name="endTime"
+              value={form.endTime ?? ""}
+              disabled={!form.facilityRoomType}
               onChange={(e) => formChangeHandler(e)}
               className="
                 w-full 
@@ -328,21 +399,65 @@ const LessonRequestComponent = ({
               <option value="" disabled selected>
                 시간 선택
               </option>
-              <option value="10:00">10:00</option>
-              <option value="11:00">11:00</option>
-              <option value="12:00">12:00</option>
-              <option value="13:00">13:00</option>
-              <option value="14:00">14:00</option>
-              <option value="15:00">15:00</option>
-              <option value="16:00">16:00</option>
-              <option value="17:00">17:00</option>
-              <option value="18:00">18:00</option>
-              <option value="19:00">19:00</option>
-              <option value="20:00">20:00</option>
-              <option value="21:00">21:00</option>
+              {timesForCheck?.map((i) => (
+                <option value={i} key={i}>
+                  {i}
+                </option>
+              ))}
             </select>
           </div>
         </div>
+      </section>
+      <section className="mb-12">
+        <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
+          7. 필요 시설
+        </h3>
+
+        {form.facilityType && (
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+            <div className="flex flex-col w-full">
+              <select
+                id="facility"
+                name="facilityRoomType"
+                value={form.facilityRoomType ?? ""}
+                onChange={(e) => formChangeHandler(e)}
+                className="
+                w-full 
+                border border-gray-300 
+                rounded-lg 
+                p-3 
+                text-gray-800 
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-blue-200 
+                focus:border-blue-500
+                transition
+            "
+              >
+                <option value="" disabled>
+                  기본 선택
+                </option>
+                {availableTimes
+                  .filter((i) => i.schedule.some((s) => s.times.length > 0))
+                  .map((i) => (
+                    <option value={i.spaceId} key={i.spaceId}>
+                      {i.spaceName}
+                    </option>
+                  ))}
+              </select>
+
+              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <h4 className="text-sm font-semibold text-gray-700 mb-1">
+                  시설 이용 안내
+                </h4>
+                <span className="text-xs text-gray-500 space-y-2 leading-5 pl-1">
+                  {facilityMap[form.facilityType].guide[0]}
+                  <br /> {facilityMap[form.facilityType].guide[1]}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

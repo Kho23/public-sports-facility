@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import RentalReqComponent from "./components/RentalReqComponent";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,8 @@ import { rentalRequest } from "../../api/rentalApi";
 
 const RentalReqPage = () => {
   const facilities = [
-    { id: 1, name: "무용실", AMprice: "10000", PMprice: "15000" },
-    { id: 2, name: "풋살장", AMprice: "20000", PMprice: "25000" },
+    { id: 5, name: "무용실", AMprice: "10000", PMprice: "15000" },
+    { id: 4, name: "풋살장", AMprice: "20000", PMprice: "25000" },
   ];
 
   const [getSpace, setGetSpace] = useState([]);
@@ -42,6 +42,10 @@ const RentalReqPage = () => {
     };
     f();
   };
+
+  useEffect(() => {
+    console.log("scheduleData", scheduleData);
+  }, [scheduleData]);
 
   const priceCalc = () => {
     if (!selectTime) return 0;

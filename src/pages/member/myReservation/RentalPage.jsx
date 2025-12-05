@@ -3,16 +3,6 @@ import RentalComponent from "./components/RentalComponent";
 import { deleteRental, getRentalList } from "../../../api/rentalApi";
 
 const RentalPage = () => {
-  const facilityName = [
-    { id: 101, name: "A실" },
-    { id: 102, name: "B실" },
-    { id: 103, name: "C실" },
-    { id: 104, name: "D실" },
-    { id: 201, name: "1구장" },
-    { id: 202, name: "2구장" },
-    { id: 203, name: "3구장" },
-  ];
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -21,6 +11,7 @@ const RentalPage = () => {
       setData(res);
     };
     f();
+    console.log("data", data);
   }, []);
 
   const cancelHandler = async (oneData) => {
@@ -33,11 +24,7 @@ const RentalPage = () => {
 
   return (
     <div>
-      <RentalComponent
-        data={data}
-        facilityName={facilityName}
-        cancelHandler={cancelHandler}
-      />
+      <RentalComponent data={data} cancelHandler={cancelHandler} />
     </div>
   );
 };

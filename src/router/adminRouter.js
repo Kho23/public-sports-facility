@@ -19,13 +19,11 @@ import GalleryReadPage from "../pages/admin/community/gallery/GalleryReadPage";
 import GalleryRegisterPage from "../pages/admin/community/gallery/GalleryRegisterPage";
 import GalleryEditPage from "../pages/admin/community/gallery/GalleryEditPage";
 import AgeGenderStatPage from "../pages/admin/statistic/AgeGenderStatPage";
-<<<<<<< Updated upstream
 import LessonApprovalPage from "../pages/admin/reservation/LessonApprovalPage";
 import RentalApprovalPage from "../pages/admin/reservation/RentalApprovalPage";
 import LessonEditPage from "../pages/admin/reservation/LessonEditPage";
-=======
 import LessonStatPage from "../pages/admin/statistic/LessonStatPage";
->>>>>>> Stashed changes
+
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
   return [
@@ -182,7 +180,6 @@ const adminRouter = () => {
       ),
     },
     {
-<<<<<<< Updated upstream
       path: "lesson/approve",
       element: (
         <Suspense fallback={<Loading />}>
@@ -203,12 +200,14 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <RentalApprovalPage />
-=======
+        </Suspense>
+      ),
+    },
+    {
       path: "stat/lesson",
       element: (
         <Suspense fallback={<Loading />}>
           <LessonStatPage />
->>>>>>> Stashed changes
         </Suspense>
       ),
     },

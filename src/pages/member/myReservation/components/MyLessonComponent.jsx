@@ -49,8 +49,6 @@ const MyLessonComponent = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-white pt-10 md:pt-20">
-
-      {/* 상단 타이틀 영역 */}
       <div className="w-full max-w-4xl px-4 mb-8">
         <div className="flex justify-between items-end border-b-2 border-gray-300 pb-4 mb-6">
           <h1 className="text-4xl font-bold text-gray-900">수강신청 내역</h1>

@@ -42,9 +42,9 @@ const AgeGenderStatPageComponent = () => {
         
         // [수정됨] 'Male' / 'Female' 체크
         // 대소문자 구분 없이 체크하거나, 백엔드 값 그대로 쓰기
-        if (item.gender === 'Male' || item.gender === 'M') {
+        if (item.gender === 'MALE' || item.gender === 'M') {
             result[item.ageGroup].남성 = item.count;
-        } else if (item.gender === 'Female' || item.gender === 'F') {
+        } else if (item.gender === 'FEMALE' || item.gender === 'F') {
             result[item.ageGroup].여성 = item.count;
         }
     });

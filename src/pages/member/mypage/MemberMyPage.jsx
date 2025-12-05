@@ -20,13 +20,29 @@ const MemberMyPage = () => {
       return;// 즉시 함수를 종료하도록 함 
       //비로그인 상태에서 URL로 마이페이지 접근 시 막는 로직
     }
-    const f = async () => {
-      const data = await getOne();
-      setData(data);
-    };
-    f();
+
     //이제 로그인 상태에서만 f 함수 실행
+  }, [])
+  useEffect(() => {
+    if (isLoggedIn && memberId) {
+       const f = async () => {
+        try {
+          const data = await getOne();
+          setData(data);
+        } catch(err) {
+            console.error(err);
+        }
+      };
+      f();
+    } else if (!isLoggedIn) {
+        // 이 useEffect는 isLoggedIn이 false로 변할 때(로그아웃)도 실행됨
+        // 이미 1번 useEffect에서 초기 진입은 막았으므로, 
+        // 여기서 false가 된 것은 "사용자가 로그아웃 버튼을 눌렀다"는 뜻임
+        // 따라서 경고창 없이 조용히 로그인 페이지로 보냄
+        moveToLogin();
+    }
   }, [isLoggedIn, memberId])
+
 
   return <MemberMyComponent data={data} />;
 };

@@ -59,10 +59,7 @@ const LoginPage = () => {
         <div className="flex justify-between items-end border-b-2 border-gray-300 pb-4 mb-6">
           <h1 className="text-4xl font-bold text-gray-900">로그인</h1>
           {/* 우측 상단 아이콘 영역 (프린트/공유 등 - 이미지 연출용) */}
-          <div className="flex space-x-2 text-gray-400">
-             <span className="border p-1 rounded-full cursor-pointer hover:bg-gray-100">🖨️</span>
-             <span className="border p-1 rounded-full cursor-pointer hover:bg-gray-100">🔗</span>
-          </div>
+         
         </div>
         
         <div className="text-center text-sm text-gray-600 mb-10 leading-relaxed">

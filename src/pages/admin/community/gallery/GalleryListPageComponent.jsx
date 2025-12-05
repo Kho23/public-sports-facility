@@ -11,7 +11,7 @@ const GalleryListPageComponent = () => {
       try {
         const data = await getGalleryList();
         console.log(data)
-        setList(data)
+        setList(data.dtoList)
       } catch (error) {
         console.log("갤러리 로드 중 오류 발생 ", error)
       }

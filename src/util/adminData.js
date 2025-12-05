@@ -145,6 +145,11 @@ export const adminAllMenuItems = [
         title: "연령별 통계",
         path: "/admin/stat/ageGender",
       },
+      {
+        id: "lesson",
+        title: "강의 종류별 통계",
+        path: "/admin/stat/lesson",
+      },
     ],
   },
 ];

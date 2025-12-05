@@ -184,7 +184,7 @@ const LessonRequestPage = () => {
 
     setPage((page) => page + 1);
   };
-
+console.log(data,partnerClass )
   return (
     <>
       {page === 1 && (

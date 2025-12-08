@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
-import partnerMyLessonRouter from "./partnerMyLessonRouter";
 import memberMyReservationRouter from "./memberMyReservationRouter";
+import attendanceRouter from "./attendanceRouter";
 
 const MemberEdit = lazy(() =>
   import("../pages/member/memberEdit/MemberEditPage")
@@ -13,7 +13,7 @@ const LessonsRequest = lazy(() =>
   import("../pages/partner/lessonRequest/LessonRequestPage")
 );
 const Attendance = lazy(() =>
-  import("../pages/partner/attendance/AttendancePage")
+  import("../pages/partner/attendance/AttendanceListPage")
 );
 const Reservation = lazy(() =>
   import("../pages/member/myReservation/MyReservationPage")
@@ -40,17 +40,11 @@ const partnerMyPageRouter = () => {
     },
     {
       path: "myLessons",
-      children: [
-        {
-          index: true,
-          element: (
-            <Suspense fallback={<Loading />}>
-              <MyLessons />
-            </Suspense>
-          ),
-        },
-        ...partnerMyLessonRouter(),
-      ],
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MyLessons />
+        </Suspense>
+      ),
     },
     {
       path: "lessonRequest",
@@ -62,11 +56,17 @@ const partnerMyPageRouter = () => {
     },
     {
       path: "attendance",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <Attendance />
-        </Suspense>
-      ),
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Attendance />
+            </Suspense>
+          ),
+        },
+        ...attendanceRouter(),
+      ],
     },
     {
       path: "myReservation",

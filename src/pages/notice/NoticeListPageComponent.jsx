@@ -18,7 +18,7 @@ const NoticeListPageComponent = () => {
   });
 
   const [searchParam, setSearchParam] = useSearchParams();
-  const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || "");
+  const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || ""); 
   const [category, setCategory] = useState(() => searchParam.get("type") || "t");
 
   const { moveToNoticeDetail } = useCustomMove();

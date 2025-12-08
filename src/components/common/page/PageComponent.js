@@ -10,7 +10,12 @@ const PageComponent = ({ pageData }) => {
             size: 10,
             type: searchParam.get("type") || "t",
             keyword: searchParam.get("keyword") || "",
-            sort: searchParam.get("sort")||"LATEST"
+            sort: searchParam.get("sort") || "LATEST",
+            category: searchParam.get("category") || "",
+            startTime: searchParam.get("startTime"),
+            endTime: searchParam.get("endTime"),
+            days: searchParam.getAll("days"),
+            available: searchParam.get("available") === "true"
         });
     };
     return (

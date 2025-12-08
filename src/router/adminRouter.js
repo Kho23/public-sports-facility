@@ -23,6 +23,7 @@ import LessonApprovalPage from "../pages/admin/reservation/LessonApprovalPage";
 import RentalApprovalPage from "../pages/admin/reservation/RentalApprovalPage";
 import LessonEditPage from "../pages/admin/reservation/LessonEditPage";
 import LessonStatPage from "../pages/admin/statistic/LessonStatPage";
+import ChatListPage from "../pages/admin/chat/ChatListPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -208,6 +209,14 @@ const adminRouter = () => {
       element: (
         <Suspense fallback={<Loading />}>
           <LessonStatPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "chat/list",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <ChatListPage />
         </Suspense>
       ),
     },

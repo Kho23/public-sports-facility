@@ -54,12 +54,6 @@ const LessonListPageComponent = () => {
           days: searchParam.getAll("days"),
           available: searchParam.get("available") === "true"
         };
-        if (!paramObj.category) delete paramObj.category;
-        if (!paramObj.startTime) delete paramObj.startTime;
-        if (!paramObj.endTime) delete paramObj.endTime;
-        if (!paramObj.available) delete paramObj.available;
-        if (!paramObj.days || paramObj.days.length === 0) delete paramObj.days;
-        if (!paramObj.keyword) delete paramObj.keyword;
         const data = await getLessonList(paramObj);
         console.log("백엔드에서 온 데이터", data);
         setClasses(data.dtoList);

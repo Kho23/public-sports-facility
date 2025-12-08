@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getOneLesson } from "../../../api/classApi";
-import { changeLessonStatus } from "../../../api/adminApi";
+import { changeLessonStatus, getOneLesson } from "../../../../api/adminApi";
 const LessonEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);

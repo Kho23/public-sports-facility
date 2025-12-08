@@ -10,12 +10,12 @@ const ClassItem = ({ classes }) => {
     const handleClick = async (id) => {
         try {
             if (!isLoggedIn) {
-                if(window.confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")) {
+                if (window.confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")) {
                     moveToLogin();
                 }
                 return;
             }
-            
+
             // 이미 props로 registered가 true라면 API 호출 전에 차단 가능
             if (classes.registered) {
                 alert("이미 신청된 강의입니다.");
@@ -23,7 +23,7 @@ const ClassItem = ({ classes }) => {
             }
 
             const data = await checkRegistration(id);
-            
+
             if (data) {
                 alert("이미 신청된 강의입니다.");
                 return;
@@ -51,14 +51,14 @@ const ClassItem = ({ classes }) => {
     // 카테고리 라벨 디자인 함수
     const getCategoryLabel = (category) => {
         const categoryMap = {
-            'GOLF': { label: '골프', color: 'text-green-600 bg-green-50' },
-            'FUTSAL': { label: '풋살', color: 'text-blue-600 bg-blue-50' },
-            'SWIM': { label: '수영', color: 'text-cyan-600 bg-cyan-50' },
-            'HEALTH': { label: '헬스', color: 'text-orange-600 bg-orange-50' },
-            'DANCE': { label: '무용', color: 'text-purple-600 bg-purple-50' }
+            '골프장': { label: '골프', color: 'text-green-600 bg-green-50' },
+            '풋살장': { label: '풋살', color: 'text-blue-600 bg-blue-50' },
+            '수영장': { label: '수영', color: 'text-cyan-600 bg-cyan-50' },
+            '헬스장': { label: '헬스', color: 'text-orange-600 bg-orange-50' },
+            '무용실': { label: '무용', color: 'text-purple-600 bg-purple-50' }
         };
         const current = categoryMap[category] || { label: '기타', color: 'text-gray-600 bg-gray-50' };
-        
+
         return (
             <span className={`px-2 py-1 text-xs font-extrabold rounded ${current.color} mr-2`}>
                 {current.label}
@@ -68,7 +68,7 @@ const ClassItem = ({ classes }) => {
 
     return (
         <div className="group bg-white border border-gray-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            
+
             {/* 왼쪽: 강좌 정보 영역 */}
             <div className="flex-1">
                 {/* 상단 뱃지 영역 */}
@@ -83,7 +83,7 @@ const ClassItem = ({ classes }) => {
 
                 {/* 강좌 제목 */}
                 <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">
-                    {classes.title} 
+                    {classes.title}
                     <span className="ml-2 text-sm font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
                         {classes.level}
                     </span>
@@ -98,7 +98,7 @@ const ClassItem = ({ classes }) => {
                     <div className="flex items-center gap-2">
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         <span>
-                            <span className="font-semibold text-gray-700">{classes.days.join(", ")}</span> 
+                            <span className="font-semibold text-gray-700">{classes.days.join(", ")}</span>
                             <span className="mx-1">·</span>
                             {classes.startTime.substring(0, 5)} ~ {classes.endTime.substring(0, 5)}
                         </span>

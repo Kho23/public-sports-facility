@@ -145,7 +145,6 @@ const GalleryListPageComponent = () => {
       <div className="mt-8">
           <PageComponent pageData={pageData} />
       </div>
-
     </div>
   )
 }

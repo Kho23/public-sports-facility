@@ -161,3 +161,38 @@ export const changeLessonStatus = async (lessonId, status) => {
   );
   return res.data;
 };
+export const getOneLesson = async (id) => {
+  const { data } = await axios.get(`${API_SERVER_HOST}/lesson/admin/${id}`);
+  console.log("백엔드에서 온 lesson 한개=", data);
+  return data;
+};
+export const getRentalList = async (param) => {
+  const { data } = await axios.get(
+    `${API_SERVER_HOST}/reservation/rental/admin`,
+    {
+      params: param,
+    }
+  );
+  console.log("백엔드에서 온 lesson data=", data);
+  return data;
+};
+export const getOneRental = async (id) => {
+  const { data } = await axios.get(
+    `${API_SERVER_HOST}/reservation/rental/admin/${id}`
+  );
+  console.log("백엔드에서 온 Rental 한개=", data);
+  return data;
+};
+export const changeRentalStatus = async (rentalId, status) => {
+  const res = await axios.post(
+    `${API_SERVER_HOST}/reservation/rental/admin/${rentalId}`,
+    status,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      transformRequest: [(data) => JSON.stringify(data)],
+    }
+  );
+  return res.data;
+};

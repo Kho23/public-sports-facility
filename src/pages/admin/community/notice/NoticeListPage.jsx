@@ -58,7 +58,7 @@ const NoticeListPage = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
+    <div className="container mx-auto max-w-full p-2 md:p-4">
       {/* 1. 페이지 제목 */}
       <h1 className="text-3xl font-bold mb-6 pb-4 border-b-2 border-gray-800">
         공지사항

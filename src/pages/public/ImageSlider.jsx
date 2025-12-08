@@ -25,11 +25,11 @@ const ImageSlider = () => {
         className="w-full h-full object-cover transition-all duration-700"
         alt="slide"
       />
-
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
         {images.map((_, idx) => (
-          <div
+          <button
             key={idx}
+            onClick={() => setCurrent(idx)}
             className={`w-3 h-3 rounded-full transition ${
               current === idx ? "bg-white" : "bg-gray-500"
             }`}

@@ -29,6 +29,9 @@ const useCustomMove = () => {
   const moveToAdminLessonDetail = (id) => {
     navigate(`/admin/lesson/approve/${id}`);
   };
+  const moveToAdminRentalDetail = (id) => {
+    navigate(`/admin/rental/approve/${id}`);
+  };
 
   return {
     moveToLessonList,
@@ -50,6 +53,7 @@ const useCustomMove = () => {
     moveToAdminPartnerRequestDetail,
     moveToAdminSupportDetail,
     moveToAdminLessonDetail,
+    moveToAdminRentalDetail,
   };
 };
 

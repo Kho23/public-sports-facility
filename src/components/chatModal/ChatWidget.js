@@ -3,6 +3,7 @@ import axios from 'axios'; // axios 직접 사용
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { getCookie } from '../../util/cookieUtil';
+import { getHistory } from '../../api/chatApi';
 
 const ChatWidget = () => {
     // --- [State & Ref] ---
@@ -23,14 +24,13 @@ const ChatWidget = () => {
     useEffect(() => {
         if (memberId && token) {
             connect();
-            loadHistory();
+            getHistory(memberId).then((data)=>setMessages(data));
         } else {
             // 로그아웃 시 정리
             setMessages([]);
             setIsOpen(false);
             disconnect();
         }
-
         return () => disconnect();
     }, [memberId, token]);
 
@@ -81,17 +81,6 @@ const ChatWidget = () => {
         setInput('');
     };
 
-    // 4. 과거 내역 불러오기
-    const loadHistory = async () => {
-        try {
-            const res = await axios.get(`http://localhost:8080/api/chat/${memberId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setMessages(res.data);
-        } catch (err) {
-            console.log("기록 못 불러옴", err);
-        }
-    };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') sendMessage();
@@ -167,15 +156,15 @@ const ChatWidget = () => {
                     </div>
 
                     {messages.map((msg, index) => {
-                        const isMyMessage = msg.sender === myLoginId;
+                        const isMyMessage = msg.sender === 'admin';
                         return (
                             <div key={index} style={{
-                                alignSelf: isMyMessage ? 'flex-end' : 'flex-start',
+                                alignSelf: isMyMessage ? 'flex-start' : 'flex-end',
                                 maxWidth: '75%',
                                 padding: '12px 16px',
                                 borderRadius: isMyMessage ? '18px 18px 2px 18px' : '18px 18px 18px 2px',
-                                backgroundColor: isMyMessage ? '#667eea' : '#fff',
-                                color: isMyMessage ? 'white' : '#333',
+                                backgroundColor: isMyMessage ? '#fff' : '#667eea',
+                                color: isMyMessage ? '#333' : 'white',
                                 boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
                                 fontSize: '14px',
                                 lineHeight: '1.5',

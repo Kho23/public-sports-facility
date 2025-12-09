@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getLessonList } from "../../../api/adminApi";
-import useCustomMove from "../../../hooks/useCustomMove";
-import usePageMove from "../../../hooks/usePageMove";
-import PageComponent from "../../../components/common/PageComponent";
+import { getLessonList } from "../../../../api/adminApi";
+import useCustomMove from "../../../../hooks/useCustomMove";
+import usePageMove from "../../../../hooks/usePageMove";
+import PageComponent from "../../../../components/common/PageComponent";
 
 const initState = {
   dtoList: [],
@@ -16,8 +16,10 @@ const initState = {
   totalPage: 0,
   current: 0,
 };
-const PartnerRequestList = () => {
+const LessonApprovalPage = () => {
   const [data, setData] = useState(initState);
+  const [category, setCategory] = useState("name");
+  const [keyword, setKeyword] = useState("");
   const [statusFilter, setStatusFilter] = useState(null);
   const { moveToAdminLessonDetail } = useCustomMove();
   const { page, size, moveToList } = usePageMove();
@@ -25,10 +27,16 @@ const PartnerRequestList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getLessonList({ page, size });
+        const res = await getLessonList({
+          page,
+          size,
+          keyword,
+          type: category,
+          role: statusFilter,
+        });
         setData(res);
       } catch (err) {
-        console.error("파트너 리스트 불러오기 실패:", err);
+        console.error("강의개설 리스트 불러오기 실패:", err);
       }
     };
     fetchData();
@@ -38,11 +46,17 @@ const PartnerRequestList = () => {
     const value = e.target.value;
     const newValue = statusFilter === value ? null : value;
     setStatusFilter(newValue);
+  };
+
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
     try {
       const res = await getLessonList({
         page,
         size,
-        role: newValue,
+        keyword,
+        type: category,
+        role: statusFilter,
       });
       setData(res);
     } catch (err) {
@@ -81,13 +95,70 @@ const PartnerRequestList = () => {
       <h1 className="text-3xl font-bold mb-6 pb-4 border-b-2 border-gray-800">
         강좌개설 신청내역
       </h1>
+      <form
+        onSubmit={handleSearchSubmit}
+        className="flex justify-end items-center space-x-2 my-4 p-4 bg-gray-100 rounded-md"
+      >
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2"
+        >
+          <option value="name">강사명</option>
+          <option value="lessonName">수업명</option>
+        </select>
+
+        <input
+          type="text"
+          name="keyword"
+          value={keyword}
+          placeholder="검색어를 입력하세요"
+          onChange={(e) => setKeyword(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 flex-grow max-w-xs"
+        />
+
+        <div className="flex items-center gap-2">
+          {[
+            { label: "미승인", value: "PENDING" },
+            { label: "승인", value: "ACCEPTED" },
+            { label: "반려", value: "REJECTED" },
+          ].map((item) => (
+            <label
+              key={item.value}
+              className={`px-2 py-1 rounded-md border cursor-pointer text-sm flex items-center justify-center
+        ${
+          statusFilter === item.value
+            ? "bg-gray-800 text-white border-gray-800"
+            : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+        }
+      `}
+            >
+              <input
+                type="checkbox"
+                className="hidden"
+                value={item.value}
+                checked={statusFilter === item.value}
+                onChange={handleFilterChange}
+              />
+              <span>{item.label}</span>
+            </label>
+          ))}
+        </div>
+
+        <button
+          type="submit"
+          className="bg-gray-700 text-white font-bold rounded px-4 py-2 hover:bg-gray-800"
+        >
+          검색
+        </button>
+      </form>
 
       {/* 🔹 총 개수 */}
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium text-gray-700">
           총 {data.totalCnt}건
         </div>
-        <div className="flex items-center space-x-4">
+        {/* <div className="flex items-center space-x-4">
           <label className="flex items-center space-x-1 cursor-pointer">
             <input
               type="checkbox"
@@ -118,7 +189,7 @@ const PartnerRequestList = () => {
             />
             <span className=" text-gray-700">반려</span>
           </label>
-        </div>
+        </div> */}
       </div>
 
       {/* 🔹 테이블 */}
@@ -138,7 +209,7 @@ const PartnerRequestList = () => {
           {data.dtoList.length === 0 ? (
             <tr>
               <td colSpan="5" className="p-8 text-center text-gray-500">
-                등록된 파트너 신청이 없습니다.
+                등록된 강좌개설 신청이 없습니다.
               </td>
             </tr>
           ) : (
@@ -171,4 +242,4 @@ const PartnerRequestList = () => {
   );
 };
 
-export default PartnerRequestList;
+export default LessonApprovalPage;

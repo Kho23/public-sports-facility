@@ -111,7 +111,7 @@ const ScheduleListPage = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
+    <div className="container mx-auto max-w-full p-2 md:p-4">
       {/* 헤더 */}
       <div className="flex justify-between items-end mb-6 pb-4 border-b-2 border-gray-800">
         <h1 className="text-3xl font-bold">일정 관리</h1>

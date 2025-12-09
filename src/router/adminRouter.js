@@ -24,7 +24,7 @@ import RentalApprovalPage from "../pages/admin/reservation/rental/RentalApproval
 import LessonEditPage from "../pages/admin/reservation/lesson/LessonEditPage";
 import RentalEditPage from "../pages/admin/reservation/rental/RentalEditPage";
 import LessonStatPage from "../pages/admin/statistic/LessonStatPage";
-import ChatListPage from "../pages/admin/chat/ChatListPage";
+import ChatListPage from "../pages/admin/chat/AdminChatPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {

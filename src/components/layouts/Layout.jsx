@@ -7,11 +7,19 @@ const Layout = () => {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
   const shouldShowSidebar = !isMainPage;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   // [수정] 서브 페이지일 때 상단 여백을 넉넉하게 (헤더 높이 + 여유분)
   // pt-[140px] 정도로 늘려서 헤더와 겹치지 않게 함
   const contentWrapperClasses = `flex-1 w-full max-w-screen-2xl mx-auto pt-[140px] pb-20 ${
     shouldShowSidebar ? "flex" : ""
   }`;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   if (isMainPage) {
     return (
       <div className="flex flex-col min-h-screen relative">
@@ -29,6 +37,10 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen bg-white">
       {/* 서브 페이지 헤더 */}
       <Header />
+<<<<<<< Updated upstream
+=======
+      
+>>>>>>> Stashed changes
       {/* 본문 영역 */}
       <div className={contentWrapperClasses}>
         <Sidebar />
@@ -36,9 +48,15 @@ const Layout = () => {
           <Outlet />
         </main>
       </div>
+
       <Footer />
       <ChatWidget />
     </div>
   );
 };
+<<<<<<< Updated upstream
 export default Layout;
+=======
+
+export default Layout;
+>>>>>>> Stashed changes

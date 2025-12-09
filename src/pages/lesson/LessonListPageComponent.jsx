@@ -119,18 +119,23 @@ const LessonListPageComponent = () => {
     }
   }
 
+  // 기준 규격(max-w-6xl mx-auto p-6) 적용
   return (
-    <div className="bg-white min-h-screen font-sans">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-
-        {/* 네비게이션 & 타이틀 */}
+    <div className="max-w-6xl mx-auto p-6 font-sans">
+      
+        {/* 네비게이션 */}
         <nav className="text-sm text-gray-500 mb-6">
           홈 &gt; 수강신청 &gt; 강좌검색
         </nav>
 
+        {/* 타이틀 */}
         <div className="flex items-end justify-between mb-4">
           <h1 className="text-3xl font-bold text-gray-900">수강신청</h1>
         </div>
+
+        {/* 기준 구분선 추가 */}
+        <div className="border-b-2 border-gray-400 mb-6" />
+
         <p className="text-gray-500 mb-8">다양한 스포츠 강좌를 검색하고 신청하세요.</p>
 
         {/* 1. 카테고리 탭 (검색 박스 위) */}
@@ -290,7 +295,6 @@ const LessonListPageComponent = () => {
         <div className="mt-10 mb-20">
           <PageComponent pageData={pageData} />
         </div>
-      </div>
     </div>
   );
 };

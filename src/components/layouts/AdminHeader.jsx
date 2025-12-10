@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MdOutlineManageAccounts } from "react-icons/md";
-import { adminAllMenuItems } from "../../util/adminData";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/auth/authSlice";
-import useCustomMove from "../../hooks/useCustomMove";
 
 const AdminHeader = () => {
   const dispatch = useDispatch();
-  const { moveToMain } = useCustomMove();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -25,7 +21,7 @@ const AdminHeader = () => {
             to={"/admin"}
             className="text-2xl font-bold text-black tracking-wide"
           >
-            그린체육관 [관리자페이지]
+            JE:O CENTER [ADMIN]
           </Link>
         </div>
 

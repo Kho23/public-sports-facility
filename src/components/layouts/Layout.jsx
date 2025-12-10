@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import ChatWidget from "../chatModal/ChatWidget";
+import MapWidget from "../mapModal/MapWidget";
 const Layout = () => {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
@@ -18,6 +19,7 @@ const Layout = () => {
           <Outlet />
         </main>
         <Footer />
+        <MapWidget />
         <ChatWidget />
       </div>
     );
@@ -34,6 +36,7 @@ const Layout = () => {
         </main>
       </div>
       <Footer />
+      <MapWidget />
       <ChatWidget />
     </div>
   );

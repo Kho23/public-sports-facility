@@ -16,9 +16,26 @@ const ProgramEditComponent = ({
   return (
     <div className="container mx-auto max-w-5xl p-4 md:p-8">
       <div className="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-800">
-        <h1 className="text-3xl font-bold"> {data.programName}프로그램 수정</h1>
-        <div className="flex text-sm pt-4 text-gray-500 space-x-4">
+        <h1 className="text-3xl mt-8 font-bold">
+          {data.programName}프로그램 수정
+        </h1>
+        <div className="flex flex-col items-end text-sm text-gray-500 space-y-3">
           <span>작성자 : 관리자</span>
+          <div className="flex gap-x-4">
+            <button
+              type="submit"
+              onClick={submitHandler}
+              className="bg-blue-600 text-white font-bold py-2 px-6 rounded hover:bg-blue-800 transition-colors"
+            >
+              수정
+            </button>
+            <Link
+              to={-1}
+              className="bg-gray-600 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
+            >
+              취소
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -113,22 +130,6 @@ const ProgramEditComponent = ({
             ))}
           </div>
         )}
-      </div>
-
-      <div className="flex justify-end mt-8 gap-x-4">
-        <button
-          type="submit"
-          onClick={submitHandler}
-          className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
-        >
-          수정
-        </button>
-        <Link
-          to={-1}
-          className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
-        >
-          취소
-        </Link>
       </div>
     </div>
   );

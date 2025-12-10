@@ -1,6 +1,4 @@
-import { lazy, Suspense } from "react";
-import ProgramListPage from "../pages/program/ProgramListPage";
-import ProgramEditPage from "../pages/admin/program/ProgramEditPage";
+import { Suspense } from "react";
 import NoticeEditPage from "../pages/admin/community/notice/NoticeEditPage";
 import NoticeAddPage from "../pages/admin/community/notice/NoticeAddPage";
 import NoticeListPage from "../pages/admin/community/notice/NoticeListPage";
@@ -13,7 +11,6 @@ import GuideAdminPage from "../pages/admin/guide/GuideAdminPage";
 import FaqListPage from "../pages/admin/community/faq/FaqListPage";
 import ScheduleListPage from "../pages/admin/community/schedule/ScheduleListPage";
 import MemberListPage from "../pages/admin/member/memberInfo/MemberListPage";
-
 import GalleryListPage from "../pages/admin/community/gallery/GalleryListPage";
 import GalleryReadPage from "../pages/admin/community/gallery/GalleryReadPage";
 import GalleryRegisterPage from "../pages/admin/community/gallery/GalleryRegisterPage";
@@ -25,6 +22,7 @@ import LessonEditPage from "../pages/admin/reservation/lesson/LessonEditPage";
 import RentalEditPage from "../pages/admin/reservation/rental/RentalEditPage";
 import LessonStatPage from "../pages/admin/statistic/LessonStatPage";
 import ChatListPage from "../pages/admin/chat/AdminChatPage";
+import ProgramAdminPage from "../pages/admin/program/ProgramAdminPage";
 
 const Loading = () => <div>Loading...</div>;
 const adminRouter = () => {
@@ -33,15 +31,7 @@ const adminRouter = () => {
       path: "program/:programId",
       element: (
         <Suspense fallback={<Loading />}>
-          <ProgramListPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: "program/update/:programId",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <ProgramEditPage />
+          <ProgramAdminPage />
         </Suspense>
       ),
     },

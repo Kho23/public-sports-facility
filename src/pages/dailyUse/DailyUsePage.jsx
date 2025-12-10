@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   findByFacilityId,
   registerDailyUse,
@@ -8,9 +8,9 @@ import { getAvailableTime } from "../../api/commonApi";
 import DailyUsePageComponent from "./components/DailyUsePageComponent";
 
 const facilities = [
-  { id: 1, name: "수영장" },
-  { id: 2, name: "헬스장" },
-  { id: 3, name: "골프장" },
+  { id: 1, name: "수영장", price: 5000 },
+  { id: 2, name: "헬스장", price: 10000 },
+  { id: 3, name: "골프장", price: 7000 },
 ];
 
 const DailyUsePage = () => {
@@ -20,6 +20,13 @@ const DailyUsePage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableTime, setAvailableTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState([]);
+  const [price, setPrice] = useState(null);
+
+  useEffect(() => {
+    if (!facility) return;
+    const f = facilities.find((i) => i.id === facility);
+    if (f) setPrice(f.price * selectedTime.length);
+  }, [selectedTime, facility]);
 
   const resetFn = () => {
     setselectedSpace(null);
@@ -55,7 +62,7 @@ const DailyUsePage = () => {
     setSelectedDate(info.dateStr);
     setSelectedTime([]);
     if (facility === 2) return;
-
+    if (!selectedSpace) return;
     const res = await getAvailableTime(selectedSpace, info.dateStr);
     const formatted = res.map((t) => {
       const h = Number(t.slice(0, 2));
@@ -88,7 +95,10 @@ const DailyUsePage = () => {
   const submitHandler = async () => {
     if (facility === 2) {
       try {
-        await registerGymDailyUse({ date: selectedDate });
+        await registerGymDailyUse({
+          date: selectedDate,
+          price: facilities[1].price,
+        });
         alert("예약이 완료되었습니다.");
       } catch (err) {
         console.error("헬스장 예약 실패", err);
@@ -106,6 +116,7 @@ const DailyUsePage = () => {
       startTime: `${selectedDate}T${startHour}`,
       endTime: `${selectedDate}T${endHour}`,
       spaceId: selectedSpace,
+      price: price,
     };
 
     try {
@@ -130,6 +141,7 @@ const DailyUsePage = () => {
       submitHandler={submitHandler}
       selectedTime={selectedTime}
       availableTime={availableTime}
+      price={price}
     />
   );
 };

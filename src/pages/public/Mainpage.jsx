@@ -1,5 +1,4 @@
 import React from "react";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
 import {
   Info,
   Layout,
@@ -7,101 +6,140 @@ import {
   History,
   HelpCircle,
   BookOpen,
+  ChevronRight,
 } from "lucide-react";
-
-import ImageSlider from "./ImageSlider";
 import NoticePreview from "./NoticePreview";
 import { useNavigate } from "react-router-dom";
-
+import img from "../../images/메인페이지배경.png";
 const MainPage = () => {
   const navigate = useNavigate();
   const menuItems = [
-    { title: "이용안내", icon: <Info size={24} />, link: "/guide/time" },
-    {
-      title: "프로그램 안내",
-      icon: <BookOpen size={24} />,
-      link: "/program/1",
-    },
+    { title: "이용안내", icon: Info, link: "/guide/time" },
+    { title: "프로그램 안내", icon: BookOpen, link: "/program/1" },
     {
       title: "수강 신청",
-      icon: <Layout size={24} />,
+      icon: Layout,
       link: "/reservation/registration",
     },
     {
       title: "대관 신청",
-      icon: <CalendarCheck size={24} />,
+      icon: CalendarCheck,
       link: "/reservation/rental",
     },
     {
       title: "예약 내역 조회",
-      icon: <History size={24} />,
+      icon: History,
       link: "/member/myReservation",
     },
-    { title: "FAQ", icon: <HelpCircle size={24} />, link: "/community/faq" },
+    { title: "FAQ", icon: HelpCircle, link: "/community/faq" },
   ];
-
   return (
-    <div className="flex flex-col min-h-screen bg-indigo-50">
-      <main className="w-full max-w-[1400px] mx-auto px-6 py-10 mt-16">
-        {/* 전체 컨테이너 */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 border border-slate-100">
-          <div className="grid grid-cols-12 gap-6 h-[462px]">
-            {/* 1. 왼쪽 메뉴 (짙은 인디고 배경 + 아이콘) */}
-            <aside className="col-span-3 flex flex-col h-full rounded-2xl overflow-hidden shadow-lg">
-              <div className="bg-indigo-900 h-full p-0">
-                <div className="grid grid-cols-2 h-full divide-x divide-y divide-indigo-800">
-                  {menuItems.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={() => navigate(item.link)}
-                      className={`w-full h-full min-h-[90px] flex flex-col items-center justify-center text-white font-semibold text-sm md:text-base 
-                      shadow-none transition-all duration-300 hover:bg-indigo-800 break-keep p-2 text-center`}
-                    >
-                      <div className="mb-2">{item.icon}</div>
-                      <span className="leading-tight">{item.title}</span>
-                    </button>
-                  ))}
+    // relative w-full: 내부 컨텐츠의 기준점
+    <div className="w-full relative">
+      {/* [배경 이미지] */}
+      {/* z-[-10] 설정: Layout의 Header, Footer(z-50)보다 뒤로 가게 함 */}
+      {/* fixed inset-0: 스크롤을 내려도 배경은 화면에 꽉 차게 고정 */}
+      <div
+        className="fixed inset-0 w-full h-full z-[-10]"
+        style={{
+          backgroundImage: `url(${img})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* 배경 필터 (검정색 40%) */}
+        <div className="absolute inset-0 bg-black/40"></div>
+      </div>
+      {/* [메인 컨텐츠] */}
+      {/* z-10: 배경보다는 앞, 하지만 Header보다는 뒤(Layout 구조상 자연스럽게 배치됨) */}
+      <div className="relative z-10 flex flex-col items-center w-full pb-20">
+        {/* 타이틀 섹션 */}
+        <section className="relative w-full h-[400px] flex flex-col justify-center items-center text-center px-4 mt-10">
+          <p className="text-white text-xl md:text-2xl font-semibold mb-2 tracking-tight [text-shadow:_1px_1px_2px_rgba(0,0,0,0.5)]">
+            Join. Every. One. – JE:O
+          </p>
+          <h1
+            className="text-white text-5xl md:text-[64px] font-extrabold
+            [text-shadow:_2px_2px_4px_rgba(0,0,0,0.7)]"
+          >
+            재오복합체육센터
+          </h1>
+        </section>
+        <main className="w-full max-w-[1200px] px-4">
+          {/* 바로가기 메뉴 (카드형) */}
+          <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+            {menuItems.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => navigate(item.link)}
+                className="group flex flex-col items-center justify-center p-6 h-[160px]
+                  bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-white/40
+                  hover:bg-blue-900 hover:border-blue-800 hover:scale-105
+                  transition-all duration-300 ease-in-out"
+              >
+                <div className="mb-4 p-3 rounded-full bg-blue-50 group-hover:bg-white/10 transition-colors">
+                  <item.icon
+                    size={32}
+                    className="text-blue-800 group-hover:text-white transition-colors"
+                    strokeWidth={1.5}
+                  />
                 </div>
+                <span className="text-slate-800 font-bold text-base leading-snug whitespace-pre-line group-hover:text-white transition-colors">
+                  {item.title}
+                </span>
+              </button>
+            ))}
+          </section>
+          {/* 정보 패널 (일정 / 공지사항) */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* 왼쪽: 일정 안내 */}
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
+              <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
+                <h2 className="text-slate-800 text-lg font-bold flex items-center gap-2">
+                  마감임박 강의목록
+                </h2>
+                <button
+                  onClick={() => navigate("/guide/time")}
+                  className="text-slate-600 text-sm hover:text-blue-800 flex items-center gap-1 transition-colors"
+                >
+                  더보기 <ChevronRight size={16} />
+                </button>
               </div>
-            </aside>
-
-            {/* 2. 가운데 이벤트 영역 (슬라이더) */}
-            <section className="col-span-6">
-              <div className="bg-slate-100 rounded-2xl overflow-hidden shadow-inner relative flex flex-col justify-center items-center h-[462px]">
-                <ImageSlider />
+              <div className="p-6 h-[300px] bg-slate-50/50 flex flex-col items-center justify-center text-slate-400">
+                <CalendarCheck
+                  size={48}
+                  className="mb-3 text-slate-300"
+                  strokeWidth={1}
+                />
+                <p className="text-sm font-medium text-black">
+                  등록된 일정이 없습니다.
+                </p>
               </div>
-            </section>
-
-            {/* 3. 오른쪽 공지 및 지도 API */}
-            <aside className="col-span-3 flex flex-col gap-4 h-full">
-              {/* 공지사항 영역: p-4 제거, overflow-hidden 추가 */}
-              <div className="flex-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden relative">
-                <div className="w-full h-full">
+            </div>
+            {/* 오른쪽: 공지사항 */}
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
+              <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
+                <h2 className="text-slate-800 text-lg font-bold flex items-center gap-2">
+                  공지사항
+                </h2>
+                <button
+                  onClick={() => navigate("/community/notice")}
+                  className="text-slate-600 text-sm hover:text-blue-600 flex items-center gap-1 transition-colors"
+                >
+                  더보기 <ChevronRight size={16} />
+                </button>
+              </div>
+              <div className="h-[300px] overflow-hidden bg-white/50">
+                <div className="h-full overflow-y-auto custom-scrollbar p-2">
                   <NoticePreview />
                 </div>
               </div>
-
-              {/* 지도 영역: p-3 제거, 내부 div의 rounded 제거 (부모가 처리) */}
-              <div className="flex-1 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-                {/* 내부 여백이 사라졌으므로 지도 컨테이너가 꽉 찹니다 */}
-                <div className="w-full h-full bg-slate-200">
-                  <Map
-                    center={{ lat: 37.3498095, lng: 127.1069927 }}
-                    style={{ width: "100%", height: "100%" }}
-                    level={5}
-                  >
-                    <MapMarker
-                      position={{ lat: 37.3498095, lng: 127.1069927 }}
-                    />
-                  </Map>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </main>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 };
-
 export default MainPage;

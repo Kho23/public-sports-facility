@@ -152,4 +152,17 @@ export const adminAllMenuItems = [
       },
     ],
   },
-];
+  {
+    id: "chat",
+    title: "실시간 문의 답변",
+    path: "/admin/chat", // 1차 메뉴의 기본 경로
+    subMenus: [
+      // 2차 메뉴 (사이드바 내용)
+      {
+        id: "list",
+        title: "채팅 목록",
+        path: "/admin/chat/list",
+      },
+    ]
+  }
+]

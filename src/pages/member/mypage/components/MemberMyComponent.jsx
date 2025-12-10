@@ -5,7 +5,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { BsChatLeftText } from "react-icons/bs";
-import { PiNotePencil } from "react-icons/pi";
 
 const MemberMyComponent = ({ data }) => {
   return (
@@ -20,7 +19,7 @@ const MemberMyComponent = ({ data }) => {
         </div>
 
         <div className="text-2xl sm:text-3xl font-bold text-gray-900">
-          <span>{data.memberName} 님</span>
+          <span>{data?.memberName} 님</span>
           <span className="text-base text-gray-500 font-normal mt-1">
             &nbsp; 환영합니다
           </span>
@@ -32,7 +31,7 @@ const MemberMyComponent = ({ data }) => {
           <Link
             to="/member/memberEdit"
             className="
-              group block 
+              group
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
               py-5 px-6 
@@ -59,7 +58,7 @@ const MemberMyComponent = ({ data }) => {
           <Link
             to="/member/PwEditPage"
             className="
-              group block 
+              group
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
               py-5 px-6 
@@ -86,7 +85,7 @@ const MemberMyComponent = ({ data }) => {
           <Link
             to="/member/myReservation"
             className="
-              group block 
+              group
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
               py-5 px-6 
@@ -113,7 +112,7 @@ const MemberMyComponent = ({ data }) => {
           <Link
             to="/member/support"
             className="
-              group block 
+              group 
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
               py-5 px-6 
@@ -140,7 +139,7 @@ const MemberMyComponent = ({ data }) => {
           <Link
             to="/member/partnerRequest"
             className="
-              group block 
+              group
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
               py-5 px-6 

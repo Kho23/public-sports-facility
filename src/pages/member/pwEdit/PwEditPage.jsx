@@ -11,7 +11,10 @@ const PwEditPage = () => {
 
   const pwCheckFn = (formCheck) => {
     const { memberPassword, memberPasswordCheck } = formCheck;
-    if (memberPasswordCheck > 0 && memberPassword === memberPasswordCheck)
+    if (
+      memberPasswordCheck?.length > 0 &&
+      memberPassword === memberPasswordCheck
+    )
       return true;
     else return false;
   };
@@ -35,7 +38,7 @@ const PwEditPage = () => {
   const clickHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await changePassword(data);
+      const res = await changePassword(formCheck);
       alert("비밀번호 변경이 완료되었습니다");
       navigate("/");
     } catch (err) {

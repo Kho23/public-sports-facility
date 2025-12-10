@@ -63,7 +63,7 @@ const Header = () => {
     <header className={headerContainerClass} onMouseLeave={handleMouseLeave}>
       {/* 1. 최상단 유틸리티 바 */}
       <div className={topBarClass}>
-        <div className="flex items-center tracking-wide mr-64">
+        <div className="flex items-center tracking-wide mr-5">
           {isLoggedIn ? (
             <>
               {memberRole === "ROLE_ADMIN" && (

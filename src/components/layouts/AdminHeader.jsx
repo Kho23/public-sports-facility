@@ -21,7 +21,7 @@ const AdminHeader = () => {
             to={"/admin"}
             className="text-2xl font-bold text-black tracking-wide"
           >
-            JE:O CENTER [ADMIN]
+            JE:O CENTER [관리자페이지]
           </Link>
         </div>
 

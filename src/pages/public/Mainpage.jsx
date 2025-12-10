@@ -90,7 +90,7 @@ const MainPage = () => {
                 </h2>
                 <button
                   onClick={() => navigate("/reservation/registration")}
-                  className="text-slate-600 text-sm hover:text-blue-800 flex items-center gap-1 transition-colors"
+                  className="text-black text-sm hover:text-blue-600 flex items-center gap-1 transition-colors"
                 >
                   더보기 <ChevronRight size={16} />
                 </button>
@@ -114,7 +114,7 @@ const MainPage = () => {
                 </h2>
                 <button
                   onClick={() => navigate("/community/notice")}
-                  className="text-slate-600 text-sm hover:text-blue-600 flex items-center gap-1 transition-colors"
+                  className="text-black text-sm hover:text-blue-600 flex items-center gap-1 transition-colors"
                 >
                   더보기 <ChevronRight size={16} />
                 </button>

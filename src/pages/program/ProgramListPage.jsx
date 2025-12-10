@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getOne } from "../../api/programApi";
 import ProgramListPageComponent from "./ProgramListPageComponent";
 
@@ -11,8 +11,6 @@ const initState = {
 const ProgramListPage = () => {
   const { programId } = useParams();
   const [data, setData] = useState(initState);
-  const location = useLocation();
-  const adminPage = location.pathname.startsWith("/admin");
 
   useEffect(() => {
     const f = async () => {
@@ -29,11 +27,7 @@ const ProgramListPage = () => {
 
   return (
     <div>
-      <ProgramListPageComponent
-        data={data}
-        adminPage={adminPage}
-        programId={programId}
-      />
+      <ProgramListPageComponent data={data} programId={programId} />
     </div>
   );
 };

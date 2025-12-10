@@ -97,16 +97,17 @@ const AttendanceComponent = ({
               <td className="py-3">
                 <select
                   name="status"
+                  value={i.status || ""}
                   onChange={(e) => setAttendanceHandler(i.studentNo, e)}
                   className="border rounded-lg px-2 py-1 font-semibold bg-green-100 text-green-800 focus:ring focus:ring-blue-200"
                 >
                   <option value="" disabled>
                     선택
                   </option>
-                  <option value={i.status == "ATTEND" ?? ""}>출석</option>
-                  <option value={i.status == "LATE" ?? ""}>지각</option>
-                  <option value={i.status == "LEAVE" ?? ""}>조퇴</option>
-                  <option value={i.status == "ABSENT" ?? ""}>결석</option>
+                  <option value="ATTEND">출석</option>
+                  <option value="LATE">지각</option>
+                  <option value="LEAVE">조퇴</option>
+                  <option value="ABSENT">결석</option>
                 </select>
               </td>
               <td className="py-3">

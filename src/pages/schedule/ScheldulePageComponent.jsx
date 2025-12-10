@@ -38,7 +38,14 @@ const SchedulePage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+     <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 커뮤니티 &gt; 일정
+      </nav>
+      <div className="flex items-end justify-between mb-4">
+        <h1 className="text-3xl font-bold text-gray-900">일정</h1>
+      </div>
+      <div className="border-b-2 border-gray-400 mb-6" />
       <style>{`
         /* 1. 기본 폰트 및 버튼 스타일 */
         .fc-toolbar-title { font-size: 1.5rem !important; font-weight: 700 !important; }
@@ -71,9 +78,6 @@ const SchedulePage = () => {
         .fc-day-today { background-color: #eff6ff !important; }
         .fc-theme-standard td, .fc-theme-standard th { border-color: #e5e7eb !important; }
       `}</style>
-
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">월별 일정</h2>
-
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-10">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}

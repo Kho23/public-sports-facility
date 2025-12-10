@@ -1,31 +1,21 @@
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 
-// 웹소켓 엔드포인트
 const WS_URL = "http://localhost:8080/ws-chat";
 
 // 1. 소켓 연결 함수
-// 인자: (참조객체, 방번호, 토큰, 메시지받으면실행할함수)
-export const connectSocket = (clientRef, roomId, token, onMessageReceived) => {
+export const connectSocket = (clientRef, token, onConnect) => {
     const socket = new SockJS(WS_URL);
     clientRef.current = Stomp.over(socket);
 
-    // clientRef.current.debug = () => {}; // 로그 끄기 (선택)
+    // 디버그 로그 끄기 (선택)
+    // clientRef.current.debug = () => {}; 
 
     clientRef.current.connect(
         { Authorization: `Bearer ${token}` },
         () => {
-            console.log(`[Socket] ${roomId}번 방 연결 성공`);
-            
-            // 구독 설정
-            clientRef.current.subscribe(
-                `/sub/chat/room/${roomId}`, 
-                (message) => {
-                    const received = JSON.parse(message.body);
-                    // ★ 컴포넌트에서 전달받은 콜백 함수 실행 (화면 갱신용)
-                    onMessageReceived(received); 
-                }
-            );
+            console.log(`[Socket] 연결 성공`);
+            if (onConnect) onConnect();
         },
         (err) => {
             console.error("[Socket] 연결 에러:", err);
@@ -33,7 +23,20 @@ export const connectSocket = (clientRef, roomId, token, onMessageReceived) => {
     );
 };
 
-// 2. 연결 해제 함수
+// 2. 구독 함수
+export const subscribeRoom = (clientRef, roomId, callback) => {
+    if (!clientRef.current || !clientRef.current.connected) return;
+    
+    return clientRef.current.subscribe(
+        `/sub/chat/room/${roomId}`,
+        (message) => {
+            const received = JSON.parse(message.body);
+            callback(received);
+        }
+    );
+};
+
+// 3. 연결 해제 함수
 export const disconnectSocket = (clientRef) => {
     if (clientRef.current) {
         clientRef.current.disconnect();
@@ -41,17 +44,17 @@ export const disconnectSocket = (clientRef) => {
     }
 };
 
-// 3. 메시지 전송 함수
+// 🔥 [중요 수정] 메시지 전송 함수
 export const publishMessage = (clientRef, roomId, message) => {
+    // 1. 클라이언트가 없거나(null), 연결이 안 되어(!connected) 있으면 '중단'해야 함
     if (!clientRef.current || !clientRef.current.connected) {
-        console.log("[Socket] 연결되지 않아 전송 실패");
+        console.log("[Socket] 전송 실패: 소켓이 연결되지 않았습니다.");
         return;
     }
 
-    const msg = {
+    // 2. 연결된 상태일 때만 전송
+    clientRef.current.send("/pub/chat/message", {}, JSON.stringify({
         roomId: roomId,
-        message: message
-    };
-
-    clientRef.current.send("/pub/chat/message", {}, JSON.stringify(msg));
+        message: message,
+    }));
 };

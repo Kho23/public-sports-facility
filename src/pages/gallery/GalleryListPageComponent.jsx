@@ -7,13 +7,13 @@ import PageComponent from '../../components/common/page/PageComponent'
 const GalleryListPageComponent = () => {
   const [list, setList] = useState([])
   const [searchParam, setSearchParam] = useSearchParams();
-  
+
   // 초기값 설정
   const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || "");
   const [category, setCategory] = useState(() => searchParam.get("type") || "t");
-  
+
   const { moveToGalleryDetail } = useCustomMove()
-  
+
   const [pageData, setPageData] = useState({
     pageNumList: [],
     prev: false,
@@ -34,7 +34,7 @@ const GalleryListPageComponent = () => {
           keyword: searchParam.get("keyword") || ""
         };
         const data = await getGalleryList(paramObj);
-        
+
         setList(data.dtoList)
         setPageData({
           pageNumList: data.pageNumList,
@@ -48,7 +48,7 @@ const GalleryListPageComponent = () => {
       } catch (error) {
         console.log("갤러리 로드 중 오류 발생 ", error)
       }
-    }; 
+    };
     get()
   }, [searchParam.toString()])
 
@@ -61,42 +61,45 @@ const GalleryListPageComponent = () => {
     e.preventDefault();
     setSearchParam({ page: 1, size: 10, type: category, keyword: searchingTitle });
   };
-  
+
   const handleSearchChange = (e) => setSearchingTitle(e.target.value);
   const handleCategory = (e) => setCategory(e.target.value);
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
-      {/* 1. 페이지 제목 */}
-      <h1 className="text-3xl font-bold mb-6 pb-4 border-b-2 border-gray-800">
-        갤러리
-      </h1>
+    <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 커뮤니티 &gt; 갤러리
+      </nav>
+      <div className="flex items-end justify-between mb-4">
+        <h1 className="text-3xl font-bold text-gray-900">갤러리</h1>
+      </div>
+      <div className="border-b-2 border-gray-400 mb-6" />
 
       {/* 2. 검색 폼 (공지사항과 동일) */}
-      <form 
-        onSubmit={handleSearchSubmit} 
+      <form
+        onSubmit={handleSearchSubmit}
         className="flex justify-end items-center space-x-2 my-4 p-4 bg-gray-100 rounded-md"
       >
-        <select 
-          value={category} 
-          onChange={handleCategory} 
+        <select
+          value={category}
+          onChange={handleCategory}
           className="border border-gray-300 rounded px-3 py-2"
         >
           <option value="t">제목</option>
           <option value="c">내용</option>
           <option value="tc">제목+내용</option>
         </select>
-        
-        <input 
-          type="text" 
-          value={searchingTitle} 
-          onChange={handleSearchChange} 
-          placeholder="검색어 입력" 
-          className="border border-gray-300 rounded px-3 py-2 flex-grow max-w-xs" 
+
+        <input
+          type="text"
+          value={searchingTitle}
+          onChange={handleSearchChange}
+          placeholder="검색어 입력"
+          className="border border-gray-300 rounded px-3 py-2 flex-grow max-w-xs"
         />
-        
-        <button 
-          type="submit" 
+
+        <button
+          type="submit"
           className="bg-gray-700 text-white font-bold rounded px-4 py-2 hover:bg-gray-800"
         >
           검색
@@ -116,19 +119,19 @@ const GalleryListPageComponent = () => {
           >
             {/* 썸네일 영역 */}
             <div className="w-full h-48 overflow-hidden bg-gray-200">
-                {gallery.images && gallery.images.length > 0 ? (
+              {gallery.images && gallery.images.length > 0 ? (
                 <img
-                    src={gallery.images[0].thumbnailUrl}
-                    alt={gallery.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                  src={gallery.images[0].thumbnailUrl}
+                  alt={gallery.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
                 />
-                ) : (
+              ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    (이미지 없음)
+                  (이미지 없음)
                 </div>
-                )}
+              )}
             </div>
-            
+
             {/* 텍스트 영역 */}
             <div className="p-4">
               <h3 className="text-lg font-bold truncate mb-2">{gallery.title}</h3>
@@ -143,7 +146,7 @@ const GalleryListPageComponent = () => {
       {/* 5. 페이지네이션 컴포넌트 사용 */}
       {/* PageComponent에 pageData와 movePage 함수를 넘겨줍니다 */}
       <div className="mt-8">
-          <PageComponent pageData={pageData} />
+        <PageComponent pageData={pageData} />
       </div>
     </div>
   )

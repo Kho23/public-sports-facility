@@ -6,7 +6,7 @@ import PageComponent from "../../components/common/page/PageComponent";
 
 const NoticeListPageComponent = () => {
   const [notices, setNotices] = useState([]);
-  
+
   const [pageData, setPageData] = useState({
     pageNumList: [],
     prev: false,
@@ -18,7 +18,7 @@ const NoticeListPageComponent = () => {
   });
 
   const [searchParam, setSearchParam] = useSearchParams();
-  const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || ""); 
+  const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || "");
   const [category, setCategory] = useState(() => searchParam.get("type") || "t");
 
   const { moveToNoticeDetail } = useCustomMove();
@@ -27,26 +27,26 @@ const NoticeListPageComponent = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const page=searchParam.get("page")
+        const page = searchParam.get("page")
         console.log("useEffect가 보고 있는 페이지 번호:", page);
         const paramObj = {
-            page: searchParam.get("page") || 1,
-            size: searchParam.get("size") || 10,
-            type: searchParam.get("type") || "t",
-            keyword: searchParam.get("keyword") || ""
+          page: searchParam.get("page") || 1,
+          size: searchParam.get("size") || 10,
+          type: searchParam.get("type") || "t",
+          keyword: searchParam.get("keyword") || ""
         };
         console.log("📡 백엔드로 보낼 데이터:", paramObj);
         const data = await getNoticeList(paramObj);
         console.log("✅ 백엔드에서 받은 데이터:", data);
         setNotices(data.dtoList);
         setPageData({
-            pageNumList: data.pageNumList,
-            prev: data.prev,
-            next: data.next,
-            current: data.current,
-            prevPage: data.prevPage,
-            nextPage: data.nextPage,
-            totalCnt: data.totalCnt
+          pageNumList: data.pageNumList,
+          prev: data.prev,
+          next: data.next,
+          current: data.current,
+          prevPage: data.prevPage,
+          nextPage: data.nextPage,
+          totalCnt: data.totalCnt
         });
       } catch (error) {
         console.error("❌ 에러 발생 (백엔드 주소 확인필요):", error);
@@ -55,7 +55,7 @@ const NoticeListPageComponent = () => {
     getData();
   }, [searchParam.toString()]);
 
- 
+
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -63,17 +63,23 @@ const NoticeListPageComponent = () => {
   };
 
   const addViewCount = async (id) => {
-      setNotices((prev) => prev.map((n) => n.noticeId === id ? { ...n, viewCount: n.viewCount + 1 } : n));
-      try { await increaseViewCount(id); moveToNoticeDetail(id); } catch (e) { console.error(e); }
+    setNotices((prev) => prev.map((n) => n.noticeId === id ? { ...n, viewCount: n.viewCount + 1 } : n));
+    try { await increaseViewCount(id); moveToNoticeDetail(id); } catch (e) { console.error(e); }
   };
 
   const handleSearchChange = (e) => setSearchingTitle(e.target.value);
   const handleCategory = (e) => setCategory(e.target.value);
 
   return (
-    <div className="container mx-auto max-w-5xl p-4 md:p-8">
-      <h1 className="text-3xl font-bold mb-6 pb-4 border-b-2 border-gray-800">공지사항</h1>
-      
+    <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 커뮤니티 &gt; 공지사항
+      </nav>
+      <div className="flex items-end justify-between mb-4">
+        <h1 className="text-3xl font-bold text-gray-900">공지사항</h1>
+      </div>
+      <div className="border-b-2 border-gray-400 mb-6" />
+
       <form onSubmit={handleSearchSubmit} className="flex justify-end items-center space-x-2 my-4 p-4 bg-gray-100 rounded-md">
         <select value={category} onChange={handleCategory} className="border border-gray-300 rounded px-3 py-2">
           <option value="t">제목</option>
@@ -105,7 +111,7 @@ const NoticeListPageComponent = () => {
           )}
         </tbody>
       </table>
-     <PageComponent pageData={pageData}/>
+      <PageComponent pageData={pageData} />
     </div>
   );
 };

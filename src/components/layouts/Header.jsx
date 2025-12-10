@@ -13,6 +13,7 @@ const Header = () => {
   const [hoveredMenuId, setHoveredMenuId] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMainPage = location.pathname === "/";
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -22,25 +23,28 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const handleLogout = () => {
     dispatch(logout());
     alert("로그아웃 되었습니다.");
     moveToMain();
   };
+
   const handleMouseEnter = (id) => {
     setHoveredMenuId(id);
     setIsMenuOpen(true);
   };
+
   const handleMouseLeave = () => {
     setHoveredMenuId(null);
     setIsMenuOpen(false);
   };
-  // --- 스타일 정의 ---
+
   const isSolidHeader = isScrolled || isMenuOpen;
   const headerContainerClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
     isMainPage && !isSolidHeader
       ? "bg-black/20 backdrop-blur-[3px] border-white/10"
-      : "bg-white/90 border-gray-200 shadow-sm"
+      : "bg-white border-gray-200 shadow-sm"
   }`;
   const logoColor =
     isMainPage && !isSolidHeader ? "text-white drop-shadow-md" : "text-black";
@@ -53,7 +57,7 @@ const Header = () => {
   const topBarClass = `flex space-x-6 h-[50px] justify-end px-8 py-2 text-[14px] font-medium transition-colors duration-300 ${
     isMainPage && !isSolidHeader
       ? "bg-transparent border-b border-white/10 text-white/80"
-      : "bg-white/10 border-b border-gray-200 text-slate-500"
+      : "bg-white border-b border-slate-50 text-slate-500"
   }`;
   return (
     <header className={headerContainerClass} onMouseLeave={handleMouseLeave}>
@@ -73,7 +77,12 @@ const Header = () => {
               {memberRole === "ROLE_USER" && (
                 <Link
                   to={`/member`}
-                  className="mr-10 hover:text-blue-600 transition-colors"
+                  className={`mr-5 transition-colors duration-200
+                ${
+                  isMainPage && !isSolidHeader
+                    ? "text-white hover:text-yellow-300"
+                    : "text-black hover:text-yellow-500"
+                }`}
                 >
                   마이페이지
                 </Link>
@@ -81,14 +90,24 @@ const Header = () => {
               {memberRole === "ROLE_PARTNER" && (
                 <Link
                   to={`/partner`}
-                  className="mr-5 hover:text-blue-600 transition-colors"
+                  className={`mr-5 transition-colors duration-200
+                ${
+                  isMainPage && !isSolidHeader
+                    ? "text-white hover:text-yellow-300"
+                    : "text-black hover:text-yellow-500"
+                }`}
                 >
                   파트너 페이지
                 </Link>
               )}
               <button
                 onClick={handleLogout}
-                className="hover:text-blue-600 transition-colors"
+                className={`transition-colors duration-200
+                ${
+                  isMainPage && !isSolidHeader
+                    ? "text-white hover:text-yellow-300"
+                    : "text-black hover:text-yellow-500"
+                }`}
               >
                 로그아웃
               </button>
@@ -97,13 +116,23 @@ const Header = () => {
             <>
               <Link
                 to="/auth/login"
-                className="mr-5 hover:text-blue-600 transition-colors"
+                className={`mr-5 transition-colors duration-200
+                ${
+                  isMainPage && !isSolidHeader
+                    ? "text-white hover:text-yellow-300"
+                    : "text-black hover:text-yellow-500"
+                }`}
               >
                 로그인
               </Link>
               <Link
                 to="/auth/register"
-                className="hover:text-blue-600 transition-colors"
+                className={`transition-colors duration-200
+                ${
+                  isMainPage && !isSolidHeader
+                    ? "text-white hover:text-yellow-300"
+                    : "text-black hover:text-yellow-500"
+                }`}
               >
                 회원가입
               </Link>
@@ -168,22 +197,21 @@ const Header = () => {
       </nav>
       {/* 3. 메가 메뉴 패널 */}
       <div
-        className={`absolute top-full left-0 w-full bg-white z-40 border-t border-gray-200 overflow-hidden transition-all duration-300 ease-in-out shadow-2xl
-          ${
-            isMenuOpen
-              ? "max-h-[500px] opacity-100 visible"
-              : "max-h-0 opacity-0 invisible"
-          }
-        `}
+        className={`absolute top-full left-0 w-full bg-white/90 z-40 border-t border-gray-200 overflow-hidden transition-all duration-300 ease-in-out shadow-2xl
+    ${
+      isMenuOpen
+        ? "max-h-[500px] opacity-100 visible"
+        : "max-h-0 opacity-0 invisible"
+    }
+  `}
       >
         <div className="max-w-[1400px] mx-auto px-6 h-full flex relative min-h-[320px]">
-          {/* [좌측 패널] - 대메뉴 제목 표시 (분야별, 이용안내 등) */}
-          <div className="absolute top-0 left-6 w-[200px] h-full py-10 border-r border-gray-100 flex flex-col z-10 bg-white">
-            {/* 현재 선택된 메뉴의 큰 제목 */}
+          {/* 좌측 패널 - 배경 제거 */}
+          <div className="absolute top-0 left-6 w-[200px] h-full py-10 border-gray-100 flex flex-col z-10 bg-none">
             <h2 className="text-3xl font-black text-slate-800 mb-4 tracking-tighter leading-tight break-keep">
               {hoveredMenuId
                 ? allMenuItems.find((m) => m.id === hoveredMenuId)?.title
-                : "소통마당"}
+                : ""}
             </h2>
             <p className="text-slate-400 text-xs leading-relaxed">
               Healthy Life,
@@ -194,8 +222,11 @@ const Header = () => {
               <div className="w-10 h-10 bg-blue-900 rounded-full blur-xl absolute bottom-10 left-0"></div>
             </div>
           </div>
-          <div className="absolute top-0 right-6 w-[200px] h-full border-l border-gray-100 hidden xl:block z-10 bg-white"></div>
-          {/* [중앙 컬럼 리스트] */}
+
+          {/* 우측 패널 - 배경 제거 */}
+          <div className="absolute top-0 right-6 w-[200px] h-full border-l border-gray-100 hidden xl:block z-10 bg-none"></div>
+
+          {/* 중앙 컬럼 */}
           <div className="flex-1 flex ml-[200px] xl:mr-[200px]">
             {allMenuItems.map((menu) => {
               if (menu.hideInHeader) return null;
@@ -204,13 +235,10 @@ const Header = () => {
                 <div
                   key={menu.id}
                   onMouseEnter={() => handleMouseEnter(menu.id)}
-                  // [변경] 제목을 뺐으므로 상단 패딩(pt-8)을 줄이고 리스트가 위에서부터 시작되게 함
-                  className={`flex-1 pt-8 pb-10 px-2 transition-colors duration-200 border-r border-gray-100 last:border-r-0
-                    ${isHoveredColumn ? "bg-blue-900" : "bg-white"}
-                  `}
+                  className={`flex-1 pt-8 pb-10 px-2 transition-colors duration-200  border-gray-100
+              ${isHoveredColumn ? "bg-blue-900" : "bg-none"}
+            `}
                 >
-                  {/* [변경] 중복 제목(h3) 삭제됨 */}
-                  {/* 서브메뉴 리스트 */}
                   <ul className="space-y-3 flex flex-col items-center w-full">
                     {menu.subMenus &&
                       menu.subMenus.map((subMenu) => (
@@ -218,14 +246,13 @@ const Header = () => {
                           <Link
                             to={subMenu.path}
                             onClick={() => setIsMenuOpen(false)}
-                            // [변경] 가독성 개선: 글자 크기 16px, 폰트 두께 semibold, 기본 색상 slate-700
                             className={`block text-[16px] py-2 transition-all duration-200 rounded-md
-                            ${
-                              isHoveredColumn
-                                ? "text-white font-bold hover:bg-blue-800 hover:scale-105" // 남색 배경일 때: 흰색 + 굵게
-                                : "text-slate-700 font-semibold hover:text-blue-800 hover:bg-slate-50"
-                            } // 흰색 배경일 때: 진한 회색 + 굵게
-                          `}
+                        ${
+                          isHoveredColumn
+                            ? "text-white font-bold hover:bg-blue-800 hover:scale-105"
+                            : "text-slate-700 font-semibold hover:text-blue-800 hover:bg-slate-50/70"
+                        }
+                      `}
                           >
                             {subMenu.title}
                           </Link>

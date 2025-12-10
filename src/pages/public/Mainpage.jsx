@@ -34,13 +34,9 @@ const MainPage = () => {
     { title: "FAQ", icon: HelpCircle, link: "/community/faq" },
   ];
   return (
-    // relative w-full: 내부 컨텐츠의 기준점
-    <div className="w-full relative">
-      {/* [배경 이미지] */}
-      {/* z-[-10] 설정: Layout의 Header, Footer(z-50)보다 뒤로 가게 함 */}
-      {/* fixed inset-0: 스크롤을 내려도 배경은 화면에 꽉 차게 고정 */}
+    <div className="relative w-full min-h-screen">
       <div
-        className="fixed inset-0 w-full h-full z-[-10]"
+        className="absolute inset-0 z-[-10]"
         style={{
           backgroundImage: `url(${img})`,
           backgroundSize: "cover",
@@ -48,14 +44,10 @@ const MainPage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* 배경 필터 (검정색 40%) */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/40" />
       </div>
-      {/* [메인 컨텐츠] */}
-      {/* z-10: 배경보다는 앞, 하지만 Header보다는 뒤(Layout 구조상 자연스럽게 배치됨) */}
       <div className="relative z-10 flex flex-col items-center w-full pb-20">
-        {/* 타이틀 섹션 */}
-        <section className="relative w-full h-[400px] flex flex-col justify-center items-center text-center px-4 mt-10">
+        <section className="relative w-full h-[350px] flex flex-col justify-center items-center text-center px-4 mt-28">
           <p className="text-white text-xl md:text-2xl font-semibold mb-2 tracking-tight [text-shadow:_1px_1px_2px_rgba(0,0,0,0.5)]">
             Join. Every. One. – JE:O
           </p>
@@ -67,7 +59,6 @@ const MainPage = () => {
           </h1>
         </section>
         <main className="w-full max-w-[1200px] px-4">
-          {/* 바로가기 메뉴 (카드형) */}
           <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
             {menuItems.map((item, index) => (
               <button
@@ -91,16 +82,14 @@ const MainPage = () => {
               </button>
             ))}
           </section>
-          {/* 정보 패널 (일정 / 공지사항) */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 왼쪽: 일정 안내 */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
               <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
                 <h2 className="text-slate-800 text-lg font-bold flex items-center gap-2">
                   마감임박 강의목록
                 </h2>
                 <button
-                  onClick={() => navigate("/guide/time")}
+                  onClick={() => navigate("/reservation/registration")}
                   className="text-slate-600 text-sm hover:text-blue-800 flex items-center gap-1 transition-colors"
                 >
                   더보기 <ChevronRight size={16} />

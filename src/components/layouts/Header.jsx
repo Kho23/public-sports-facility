@@ -13,6 +13,7 @@ const Header = () => {
   const [hoveredMenuId, setHoveredMenuId] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMainPage = location.pathname === "/";
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -22,19 +23,23 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const handleLogout = () => {
     dispatch(logout());
     alert("로그아웃 되었습니다.");
     moveToMain();
   };
+
   const handleMouseEnter = (id) => {
     setHoveredMenuId(id);
     setIsMenuOpen(true);
   };
+
   const handleMouseLeave = () => {
     setHoveredMenuId(null);
     setIsMenuOpen(false);
   };
+
   const isSolidHeader = isScrolled || isMenuOpen;
   const headerContainerClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
     isMainPage && !isSolidHeader
@@ -217,8 +222,10 @@ const Header = () => {
               <div className="w-10 h-10 bg-blue-900 rounded-full blur-xl absolute bottom-10 left-0"></div>
             </div>
           </div>
+
           {/* 우측 패널 - 배경 제거 */}
           <div className="absolute top-0 right-6 w-[200px] h-full border-l border-gray-100 hidden xl:block z-10 bg-none"></div>
+
           {/* 중앙 컬럼 */}
           <div className="flex-1 flex ml-[200px] xl:mr-[200px]">
             {allMenuItems.map((menu) => {

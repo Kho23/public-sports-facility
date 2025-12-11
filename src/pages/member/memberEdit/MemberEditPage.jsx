@@ -20,7 +20,6 @@ const MemberEditPage = () => {
   useEffect(() => {
     const f = async () => {
       const data = await getOne();
-      //더이상 멤버 아이디로 가져오지 않아 id 인자 제거
       setData(data);
       if (data.memberBirthDate)
         setUserBirth(data.memberBirthDate.substring(0, 10));

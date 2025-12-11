@@ -9,7 +9,7 @@ const AttendanceListComponent = ({
 }) => {
   return (
     <div>
-      <div className="max-w-5xl mx-auto px-6">
+      <div className="max-w-5xl">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-10 border-l-8 border-blue-900 pl-4">
           출석 관리
         </h1>
@@ -40,14 +40,11 @@ const AttendanceListComponent = ({
       <table className="w-full border-collapse shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr className="bg-blue-900 text-white">
-            <th className="py-3">시작날짜</th>
-            <th className="py-3">종료날짜</th>
+            <th className="py-3 w-[130px]">시작날짜</th>
+            <th className="py-3 w-[130px]">종료날짜</th>
             <th className="py-3">요일</th>
-            <th className="py-3">강좌명</th>
+            <th className="py-3 min-w-[200px]">강좌명</th>
             <th className="py-3">총원</th>
-            <th className="py-3">출석</th>
-            <th className="py-3">지각</th>
-            <th className="py-3">결석</th>
             <th className="py-3">보기</th>
           </tr>
         </thead>
@@ -55,8 +52,8 @@ const AttendanceListComponent = ({
           {data && data.length > 0 ? (
             data.map((i) => (
               <tr className="text-center border-b">
-                <td className="py-3">{i.startDate}</td>
-                <td className="py-3">{i.endDate}</td>
+                <td className="py-3 w-[130px]">{i.startDate}</td>
+                <td className="py-3 w-[130px]">{i.endDate}</td>
                 <td className="py-3">
                   {i.days.map((j) => (
                     <span>
@@ -65,11 +62,11 @@ const AttendanceListComponent = ({
                     </span>
                   ))}
                 </td>
-                <td className="py-3 font-semibold">{i.title}</td>
-                <td className="py-3">{i.currentPeople}</td>
-                <td className="py-3 text-green-700 font-bold">출석인원</td>
-                <td className="py-3 text-yellow-700 font-bold">지각인원</td>
-                <td className="py-3 text-red-700 font-bold">결석인원</td>
+                <td className="py-3 font-semibold min-w-[200px]">{i.title}</td>
+                <td className="py-3">
+                  {i.currentPeople}
+                  {""} 명
+                </td>
                 <td className="py-3">
                   <Link
                     to={`${i.lessonNo}`}

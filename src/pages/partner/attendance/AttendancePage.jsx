@@ -32,8 +32,8 @@ const AttendancePage = () => {
           attendanceId: i.attendanceId,
           name: i.name,
           attendanceDate: selectDate,
-          memo: "",
-          status: null,
+          memo: i.memo,
+          status: i.status,
         }))
       );
       console.log("attendance", attendance);

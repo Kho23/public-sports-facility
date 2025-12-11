@@ -8,30 +8,28 @@ import { useEffect } from "react";
 
 const AdminLayout = () => {
   const { moveToLogin, moveToMain } = useCustomMove();
-  const { isLoggedIn, memberRole, isLoading } = useSelector((state) => state.auth);
+  const { isLoggedIn, memberRole, isLoading } = useSelector(
+    (state) => state.auth
+  );
   useEffect(() => {
     console.log("현재 상태:", isLoggedIn, memberRole);
     if (isLoading) return;
-    //관리자 페이지에 들어오면 로그인 상태와 권환을 확인하여 조건에 충족하지 않으면 로그인 페이지로 이동시킴
     if (!isLoggedIn) {
-      alert("로그인이 필요합니다.")
+      alert("로그인이 필요합니다.");
       setTimeout(() => {
         moveToMain();
-      }, 0)
+      }, 0);
     } else if (memberRole != "ROLE_ADMIN") {
-      alert("접근 권한이 없습니다.")
+      alert("접근 권한이 없습니다.");
       setTimeout(() => {
         moveToMain();
-      }, 0)
+      }, 0);
     }
-  }, [isLoggedIn, memberRole,isLoading, moveToLogin])
-  //관리자 페이지 접근 시 로그인 여부와 권한을 확인하여 비로그인 또는 관리자 권한이 아닌 경우
-  //로그인 페이지로 이동합니다
-
-  if(isLoading){
-    return <div>Loading...</div> //로딩중일때 표시
+  }, [isLoggedIn, memberRole, isLoading, moveToLogin]);
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
-  if(!isLoggedIn || memberRole!=="ROLE_ADMIN") return null //로그인 안되어있거나 권한이 없으면 화면에 아무것도 보여주지 않음 
+  if (!isLoggedIn || memberRole !== "ROLE_ADMIN") return null;
   return (
     <div className="flex flex-col min-h-screen bg-[#2e3441] text-gray-100">
       <AdminHeader />

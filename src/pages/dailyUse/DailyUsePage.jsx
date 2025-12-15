@@ -9,7 +9,7 @@ import DailyUsePageComponent from "./components/DailyUsePageComponent";
 
 const facilities = [
   { id: 1, name: "수영장", price: 5000 },
-  { id: 2, name: "헬스장", price: 10000 },
+  { id: 2, name: "헬스장", price: 3000 },
   { id: 3, name: "골프장", price: 7000 },
 ];
 

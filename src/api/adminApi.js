@@ -196,3 +196,25 @@ export const changeRentalStatus = async (rentalId, status) => {
   );
   return res.data;
 };
+export const adminMainSearch = async (keyword) => {
+  const res = await axios.get(`${API_SERVER_HOST}/member/admin/mainSearch`, {
+    params: {
+      keyword: keyword,
+    },
+  });
+  return res.data;
+};
+export const adminApprovals = async () => {
+  const res = await axios.get(`${API_SERVER_HOST}/admin/approvals`);
+  return res.data;
+};
+export const adminScheduleList = async () => {
+  const res = await axios.get(
+    `${API_SERVER_HOST}/community/schedule/admin/monthly`
+  );
+  return res.data;
+};
+export const adminCounts = async () => {
+  const res = await axios.get(`${API_SERVER_HOST}/admin/count`);
+  return res.data;
+};

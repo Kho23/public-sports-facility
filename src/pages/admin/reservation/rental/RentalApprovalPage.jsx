@@ -77,7 +77,7 @@ const RentalApprovalPage = () => {
             심사 중
           </span>
         );
-      case "APPROVED":
+      case "ACCEPTED":
         return (
           <span className="px-2 py-1 rounded-lg text-green-800 bg-green-50 font-semibold">
             승인
@@ -135,7 +135,7 @@ const RentalApprovalPage = () => {
         <div className="flex items-center gap-2">
           {[
             { label: "미승인", value: "PENDING" },
-            { label: "승인", value: "APPROVED" },
+            { label: "승인", value: "ACCEPTED" },
             { label: "반려", value: "REJECTED" },
           ].map((item) => (
             <label

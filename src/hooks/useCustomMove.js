@@ -32,6 +32,19 @@ const useCustomMove = () => {
   const moveToAdminRentalDetail = (id) => {
     navigate(`/admin/rental/approve/${id}`);
   };
+  const moveToAdminApprovals = (type, id) => {
+    switch (type) {
+      case "강좌개설":
+        navigate(`/admin/lesson/approve/${id}`);
+        break;
+      case "대관신청":
+        navigate(`/admin/rental/approve/${id}`);
+        break;
+      case "파트너":
+        navigate(`/admin/member/partnerRequest/${id}`);
+        break;
+    }
+  };
 
   return {
     moveToLessonList,
@@ -54,6 +67,7 @@ const useCustomMove = () => {
     moveToAdminSupportDetail,
     moveToAdminLessonDetail,
     moveToAdminRentalDetail,
+    moveToAdminApprovals,
   };
 };
 

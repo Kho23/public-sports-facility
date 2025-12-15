@@ -37,7 +37,7 @@ const RentalEditPage = () => {
             심사 중
           </span>
         );
-      case "APPROVED":
+      case "ACCEPTED":
         return (
           <span className="px-2 py-1 rounded-lg text-green-800 bg-green-50 font-semibold">
             승인
@@ -57,9 +57,7 @@ const RentalEditPage = () => {
   return (
     <div className="container mx-auto max-w-4xl p-8 min-h-screen text-gray-900">
       {/* 제목 */}
-      <h1 className="text-3xl font-bold mb-10 border-b pb-4">
-        강좌개설 신청서
-      </h1>
+      <h1 className="text-3xl font-bold mb-10 border-b pb-4">대관 신청서</h1>
       {/* :압정: 기본 정보 박스 */}
       <div className="bg-white shadow-lg rounded-xl border p-6 mb-10">
         <h2 className="text-xl font-semibold mb-4 text-black">기본 정보</h2>

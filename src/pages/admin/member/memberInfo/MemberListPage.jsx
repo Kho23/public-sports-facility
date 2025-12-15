@@ -16,6 +16,7 @@ const initState = {
   totalPage: 0,
   current: 0,
 };
+
 const MemberListPage = () => {
   const [data, setData] = useState(initState);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -24,16 +25,9 @@ const MemberListPage = () => {
   const [keyword, setKeyword] = useState("");
   const [filterUser, setFilterUser] = useState(false);
   const [filterPartner, setFilterPartner] = useState(false);
-  const { page, size, moveToList } = usePageMove();
+  const { page, size, moveToList, getQueryParams } = usePageMove();
 
-  useEffect(() => {
-    let role = null;
-    if (filterUser && !filterPartner) role = "ROLE_USER";
-    else if (!filterUser && filterPartner) role = "ROLE_PARTNER";
-
-    executeSearchAndFilter(keyword, category, role, page, size);
-  }, [page, size, filterUser, filterPartner]);
-
+  // executeSearchAndFilter를 비동기 함수로 정의
   const executeSearchAndFilter = async (
     keyword,
     category,
@@ -53,11 +47,65 @@ const MemberListPage = () => {
 
     try {
       const res = await searchMemberList(params);
-      setData(res);
+      return res; // 결과를 반환
     } catch (err) {
       console.error("조회 실패:", err);
+      return initState;
     }
   };
+
+  // URL 쿼리 파라미터를 읽고 초기 검색 및 모달을 띄우는 useEffect
+  useEffect(() => {
+    const params = getQueryParams();
+    const memberIdToOpen = params.get("memberIdToOpen");
+    const shouldOpenModal = params.get("openModal") === "true";
+
+    // 필터 역할 설정 (체크박스 상태에 따라)
+    let initialRole = null;
+    if (filterUser && !filterPartner) initialRole = "ROLE_USER";
+    else if (!filterUser && filterPartner) initialRole = "ROLE_PARTNER";
+
+    // 1. URL 파라미터를 기반으로 초기 검색 키워드 및 카테고리 설정
+    const initialKeyword = params.get("keyword") || keyword;
+    const initialCategory = params.get("type") || category;
+
+    // 이전에 설정된 상태값을 덮어쓰지 않도록 초기화 로직에 반영
+    if (params.get("type") && params.get("keyword")) {
+      setCategory(initialCategory);
+      setKeyword(initialKeyword);
+    }
+
+    executeSearchAndFilter(
+      initialKeyword,
+      initialCategory,
+      initialRole,
+      page,
+      size
+    ).then((res) => {
+      setData(res);
+
+      // 2. 검색이 완료된 후, URL 파라미터가 있다면 모달을 띄웁니다.
+      if (shouldOpenModal && memberIdToOpen) {
+        // 검색 결과 DTO 목록에서 ID로 해당 회원을 찾습니다.
+        const targetMember = res.dtoList.find(
+          (m) => String(m.memberId) === memberIdToOpen
+        );
+
+        if (targetMember) {
+          setSelectedMember(targetMember);
+          setOpenModal(true);
+
+          // 3. 모달이 열린 후, URL에서 모달 관련 파라미터 제거하여 새로고침 시 모달이 다시 뜨는 것을 방지
+          const newParams = Object.fromEntries(params.entries());
+          delete newParams.openModal;
+          delete newParams.memberIdToOpen;
+
+          // URL 정리 (기존 검색 필터는 유지)
+          moveToList(newParams);
+        }
+      }
+    });
+  }, [page, size, filterUser, filterPartner]); // 의존성 배열 유지
 
   const handleCategory = (e) => {
     setCategory(e.target.value);
@@ -73,10 +121,19 @@ const MemberListPage = () => {
     setFilterUser(false);
     setFilterPartner(false);
 
-    await executeSearchAndFilter(keyword, category, null, page, size);
+    // 검색 실행 후 data 상태 업데이트 및 URL 이동
+    const res = await executeSearchAndFilter(keyword, category, null, 1, size);
+    setData(res);
+
+    moveToList({
+      page: 1,
+      size: size,
+      type: category,
+      keyword: keyword,
+    });
   };
 
-  const handleFilterChange = (setter, currentValue) => {
+  const handleFilterChange = async (setter, currentValue) => {
     const newValue = !currentValue;
     setter(newValue);
 
@@ -93,7 +150,17 @@ const MemberListPage = () => {
     if (nextUser && !nextPartner) role = "ROLE_USER";
     else if (!nextUser && nextPartner) role = "ROLE_PARTNER";
 
-    executeSearchAndFilter("", "name", role);
+    // 필터 변경 후 data 상태 업데이트 및 URL 이동
+    const res = await executeSearchAndFilter("", "name", role, 1, size);
+    setData(res);
+
+    moveToList({
+      page: 1,
+      size: size,
+      type: "name", // 필터 변경 시 검색 유형은 기본값으로 리셋
+      keyword: "", // 필터 변경 시 키워드는 비움
+      role: role || "", // 역할 파라미터 추가
+    });
   };
 
   const renderStatus = (status) => {
@@ -231,6 +298,7 @@ const MemberListPage = () => {
         </tbody>
       </table>
 
+      {/* PageComponent는 사용자님의 환경에 맞게 경로 및 props를 확인하세요. */}
       <PageComponent serverData={data} movePage={moveToList} />
 
       {openModal && (

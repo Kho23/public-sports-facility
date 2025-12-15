@@ -8,36 +8,49 @@ import {
 
 const getNum = (param, defaultValue) => {
   if (!param) return defaultValue;
-  return parseInt(param);
+  const parsed = parseInt(param);
+  return isNaN(parsed) ? defaultValue : parsed;
 };
 
-const usePageMove = () => {
-  const navigate = useNavigate();
-  const [queryParams] = useSearchParams();
-  const location = useLocation();
+const getQueryParams = (location) => {
+  return new URLSearchParams(location.search);
+};
 
-  const page = getNum(queryParams.get("page"), 1);
-  const size = getNum(queryParams.get("size"), 10);
-  const basePath = location.pathname.split("?").slice(0, -1).join("/");
-  const queryDefault = createSearchParams({ page, size }).toString();
+const usePageMove = (defaultSize = 10) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentSearchParams] = useSearchParams();
+
+  const page = getNum(currentSearchParams.get("page"), 1);
+  const size = getNum(currentSearchParams.get("size"), defaultSize);
+
+  const basePath = location.pathname;
+
   const moveToList = useCallback(
-    ({ page, size }) => {
-      let queryStr = "";
-      if (page || size) {
-        const pageNum = getNum(page, 1);
-        const sizeNum = getNum(size, 10);
-        queryStr = createSearchParams({
-          page: pageNum,
-          size: sizeNum,
-        }).toString();
-      } else {
-        queryStr = queryDefault;
-      }
-      navigate({ pathname: `${basePath}`, search: queryStr });
+    (params = {}, path = basePath) => {
+      const currentParams = Object.fromEntries(currentSearchParams.entries());
+
+      const finalParams = {
+        ...currentParams,
+        ...params,
+      };
+
+      finalParams.page = getNum(finalParams.page, 1);
+      finalParams.size = getNum(finalParams.size, size);
+
+      const queryStr = createSearchParams(finalParams).toString();
+
+      navigate({ pathname: path, search: queryStr });
     },
-    [page, size, basePath]
+    [basePath, currentSearchParams, navigate, size]
   );
-  return { moveToList, page, size };
+
+  return {
+    moveToList,
+    page,
+    size,
+    getQueryParams: () => getQueryParams(location),
+  };
 };
 
 export default usePageMove;

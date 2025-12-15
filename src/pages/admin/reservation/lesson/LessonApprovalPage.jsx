@@ -158,38 +158,6 @@ const LessonApprovalPage = () => {
         <div className="text-sm font-medium text-gray-700">
           총 {data.totalCnt}건
         </div>
-        {/* <div className="flex items-center space-x-4">
-          <label className="flex items-center space-x-1 cursor-pointer">
-            <input
-              type="checkbox"
-              value="PENDING"
-              checked={statusFilter === "PENDING"}
-              onChange={handleFilterChange}
-              className="w-4 h-4 text-blue-600 border-gray-300 rounded"
-            />
-            <span className="text-gray-700">미승인</span>
-          </label>
-          <label className="flex items-center space-x-1 cursor-pointer">
-            <input
-              type="checkbox"
-              value="ACCEPTED"
-              checked={statusFilter === "ACCEPTED"}
-              onChange={handleFilterChange}
-              className="w-4 h-4 text-green-600 border-gray-300 rounded"
-            />
-            <span className=" text-gray-700">승인</span>
-          </label>
-          <label className="flex items-center space-x-1 cursor-pointer">
-            <input
-              type="checkbox"
-              value="REJECTED"
-              checked={statusFilter === "REJECTED"}
-              onChange={handleFilterChange}
-              className="w-4 h-4 text-green-600 border-gray-300 rounded"
-            />
-            <span className=" text-gray-700">반려</span>
-          </label>
-        </div> */}
       </div>
 
       {/* 🔹 테이블 */}

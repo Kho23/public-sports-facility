@@ -31,21 +31,6 @@ const NoticeReadPageComponent = () => {
       <nav className="text-sm text-gray-500 mb-6">
         홈 &gt; 커뮤니티 &gt; 공지사항
       </nav>
-      {/* 상단 제목 및 아이콘들 */}
-      <div className="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-800">
-        <h1 className="text-3xl font-bold">공지사항</h1>
-        <div className="flex space-x-2 text-gray-600">
-          {/* 아이콘 예시 (실제 아이콘 라이브러리 필요) */}
-          <button className="p-2 hover:bg-gray-100 rounded">
-            {/* <FaPrint /> */}
-            <span className="text-lg">🖨️</span>
-          </button>
-          <button className="p-2 hover:bg-gray-100 rounded">
-            {/* <FaShareAlt /> */}
-            <span className="text-lg">🔗</span>
-          </button>
-        </div>
-      </div>
 
       {/* 공지 상세 헤더 */}
       <div className="border-t border-b border-gray-300 py-4 mb-6">

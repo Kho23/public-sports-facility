@@ -163,7 +163,7 @@ const LessonReadPageComponent = () => {
 
             <button 
                 onClick={handleClickRegister}
-                disabled={lesson.registered !== true}
+                disabled={lesson.registered == true}
                 className={`px-8 py-3 rounded-lg font-bold text-white shadow-md transition-all h-[48px] flex items-center gap-2
                     ${lesson.status === 'ACCEPTED' 
                         ? 'bg-blue-900 hover:bg-blue-800'

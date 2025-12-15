@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { checkRegistration } from '../../api/classApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import { useSelector } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const ClassItem = ({ classes }) => {
-    const { moveToLessonDetail, moveToLogin } = useCustomMove();
+    const { moveToLessonDetail, moveToLogin, moveToLessonList } = useCustomMove();
     const { isLoggedIn } = useSelector((state) => state.auth);
 
-    const handleClick = async (id) => {
+    const handleClick = async (e, id) => {
+        e.stopPropagation()
         try {
             if (!isLoggedIn) {
                 if (window.confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")) {
                     moveToLogin();
+                } else {
+                    moveToLessonList()
                 }
                 return;
             }
-
-            // 이미 props로 registered가 true라면 API 호출 전에 차단 가능
             if (classes.registered) {
                 alert("이미 신청된 강의입니다.");
                 return;
@@ -67,7 +69,7 @@ const ClassItem = ({ classes }) => {
     };
 
     return (
-        <div className="group bg-white border border-gray-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4" onClick={()=>moveToLessonDetail(classes.lessonId)}>
+        <div className="group bg-white border border-gray-200 rounded-xl p-5 mb-4 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4" onClick={() => moveToLessonDetail(classes.lessonId)}>
 
             {/* 왼쪽: 강좌 정보 영역 */}
             <div className="flex-1">
@@ -121,7 +123,7 @@ const ClassItem = ({ classes }) => {
                     </button>
                 ) : (
                     <button
-                        onClick={() => handleClick(classes.lessonId)}
+                        onClick={(e) => handleClick(e,classes.lessonId)}
                         className="w-full md:w-auto bg-black text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-800 hover:shadow-md active:scale-95 transition-all duration-200 whitespace-nowrap"
                     >
                         신청하기

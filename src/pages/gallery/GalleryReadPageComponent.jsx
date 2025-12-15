@@ -37,7 +37,6 @@ const GalleryReadPageComponent = () => {
       <nav className="text-sm text-gray-500 mb-6">
         홈 &gt; 커뮤니티 &gt; 갤러리
       </nav>
-      <h2 className="text-3xl md:text-4xl font-bold m-0 mb-6">갤러리</h2>
 
       {/* 2. 게시글 제목 */}
       <div className="border-b-2 border-gray-800 pb-4 mb-4">

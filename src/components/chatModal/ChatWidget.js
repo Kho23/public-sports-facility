@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getCookie } from "../../util/cookieUtil";
 import { getHistory } from "../../api/chatApi";
 import { connectSocket, disconnectSocket, publishMessage } from "../../api/socketApi";
+import ChatIconImage from "../../images/채팅 이모티콘.png"; // 👈 추가
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);//모달 오픈여부
@@ -282,7 +283,7 @@ const ChatWidget = () => {
         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
-        {isOpen ? "✕" : "💬"}
+        {isOpen ? "✕" : <img src={ChatIconImage} className="w-10 h-10"></img>}
       </button>
     </div>
   );

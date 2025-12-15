@@ -15,12 +15,19 @@ const AdminChatPage = () => {
   const token = getCookie("member")?.accessToken; //쿠키에서 토큰 가져오기 
 
   const ADMIN_ID = getCookie("member").memberRole == "ROLE_ADMIN" ? getCookie("member")?.loginId : ""; //관리자 id 가져오기
-  const messagesEndRef = useRef(null); //스크롤 맨 아래로 내리기 
+  const chatContainerRef = useRef(null); //스크롤 맨 아래로 내리기 
 
   useEffect(() => {
     currentRoomIdRef.current = currentRoomId; //현재 선택된 방 ID 로 스톰프 설정?
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [currentRoomId,messages]);
+    if (chatContainerRef.current) {
+      const { scrollHeight, clientHeight } = chatContainerRef.current;
+      chatContainerRef.current?.scrollTo({
+        behavior: "smooth",
+        top: scrollHeight - clientHeight
+      });
+    }
+
+  }, [currentRoomId, messages]);
 
   useEffect(() => {
     if (!token) return; //토큰 없으면 즉시 종료 
@@ -109,7 +116,7 @@ const AdminChatPage = () => {
       </div>
 
       {/* 채팅창 영역 */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
+      <div style={{  flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
         {currentRoomId ? (
           <>
             <div style={{ padding: '20px', borderBottom: '1px solid #f0f0f0', fontWeight: '600', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -119,7 +126,7 @@ const AdminChatPage = () => {
               User {roomOwnerId === ADMIN_ID ? "" : roomOwnerId}
             </div>
 
-            <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', backgroundColor: '#f8f9fa' }}>
+            <div ref={chatContainerRef} style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', backgroundColor: '#f8f9fa' }}>
               {messages.map((msg, idx) => {
                 const msgSender = msg.sender || msg.senderId;
                 const isAdmin = String(msgSender) === ADMIN_ID;
@@ -139,11 +146,10 @@ const AdminChatPage = () => {
                     }}>
                       {msg.message}
                     </div>
-                    <div ref={messagesEndRef} />
                   </div>
                 );
               })}
-              
+
             </div>
 
             <div style={{ padding: '20px', borderTop: '1px solid #f0f0f0', backgroundColor: '#fff' }}>

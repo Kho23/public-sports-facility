@@ -1,37 +1,46 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios"; // axios 직접 사용
-import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
 import { getCookie } from "../../util/cookieUtil";
 import { getHistory } from "../../api/chatApi";
+import { connectSocket, disconnectSocket, publishMessage } from "../../api/socketApi";
+import ChatIconImage from "../../images/채팅 이모티콘.png"; // 👈 추가
 
 const ChatWidget = () => {
-  // --- [State & Ref] ---
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const [isOpen, setIsOpen] = useState(false);//모달 오픈여부
+  const [messages, setMessages] = useState([]); //주고받은 채팅 목록
+  const [input, setInput] = useState(""); //채팅방 입력글자
 
-  const stompClient = useRef(null);
-  const messagesEndRef = useRef(null);
+  const stompClient = useRef(null); //소켓 연결 객체
+  const messagesEndRef = useRef(null); //스크롤 맨 아래로 내리기 
 
   // --- [Data] ---
   const cookieData = getCookie("member");
   const memberId = cookieData?.memberId;
   const token = cookieData?.accessToken;
-  const myLoginId = cookieData?.loginId;
 
   // --- [Logic] ---
   useEffect(() => {
     if (memberId && token) {
-      connect();
-      getHistory(memberId).then((data) => setMessages(data));
+      connectSocket(stompClient, token, () => {
+        console.log("소켓 연결 성공");
+        stompClient.current.subscribe(
+          `/sub/chat/room/${memberId}`, //멤버아이디 기준으로 소켓 구독 시작
+          (message) => { //메세지가 오면 JSON 문자열을 객체 형태로 변환하고 기존 채팅목록에 새 메세지를 추가해줌
+            const received = JSON.parse(message.body);
+            setMessages((prev) => [...prev, received]);
+          }
+        );
+      },
+        (err) => {
+          console.log("소켓연결 에러: ", err);
+        }); //로그인이 되어있다면 소켓 연결을 시도해라 
+      getHistory(memberId).then((data) => setMessages(data)); //채팅 목록을 가져오고 채팅 기록으로 설정해라
     } else {
       // 로그아웃 시 정리
       setMessages([]);
       setIsOpen(false);
-      disconnect();
+      disconnectSocket(stompClient);
     }
-    return () => disconnect();
+    return () => disconnectSocket(stompClient); //토큰이나 멤버ID가 변화하면 기존 소켓 연결을 끊고 useEffect 가 다시 실행됨
   }, [memberId, token]);
 
   // 스크롤 자동 이동
@@ -39,61 +48,15 @@ const ChatWidget = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
-  // 1. 소켓 연결
-  const connect = () => {
-    const socket = new SockJS("http://localhost:8080/ws-chat");
-    stompClient.current = Stomp.over(socket);
-
-    // stompClient.current.debug = () => {}; // 로그 끄기 (선택)
-
-    stompClient.current.connect(
-      { Authorization: `Bearer ${token}` },
-      () => {
-        console.log("소켓 연결 성공");
-        stompClient.current.subscribe(
-          `/sub/chat/room/${memberId}`,
-          (message) => {
-            const received = JSON.parse(message.body);
-            setMessages((prev) => [...prev, received]);
-          }
-        );
-      },
-      (err) => {
-        console.log("소켓연결 에러: ", err);
-      }
-    );
-  };
-
-  // 2. 연결 해제
-  const disconnect = () => {
-    if (stompClient.current) {
-      stompClient.current.disconnect();
-    }
-  };
-
-  // 3. 메시지 전송
-  const sendMessage = () => {
-    if (!stompClient.current || !input.trim()) return;
-
-    const msg = {
-      roomId: memberId,
-      message: input,
-    };
-
-    stompClient.current.send("/pub/chat/message", {}, JSON.stringify(msg));
-    setInput("");
-  };
-
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") sendMessage();
+    if (e.key === "Enter") publishMessage(stompClient, memberId, input,()=> setInput(""));
   };
 
-  // 비로그인 시 렌더링 X
+  // 비로그인 시 모달창 안보이게 
   if (!token || !memberId) {
     return null;
   }
 
-  // --- [UI] 디자인 및 위치 (오른쪽 하단 + 세련된 스타일) ---
   return (
     <div
       style={{
@@ -275,7 +238,7 @@ const ChatWidget = () => {
               }}
             />
             <button
-              onClick={sendMessage}
+              onClick={() => publishMessage(stompClient, memberId, input)}
               style={{
                 width: "36px",
                 height: "36px",
@@ -320,7 +283,7 @@ const ChatWidget = () => {
         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
-        {isOpen ? "✕" : "💬"}
+        {isOpen ? "✕" : <img src={ChatIconImage} className="w-10 h-10"></img>}
       </button>
     </div>
   );

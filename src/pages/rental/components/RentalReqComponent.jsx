@@ -22,6 +22,7 @@ const RentalReqComponent = ({
 }) => {
   const [viewData, setViewData] = useState({});
 
+  // 기준 규격(max-w-6xl mx-auto p-6) 적용
   return (
     <div className="max-w-6xl mx-auto p-6">
       <nav className="text-sm text-gray-500 mb-6">

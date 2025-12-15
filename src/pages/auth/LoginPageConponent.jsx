@@ -48,7 +48,6 @@ const LoginPage = () => {
 
   const handleSocialLogin = (provider) => {
     console.log(`${provider} 로그인 시도`);
-    // window.location.href = `백엔드_소셜로그인_URL/${provider}`;
   };
 
   return (

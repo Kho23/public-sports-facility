@@ -153,8 +153,8 @@ const LessonListPageComponent = () => {
       </div>
       <div className="border-b-2 border-gray-400 mb-6" />
 
-      <p className="text-gray-500 mb-8">
-        다양한 스포츠 강좌를 검색하고 신청하세요.
+      <p className="text-gray-500 mb-8 font-bold">
+        ※ 신청 마감일은 개강일 기준 3일 전입니다.
       </p>
 
       {/* 1. 카테고리 탭 (검색 박스 위) */}

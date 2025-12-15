@@ -4,22 +4,20 @@ import { getOneLesson } from '../../api/classApi';
 import { registrationById } from '../../api/memberApi';
 import useCustomMove from '../../hooks/useCustomMove';
 import { Calendar, Clock, User, MapPin, AlignLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 const LessonReadPageComponent = () => {
   const [lesson, setLesson] = useState(null); // 초기값 null로 변경 (로딩 처리 위해)
   const { id } = useParams();
   const { moveToLessonList } = useCustomMove();
   const navigate = useNavigate();
+  const {isLoggedIn} = useSelector(state=>state.auth)
 
   useEffect(() => {
     const getOne = async () => {
       try {
         const data = await getOneLesson(id);
         // 이미 신청된 강의일 경우 처리
-        if (data.registered === true) {
-          alert("이미 신청된 강의입니다. 강의 상세내역은 마이페이지-예약내역 조회-수강신청 목록에서 확인해주세요.");
-          moveToLessonList();
-        }
         setLesson(data);
       } catch (err) {
         console.error("데이터 로딩 실패", err);
@@ -30,7 +28,6 @@ const LessonReadPageComponent = () => {
 
   const handleClickRegister = async () => {
     if (!window.confirm("이 강의를 수강 신청하시겠습니까?")) return;
-
     try {
       await registrationById(id);
       alert("수강 신청이 완료되었습니다! 🎉");
@@ -52,12 +49,12 @@ const LessonReadPageComponent = () => {
 
   return (
     <div className="bg-white min-h-screen font-sans">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto p-6">
         
         {/* Breadcrumb Navigation */}
-        <nav className="text-sm text-gray-500 mb-6">
-          홈 &gt; 수강신청 &gt; 강좌상세
-        </nav>
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 예약신청 &gt; 수강신청
+      </nav>
 
         {/* Page Title Area */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
@@ -138,8 +135,6 @@ const LessonReadPageComponent = () => {
                </div>
             </div>
           </div>
-
-          {/* Description Section */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-3">
                   <AlignLeft className="w-5 h-5 text-gray-600" />
@@ -168,19 +163,20 @@ const LessonReadPageComponent = () => {
 
             <button 
                 onClick={handleClickRegister}
-                disabled={lesson.status !== 'ACCEPTED'}
+                disabled={lesson.registered == true}
                 className={`px-8 py-3 rounded-lg font-bold text-white shadow-md transition-all h-[48px] flex items-center gap-2
                     ${lesson.status === 'ACCEPTED' 
-                        ? 'bg-blue-900 hover:bg-blue-800' 
+                        ? 'bg-blue-900 hover:bg-blue-800'
                         : 'bg-gray-400 cursor-not-allowed'
                     }`}
             >
-                {lesson.status === 'ACCEPTED' ? (
+                {!isLoggedIn ? (<div>로그인 후 신청 가능</div>) :
+                lesson.registered === false  ? (
                     <>
                         <span>수강 신청하기</span>
                         <CheckCircle className="w-4 h-4" />
                     </>
-                ) : '신청 마감'}
+                ) : <div>신청 완료됨</div>}
             </button>
         </div>
 

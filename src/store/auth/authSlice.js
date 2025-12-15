@@ -7,7 +7,8 @@ const initState = {
     accessToken: null,
     memberRole: null,
     error: null,
-    isLoading: false
+    isLoading: false,
+    loginId:null
 }
 //쿠키에서 멤버 정보 로딩
 const loadMemberCookie = () => {
@@ -75,6 +76,7 @@ const authSlice = createSlice({ //createSlice 로 생성되면 useSelector 를 �
                 state.accessToken = payload.accessToken; //백엔드에서 보내준 데이터의 토큰
                 state.memberRole = payload.memberRole;//백엔드에서 보내준 데이터의 권한
                 state.error = null;
+                state.loginId = payload.loginId
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 console.log("로그인 실패")

@@ -31,13 +31,12 @@ const ChatListPage = ({ chatList, onSelect, currentRoomId }) => {
             {/* 1. 좌측: 프로필 아바타 */}
             <div className="relative flex-shrink-0 mr-4">
               <div className={`w-12 h-12 rounded-[18px] flex items-center justify-center text-white font-bold text-lg shadow-sm
-                ${room.replied ? 'bg-gray-300' : 'bg-indigo-400'} 
+                ${room.senderRole!=="ROLE_USER" ? 'bg-gray-300' : 'bg-indigo-400'} 
               `}>
-                {room.memberName ? room.memberName.charAt(0) : 'U'}
+                {room.senderRole=="ROLE_USER" ? room.senderId.charAt(0) : 'A'}
               </div>
-              
-              {/* 답변 대기 중(isReplied가 false)일 때만 빨간 점 표시 */}
-              {!room.replied && (
+            
+              {room.senderRole=="ROLE_USER" && (
                 <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
@@ -48,23 +47,23 @@ const ChatListPage = ({ chatList, onSelect, currentRoomId }) => {
             {/* 2. 중앙: 이름 및 마지막 메시지 */}
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-baseline mb-1">
-                <span className={`text-[15px] truncate mr-2 ${!room.replied ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'}`}>
-                  {room.memberName}
+                <span className={`text-[15px] truncate mr-2 ${room.senderRole=="ROLE_USER" ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'}`}>
+                  {room.senderId}
                 </span>
                 {/* 시간 표시 */}
-                <span className="text-[11px] text-gray-400 flex-shricnk-0">
+                <span className="text-[11px] text-gray-400 flex-shrink-0">
                   {room.lastSendAt ? new Date(room.lastSendAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                 </span>
               </div>
               
               <div className="flex justify-between items-center">
                 {/* 메시지 내용 */}
-                <p className={`text-[13px] truncate w-full ${!room.replied ? 'text-gray-800 font-medium' : 'text-gray-500'}`}>
+                <p className={`text-[13px] truncate w-full ${room.senderRole=="ROLE_USER" ? 'text-gray-800 font-medium' : 'text-gray-500'}`}>
                   {room.lastMessage}
                 </p>
                 
                 {/* 3. 우측: 뱃지 (답변 대기 상태일 때만 표시) */}
-                {!room.replied && (
+                {room.senderRole=="ROLE_USER" && (
                     <span className="ml-2 flex-shrink-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-sm">
                       N
                     </span>

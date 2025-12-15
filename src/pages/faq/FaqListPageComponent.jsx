@@ -44,7 +44,15 @@ const FaqListPageComponent = () => {
 
     return (
         // (6) [디자인 적용] 전체 컨테이너
-        <div className="w-full max-w-5xl mx-auto p-4 md:p-8">
+            <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 커뮤니티 &gt; 자주묻는질문
+      </nav>
+      <div className="flex items-end justify-between mb-4">
+        <h1 className="text-3xl font-bold text-gray-900">자주묻는질문</h1>
+      </div>
+      <div className="border-b-2 border-gray-400 mb-6" />
+            
             
             {/* --- 1. 카테고리 탭 메뉴 (디자인 적용) --- */}
             <div className="flex flex-wrap border-b border-gray-300 mb-6">

@@ -31,8 +31,7 @@ const NoticePreview = () => {
               key={n.noticeId}
               onClick={() => moveToNoticeDetail(n.noticeId)}
               className="flex justify-between py-2 cursor-pointer px-1 transition
-              border-b
-                     hover:font-semibold hover:text-blue-300"
+              border-b hover:font-semibold hover:text-blue-300"
             >
               <span className="flex-1 pr-2 truncate text-black">{n.title}</span>
               <span className="text-black w-24 text-right">{formatter(n)}</span>

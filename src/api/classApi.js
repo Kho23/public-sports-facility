@@ -20,3 +20,9 @@ export const checkRegistration = async (id) => {
   console.log("중복 수강신청 체크=",data)
   return data
 }
+
+export const getPreviewLessons= async()=>{
+  const {data} = await axios.get(`${API_HOST_URL}/preview`)
+  console.log("메인 표시용 레슨 데이터=",data)
+  return data
+}

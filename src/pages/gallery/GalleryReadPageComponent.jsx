@@ -33,9 +33,10 @@ const GalleryReadPageComponent = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-10 px-5">
-      {/* 1. 페이지 타이틀 */}
-      <h2 className="text-3xl md:text-4xl font-bold m-0 mb-6">갤러리</h2>
+    <div className="max-w-6xl mx-auto p-6">
+      <nav className="text-sm text-gray-500 mb-6">
+        홈 &gt; 커뮤니티 &gt; 갤러리
+      </nav>
 
       {/* 2. 게시글 제목 */}
       <div className="border-b-2 border-gray-800 pb-4 mb-4">
@@ -63,7 +64,7 @@ const GalleryReadPageComponent = () => {
           {gallery.images &&
             gallery.images.length > 0 &&
             gallery.images.map((image) => (
-            
+
               <img
                 key={image.imageUrl}
                 src={image.imageUrl}

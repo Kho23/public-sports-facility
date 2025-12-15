@@ -1,31 +1,18 @@
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 
-// 웹소켓 엔드포인트
 const WS_URL = "http://localhost:8080/ws-chat";
 
 // 1. 소켓 연결 함수
-// 인자: (참조객체, 방번호, 토큰, 메시지받으면실행할함수)
-export const connectSocket = (clientRef, roomId, token, onMessageReceived) => {
-    const socket = new SockJS(WS_URL);
-    clientRef.current = Stomp.over(socket);
-
-    // clientRef.current.debug = () => {}; // 로그 끄기 (선택)
-
+export const connectSocket = (clientRef, token, onConnect) => {
+    // 각각 유저 소켓, 인증정보 있는 토큰, 연결 시 실행될 콜백함수 
+    const socket = new SockJS(WS_URL); //소켓 연결 주소 설정
+    clientRef.current = Stomp.over(socket); //스톰프를 소켓 연결 규칙으로 설정 
     clientRef.current.connect(
-        { Authorization: `Bearer ${token}` },
+        { Authorization: `Bearer ${token}` }, //헤더에 토큰 넣고 연결 시도 
         () => {
-            console.log(`[Socket] ${roomId}번 방 연결 성공`);
-            
-            // 구독 설정
-            clientRef.current.subscribe(
-                `/sub/chat/room/${roomId}`, 
-                (message) => {
-                    const received = JSON.parse(message.body);
-                    // ★ 컴포넌트에서 전달받은 콜백 함수 실행 (화면 갱신용)
-                    onMessageReceived(received); 
-                }
-            );
+            console.log(`[Socket] 연결 성공`);
+            if (onConnect) onConnect(); //연결되면 콜백함수 실행
         },
         (err) => {
             console.error("[Socket] 연결 에러:", err);
@@ -33,7 +20,21 @@ export const connectSocket = (clientRef, roomId, token, onMessageReceived) => {
     );
 };
 
-// 2. 연결 해제 함수
+// 2. 구독 함수
+export const subscribeRoom = (clientRef, roomId, callback) => {
+    if (!clientRef.current || !clientRef.current.connected) return; 
+    //소켓이 없거나 연결 안되어있으면 즉시 종료
+    return clientRef.current.subscribe(
+        `/sub/chat/room/${roomId}`, //구독할 주소 설정 방번호 기준으로 설정함
+        (message) => {
+            const received = JSON.parse(message.body);
+            //JSON 형태로 백엔드에서 온 메세지를 자바스크립트 객체형태로 변환
+            callback(received); //변환 후 메세지를 콜백함수에 인자로 전달
+        }
+    );
+};
+
+// 3. 연결 해제 함수
 export const disconnectSocket = (clientRef) => {
     if (clientRef.current) {
         clientRef.current.disconnect();
@@ -41,17 +42,14 @@ export const disconnectSocket = (clientRef) => {
     }
 };
 
-// 3. 메시지 전송 함수
-export const publishMessage = (clientRef, roomId, message) => {
-    if (!clientRef.current || !clientRef.current.connected) {
-        console.log("[Socket] 연결되지 않아 전송 실패");
+export const publishMessage = (clientRef, roomId, message, callback) => {
+    if (!clientRef.current || !clientRef.current.connected) { //소켓 연결이 없거나 연결되지 않았으면 즉시 종료
+        console.log("[Socket] 전송 실패: 소켓이 연결되지 않았습니다.");
         return;
     }
-
-    const msg = {
+    clientRef.current.send("/pub/chat/message", {}, JSON.stringify({ //백엔드에서 소켓 연결 듣고있는 쪽에 JSON 형태로 변환해서 보내줌
         roomId: roomId,
-        message: message
-    };
-
-    clientRef.current.send("/pub/chat/message", {}, JSON.stringify(msg));
+        message: message,
+    }));
+    if(callback) callback()
 };

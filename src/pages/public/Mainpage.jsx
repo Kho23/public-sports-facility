@@ -1,48 +1,3 @@
-import { Outlet, useLocation } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
-import Sidebar from "./Sidebar";
-import ChatWidget from "../chatModal/ChatWidget";
-import MapWidget from "../mapModal/MapWidget";
-const Layout = () => {
-  const location = useLocation();
-  const isMainPage = location.pathname === "/";
-  const shouldShowSidebar = !isMainPage;
-  const contentWrapperClasses = `flex-1 w-full max-w-screen-2xl mx-auto pt-[140px] pb-20 ${
-    shouldShowSidebar ? "flex" : ""
-  }`;
-  if (isMainPage) {
-    return (
-      <div className="flex flex-col min-h-screen relative">
-        <Header />
-        <main className="flex-1 w-full relative z-0">
-          <Outlet />
-        </main>
-        <Footer />
-        <MapWidget />
-        <ChatWidget />
-      </div>
-    );
-  }
-  return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* 서브 페이지 헤더 */}
-      <Header />
-      {/* 본문 영역 */}
-      <div className={contentWrapperClasses}>
-        <Sidebar />
-        <main className="flex-1 bg-white p-6 lg:pl-8 min-h-[600px]">
-          <Outlet />
-        </main>
-      </div>
-      <Footer />
-      <MapWidget />
-      <ChatWidget />
-    </div>
-  );
-};
-export default Layout;
-4:25
 import React from "react";
 import {
   Info,
@@ -56,6 +11,8 @@ import {
 import NoticePreview from "./NoticePreview";
 import { useNavigate } from "react-router-dom";
 import img from "../../images/메인페이지배경.png";
+import LessonPreview from "./LessonPreview";
+
 const MainPage = () => {
   const navigate = useNavigate();
   const menuItems = [
@@ -78,6 +35,7 @@ const MainPage = () => {
     },
     { title: "FAQ", icon: HelpCircle, link: "/community/faq" },
   ];
+
   return (
     <div className="relative w-full min-h-screen">
       <div
@@ -127,7 +85,11 @@ const MainPage = () => {
               </button>
             ))}
           </section>
+
+          {/* 메인 컨텐츠 영역 */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* 왼쪽: 마감임박 강의목록 */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
               <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
                 <h2 className="text-slate-800 text-lg font-bold flex items-center gap-2">
@@ -140,17 +102,16 @@ const MainPage = () => {
                   더보기 <ChevronRight size={16} />
                 </button>
               </div>
-              <div className="p-6 h-[300px] bg-slate-50/50 flex flex-col items-center justify-center text-slate-400">
-                <CalendarCheck
-                  size={48}
-                  className="mb-3 text-slate-300"
-                  strokeWidth={1}
-                />
-                <p className="text-sm font-medium text-black">
-                  등록된 일정이 없습니다.
-                </p>
+              
+              {/* 수정된 부분: 오른쪽 공지사항과 동일한 구조로 변경 */}
+              <div className="h-[300px] overflow-hidden bg-white/50">
+                <div className="h-full overflow-y-auto custom-scrollbar p-2">
+                  {/* 기존의 flex center, icon, p 태그 등을 모두 제거하고 컴포넌트만 배치 */}
+                  <LessonPreview />
+                </div>
               </div>
             </div>
+
             {/* 오른쪽: 공지사항 */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
               <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
@@ -170,10 +131,12 @@ const MainPage = () => {
                 </div>
               </div>
             </div>
+
           </section>
         </main>
       </div>
     </div>
   );
 };
+
 export default MainPage;

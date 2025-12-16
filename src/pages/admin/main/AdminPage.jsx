@@ -23,7 +23,7 @@ import useCustomMove from "../../../hooks/useCustomMove";
 import { Link } from "react-router-dom";
 
 const AdminPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [pendingApprovals, setPendingApprovals] = useState([]);
   const [counts, setCounts] = useState({});
@@ -33,26 +33,23 @@ const AdminPage = () => {
   const { moveToAdminApprovals } = useCustomMove();
 
   useEffect(() => {
-    const keyword = searchTerm.trim();
+    const keyword = search.trim();
     if (keyword.length < 2) {
       setSearchResult([]);
       setLoading(false);
       return;
     }
-
     setLoading(true);
-    adminMainSearch(keyword)
-      .then((data) => {
-        setSearchResult(data);
-      })
-      .catch((error) => {
-        console.error("회원 검색 실패:", error);
-        setSearchResult([]);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [searchTerm]);
+    try {
+      const data = adminMainSearch(keyword);
+      setSearchResult(data);
+    } catch (error) {
+      console.error("회원 검색 실패:", error);
+      setSearchResult([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [search]);
 
   useEffect(() => {
     const f = async () => {
@@ -82,8 +79,7 @@ const AdminPage = () => {
       },
       "/admin/member/memberInfo"
     );
-
-    setSearchTerm("");
+    setSearch("");
     setSearchResult([]);
   };
 
@@ -129,15 +125,15 @@ const AdminPage = () => {
               type="text"
               placeholder="회원 이름 또는 ID 검색"
               className="pl-10 pr-4 py-2 rounded-xl border-none bg-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none w-96"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <Search
               className="absolute left-3 top-2.5 text-gray-400"
               size={18}
             />
 
-            {searchTerm && (
+            {search && (
               <div className="absolute z-50 w-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 max-h-60 overflow-y-auto">
                 {loading ? (
                   <div className="p-4 text-center text-blue-500 text-sm">
@@ -186,7 +182,7 @@ const AdminPage = () => {
                       ))
                     ) : (
                       <div className="p-4 text-center text-gray-500 text-sm">
-                        "{searchTerm}"에 대한 결과가 없습니다.
+                        "{search}"에 대한 결과가 없습니다.
                       </div>
                     )}
                   </>

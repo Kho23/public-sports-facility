@@ -99,6 +99,9 @@ const DailyUsePageComponent = ({
             }}
             dateClick={facility ? handleDateClick : undefined}
             dayCellContent={(arg) => arg.date.getDate()}
+            validRange={{
+              start: new Date().toISOString().split("T")[0],
+            }}
             dayCellClassNames={(arg) => {
               const cellDate = arg.date.toLocaleDateString("sv");
               return cellDate === selectedDate ? "selected-date" : "";

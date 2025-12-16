@@ -148,16 +148,10 @@ export const getLessonList = async (param) => {
   console.log("백엔드에서 온 lesson data=", data);
   return data;
 };
-export const changeLessonStatus = async (lessonId, status) => {
+export const changeLessonStatus = async (dto) => {
   const res = await axios.post(
-    `${API_SERVER_HOST}/lesson/status/${lessonId}`,
-    status,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      transformRequest: [(data) => JSON.stringify(data)],
-    }
+    `${API_SERVER_HOST}/lesson/status/${dto.id}`,
+    dto
   );
   return res.data;
 };

@@ -81,16 +81,17 @@ const DailyUseComponent = ({
                         </span>
                       </div>
                     </div>
-
-                    <div className="flex justify-end border-gray-100 pt-4">
-                      <button
-                        onClick={() => cancelDailyUseHandler(i.id)}
-                        className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded 
+                    {new Date(i.startTime?.slice(0, 10)) > new Date() && (
+                      <div className="flex justify-end border-gray-100 pt-4">
+                        <button
+                          onClick={() => cancelDailyUseHandler(i.id)}
+                          className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded 
                         hover:bg-red-500 hover:text-white hover:border-red-200 transition-colors duration-200"
-                      >
-                        취소하기
-                      </button>
-                    </div>
+                        >
+                          취소하기
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
 
@@ -132,15 +133,17 @@ const DailyUseComponent = ({
                       </div>
                     </div>
 
-                    <div className="flex justify-end border-gray-100 pt-4">
-                      <button
-                        onClick={() => cancelGymHandler(i.id)}
-                        className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded 
+                    {new Date(i.date) > new Date() && (
+                      <div className="flex justify-end border-gray-100 pt-4">
+                        <button
+                          onClick={() => cancelGymHandler(i.id)}
+                          className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded 
                         hover:bg-red-500 hover:text-white hover:border-red-200 transition-colors duration-200"
-                      >
-                        취소하기
-                      </button>
-                    </div>
+                        >
+                          취소하기
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>

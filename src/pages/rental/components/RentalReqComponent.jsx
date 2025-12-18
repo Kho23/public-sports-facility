@@ -149,6 +149,9 @@ const RentalReqComponent = ({
               end: "next",
             }}
             dayCellContent={(arg) => arg.date.getDate()}
+            validRange={{
+              start: new Date().toISOString().split("T")[0],
+            }}
             dateClick={facility && space ? handleDateClick : null}
             dayCellClassNames={(arg) => {
               const cellDate = arg.date.toLocaleDateString("sv");

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { findByFacilityId } from "../../api/dailyUseApi";
 import { getAvailableTime } from "../../api/commonApi";
 import { rentalRequest } from "../../api/rentalApi";
+import AlertModalComponent from "../../components/alertModal/AlertModalComponent";
 
 const RentalReqPage = () => {
   const facilities = [
@@ -16,6 +17,9 @@ const RentalReqPage = () => {
 
   const [facility, setFacility] = useState(null);
   const [space, setSpace] = useState(null);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const [scheduleData, setScheduleData] = useState([]);
 
@@ -104,9 +108,15 @@ const RentalReqPage = () => {
     });
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalMessage("");
+  };
+
   const reservationHandler = () => {
     if (!formData.name) {
-      alert("신청자 이름을 입력해 주세요");
+      setModalMessage("신청자 이름을 입력해 주세요");
+      setModalOpen(true);
       return;
     }
 
@@ -165,6 +175,9 @@ const RentalReqPage = () => {
         scheduleData={scheduleData}
         reservationHandler={reservationHandler}
       />
+      {modalOpen && (
+        <AlertModalComponent message={modalMessage} onClose={closeModal} />
+      )}
     </div>
   );
 };

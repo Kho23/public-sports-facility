@@ -292,52 +292,61 @@ const LessonRequestComponent = ({
           </label>
         </div>
       </section>
-      {availableTimes.length > 0 && (
-        <div className="mt-10 overflow-x-auto">
-          <h3 className="text-lg font-bold mb-4 text-blue-900">
-            강의실별 가능 시간표
-          </h3>
 
-          <table className="min-w-max border border-gray-300 text-center text-sm">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border px-3 py-2 w-32">강의실</th>
-                {availableTimes[0].schedule.map((i, idx) => (
-                  <th key={idx} className="border px-3 py-2 w-32">
-                    {i.date}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {availableTimes.map((i, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
-                  <td className="border px-3 py-2 font-semibold">
-                    {i.spaceName}
-                  </td>
-
-                  {i.schedule.map((j, dIdx) => (
-                    <td key={dIdx} className="border px-3 py-2">
-                      {j.times.length > 0 ? (
-                        <span className="text-green-600 font-bold">
-                          {j.times.join(", ")}
-                        </span>
-                      ) : (
-                        <span className="text-gray-400">없음</span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <br /> <br />
       <section className="mb-12">
         <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
-          6. 강좌 시간
+          6. 필요 시설
+        </h3>
+
+        {availableTimes?.map((i) => (
+          <div
+            key={i.spaceId}
+            className={`p-4 border rounded-lg mb-3
+      ${
+        form.facilityRoomType == i.spaceId
+          ? "border-blue-600 bg-blue-50"
+          : "border-gray-200"
+      }
+    `}
+          >
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-gray-800">{i.spaceName}</span>
+              <button
+                name="facilityRoomType"
+                value={i.spaceId}
+                onClick={(e) => formChangeHandler(e)}
+                className="text-sm text-blue-600 font-semibold"
+              >
+                선택
+              </button>
+            </div>
+
+            <p className="text-xs text-gray-600 mt-2">
+              가능한 시간: {""}
+              {i?.schedule
+                .map((j) => j.times)
+                .reduce(
+                  (j, k) => j.filter((t) => k.includes(t)),
+                  i.schedule[0]?.times ?? []
+                )
+                .join(", ") || "없음"}
+            </p>
+          </div>
+        ))}
+
+        <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <h4 className="text-sm font-semibold text-gray-700 mb-1">
+            시설 이용 안내
+          </h4>
+          <span className="text-xs text-gray-500 space-y-2 leading-5 pl-1">
+            {facilityMap[form.facilityType]?.guide[0]}
+            <br /> {facilityMap[form.facilityType]?.guide[1]}
+          </span>
+        </div>
+      </section>
+      <section className="mb-12">
+        <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
+          7. 강좌 시간
         </h3>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -407,57 +416,6 @@ const LessonRequestComponent = ({
             </select>
           </div>
         </div>
-      </section>
-      <section className="mb-12">
-        <h3 className="font-extrabold text-xl text-gray-900 border-b border-gray-300 pb-3 mb-6">
-          7. 필요 시설
-        </h3>
-
-        {form.facilityType && (
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
-            <div className="flex flex-col w-full">
-              <select
-                id="facility"
-                name="facilityRoomType"
-                value={form.facilityRoomType ?? ""}
-                onChange={(e) => formChangeHandler(e)}
-                className="
-                w-full 
-                border border-gray-300 
-                rounded-lg 
-                p-3 
-                text-gray-800 
-                focus:outline-none 
-                focus:ring-2 
-                focus:ring-blue-200 
-                focus:border-blue-500
-                transition
-            "
-              >
-                <option value="" disabled>
-                  기본 선택
-                </option>
-                {availableTimes
-                  .filter((i) => i.schedule.some((s) => s.times.length > 0))
-                  .map((i) => (
-                    <option value={i.spaceId} key={i.spaceId}>
-                      {i.spaceName}
-                    </option>
-                  ))}
-              </select>
-
-              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <h4 className="text-sm font-semibold text-gray-700 mb-1">
-                  시설 이용 안내
-                </h4>
-                <span className="text-xs text-gray-500 space-y-2 leading-5 pl-1">
-                  {facilityMap[form.facilityType].guide[0]}
-                  <br /> {facilityMap[form.facilityType].guide[1]}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
     </div>
   );

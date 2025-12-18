@@ -267,7 +267,7 @@ const RentalReqComponent = ({
                       총 이용금액
                     </span>
                     <span className="text-lg font-extrabold text-blue-900">
-                      {priceCalc().toLocaleString()} 원
+                      {priceCalc()} 원
                     </span>
                   </div>
                 </div>

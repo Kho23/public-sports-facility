@@ -114,12 +114,14 @@ const RentalComponent = ({ data, cancelHandler }) => {
                   </div>
 
                   <div className="flex justify-end">
-                    <button
-                      onClick={() => cancelHandler(i)}
-                      className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-500 hover:text-white hover:border-red-200 transition-colors duration-200"
-                    >
-                      취소하기
-                    </button>
+                    {new Date(i.startTime) > new Date() && (
+                      <button
+                        onClick={() => cancelHandler(i)}
+                        className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-500 hover:text-white hover:border-red-200 transition-colors duration-200"
+                      >
+                        취소하기
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

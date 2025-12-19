@@ -16,7 +16,8 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const { isLoading, error, isLoggedIn } = useSelector((state) => state.auth);
 
-  const { kakaoLoginHandler, naverLoginHandler } = SocialLogin();
+  const { kakaoLoginHandler, naverLoginHandler, googleLoginHandler } =
+    SocialLogin();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -195,6 +196,13 @@ const LoginPage = () => {
               className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded shadow-sm hover:bg-green-600"
             >
               네이버 로그인
+            </button>
+            <button
+              type="button"
+              onClick={googleLoginHandler}
+              className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded shadow-sm border border-gray-300 hover:bg-gray-50"
+            >
+              Google 로그인
             </button>
           </div>
         </div>

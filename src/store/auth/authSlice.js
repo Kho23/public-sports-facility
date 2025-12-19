@@ -59,7 +59,18 @@ const authSlice = createSlice({
       removeCookie("member"); //member 로 등록된 쿠키 삭제
       return { ...initState };
     },
-  },
+    socialLoginSuccess: (state, action) => {
+      const payload = action.payload;
+
+      setCookie("member", JSON.stringify(payload), 1 / 24);
+
+      state.isLoggedIn = true;
+      state.accessToken = payload.accessToken;
+      state.memberRole = payload.memberRole;
+      state.loginId = payload.loginId;
+      state.error = null;
+    },
+  }, // social reducer 추가
   extraReducers: (builder) => {
     builder
       //로그인 버튼이 눌리면 loginAsync 가 실행되어 그 상태(fulfilled, rejected, pending)에 따라 처리합니다
@@ -102,24 +113,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       });
-  },
-  reducers: {
-    // kakao reducers 추가
-    logout: (state) => {
-      removeCookie("member");
-      return { ...initState };
-    },
-    socialLoginSuccess: (state, action) => {
-      const payload = action.payload;
-
-      setCookie("member", JSON.stringify(payload), 1 / 24);
-
-      state.isLoggedIn = true;
-      state.accessToken = payload.accessToken;
-      state.memberRole = payload.memberRole;
-      state.loginId = payload.loginId;
-      state.error = null;
-    },
   },
 });
 export const { logout, socialLoginSuccess } = authSlice.actions;

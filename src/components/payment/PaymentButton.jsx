@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { getOne } from '../../api/memberApi'; 
-import axios from 'axios'; 
+import React, { useEffect, useState } from "react";
+import { getOne } from "../../api/memberApi";
+import axios from "axios";
 // 인터셉터가 있으므로 axios만 import하면 됩니다. (별도 설정 X)
-
 const PaymentButton = ({ info }) => {
     const [buyer, setBuyer] = useState(null);
 
@@ -64,6 +63,15 @@ const PaymentButton = ({ info }) => {
             {buyer ? `${info.price?.toLocaleString()}원 결제하기` : "로딩 중..."}
         </button>
     );
+  };
+  return (
+    <button
+      onClick={handlePayment}
+      disabled={!buyer}
+      className="px-8 py-3 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-700 transition h-[48px]"
+    >
+      {buyer ? `${info.price?.toLocaleString()}원 결제하기` : "로딩 중..."}
+    </button>
+  );
 };
-
 export default PaymentButton;

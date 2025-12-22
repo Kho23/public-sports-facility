@@ -6,6 +6,7 @@ import {
 } from "../../api/dailyUseApi";
 import { getAvailableTime } from "../../api/commonApi";
 import DailyUsePageComponent from "./components/DailyUsePageComponent";
+import AlertModalComponent from "../../components/alertModal/AlertModalComponent";
 
 const facilities = [
   { id: 1, name: "수영장", price: 5000 },
@@ -20,6 +21,7 @@ const DailyUsePage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableTime, setAvailableTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   const [price, setPrice] = useState(null);
 
   useEffect(() => {
@@ -33,6 +35,10 @@ const DailyUsePage = () => {
     setAvailableTime(null);
     setSelectedTime([]);
     setSelectedDate(null);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   const clickFacilityHandler = async (id) => {
@@ -86,7 +92,7 @@ const DailyUsePage = () => {
       if (clickedHour === min - 1 || clickedHour === max + 1) {
         return [...prev, time].sort();
       } else {
-        alert("연속된 시간만 선택 가능합니다.");
+        setModalOpen(true);
         return prev;
       }
     });
@@ -128,21 +134,29 @@ const DailyUsePage = () => {
   };
 
   return (
-    <DailyUsePageComponent
-      facilities={facilities}
-      clickFacilityHandler={clickFacilityHandler}
-      facility={facility}
-      space={space}
-      clickSpaceHandler={clickSpaceHandler}
-      selectedSpace={selectedSpace}
-      selectedDate={selectedDate}
-      handleDateClick={handleDateClick}
-      handleTimeClick={handleTimeClick}
-      submitHandler={submitHandler}
-      selectedTime={selectedTime}
-      availableTime={availableTime}
-      price={price}
-    />
+    <>
+      <DailyUsePageComponent
+        facilities={facilities}
+        clickFacilityHandler={clickFacilityHandler}
+        facility={facility}
+        space={space}
+        clickSpaceHandler={clickSpaceHandler}
+        selectedSpace={selectedSpace}
+        selectedDate={selectedDate}
+        handleDateClick={handleDateClick}
+        handleTimeClick={handleTimeClick}
+        submitHandler={submitHandler}
+        selectedTime={selectedTime}
+        availableTime={availableTime}
+        price={price}
+      />
+      {modalOpen && (
+        <AlertModalComponent
+          message={"연속된 시간만 선택 가능합니다."}
+          onClose={closeModal}
+        />
+      )}
+    </>
   );
 };
 

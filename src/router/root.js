@@ -30,6 +30,8 @@ const LessonDetail = lazy(() => import("../pages/lesson/LessonReadPage"));
 const PartnerMyPage = lazy(() =>
   import("../pages/partner/partnerPage/PartnerMyPage")
 );
+const KakaoCallback = lazy(() => import("../pages/auth/KakaoCallbackPage"));
+const NaverCallback = lazy(() => import("../pages/auth/NaverCallbackPage"));
 
 const root = createBrowserRouter([
   {
@@ -57,6 +59,22 @@ const root = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <Login />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/auth/kakao/callback",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <KakaoCallback />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/auth/naver/callback",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <NaverCallback />
           </Suspense>
         ),
       },

@@ -4,6 +4,7 @@ import { changeLessonStatus, getOneLesson } from "../../../../api/adminApi";
 const LessonEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     const f = async () => {
@@ -18,8 +19,16 @@ const LessonEditPage = () => {
   }, [id]);
 
   const statusChangeHandler = async (status) => {
+    if (price == 0) {
+      alert("가격을 입력해주세요.");
+      return;
+    }
     try {
-      const res = await changeLessonStatus(id, status);
+      const res = await changeLessonStatus({
+        id: id,
+        status: status,
+        price: price,
+      });
       console.log(res);
       alert("완료~!");
       window.location.reload();
@@ -99,7 +108,33 @@ const LessonEditPage = () => {
               <td className="bg-gray-100 font-semibold px-4 py-3">요일</td>
               <td className="px-4 py-3">{data.days.join(", ")}</td>
             </tr>
-            <tr></tr>
+            {data.status === "PENDING" ? (
+              <tr>
+                <td className="bg-gray-100 font-semibold px-4 py-3">가격</td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      required
+                      placeholder="가격을 입력하세요"
+                      className="w-40 px-3 py-2 border-2 border-red-400 rounded-md
+                   focus:outline-none focus:border-red-600"
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                    <span className="font-medium">원</span>
+                  </div>
+                  <p className="mt-1 text-xs text-red-500">
+                    가격 입력은 필수입니다.
+                  </p>
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <td className="bg-gray-100 font-semibold px-4 py-3">가격</td>
+                <td className="px-4 py-3">{data.price} 원</td>
+              </tr>
+            )}
+
             <tr>
               <td className="bg-gray-100 font-semibold px-4 py-3">신청 상태</td>
               <td className="px-4 py-3">{renderStatus(data.status)}</td>

@@ -132,7 +132,7 @@ const LessonRequestPage = () => {
       return;
     }
 
-    const selectRoom = availableTimes.find(
+    const selectRoom = availableTimes?.find(
       (i) => i.spaceId === Number(form.facilityRoomType)
     );
 
@@ -141,7 +141,7 @@ const LessonRequestPage = () => {
       return;
     }
 
-    const timeList = selectRoom.schedule
+    const timeList = selectRoom?.schedule
       .map((i) => i.times)
       .reduce((i, t) => i.filter((j) => t.includes(j)));
 
@@ -184,7 +184,7 @@ const LessonRequestPage = () => {
 
     setPage((page) => page + 1);
   };
-console.log(data,partnerClass )
+  console.log(data, partnerClass);
   return (
     <>
       {page === 1 && (

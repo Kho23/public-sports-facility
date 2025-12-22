@@ -149,6 +149,9 @@ const RentalReqComponent = ({
               end: "next",
             }}
             dayCellContent={(arg) => arg.date.getDate()}
+            validRange={{
+              start: new Date().toISOString().split("T")[0],
+            }}
             dateClick={facility && space ? handleDateClick : null}
             dayCellClassNames={(arg) => {
               const cellDate = arg.date.toLocaleDateString("sv");
@@ -264,7 +267,7 @@ const RentalReqComponent = ({
                       총 이용금액
                     </span>
                     <span className="text-lg font-extrabold text-blue-900">
-                      {priceCalc().toLocaleString()} 원
+                      {priceCalc()} 원
                     </span>
                   </div>
                 </div>

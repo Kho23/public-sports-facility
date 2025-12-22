@@ -9,35 +9,23 @@ const PaymentButton = ({ info }) => {
     // 1. 초기화: 회원 정보 조회 & 포트원 SDK 로드
     useEffect(() => {
         getOne().then(data => setBuyer(data)).catch(console.error);
-
-        const jquery = document.createElement("script");
-        jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
-        const iamport = document.createElement("script");
-        iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js";
-
-        document.head.appendChild(jquery);
-        document.head.appendChild(iamport);
-
-        return () => {
-            document.head.removeChild(jquery);
-            document.head.removeChild(iamport);
-        };
     }, []);
-
     const handlePayment = () => {
+        console.log("전달받은 결제 정보:", info); 
+        console.log("결제 금액:", info.price);
         if (!window.IMP) return alert("결제 모듈 로딩 중...");
         if (!buyer) return alert("회원 정보 로딩 중...");
 
         const { IMP } = window;
-        IMP.init('가맹점_식별코드'); // ★ 본인 식별코드 입력
+        IMP.init('imp04278342'); // ★ 본인 식별코드 입력
 
         // 2. 결제 요청
         IMP.request_pay({
             pg: 'html5_inicis',
             pay_method: 'card',
             merchant_uid: `mid_${new Date().getTime()}`,
-            name: info.lessonTitle,           // props로 받은 강의명
-            amount: info.lessonPrice,         // props로 받은 가격
+            name: info.title,           // props로 받은 강의명
+            amount: info.price,         // props로 받은 가격
             buyer_email: buyer.memberEmail || buyer.email, 
             buyer_name: buyer.memberName,
             buyer_tel: buyer.memberPhoneNumber || buyer.phoneNumber,

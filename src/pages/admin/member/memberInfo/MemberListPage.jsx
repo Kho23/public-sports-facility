@@ -42,11 +42,9 @@ const MemberListPage = () => {
       role: role || "",
     };
 
-    console.log("조회 params", params);
-
     try {
       const res = await searchMemberList(params);
-      return res; // 결과를 반환
+      return res;
     } catch (err) {
       console.error("조회 실패:", err);
       return initState;
@@ -79,9 +77,7 @@ const MemberListPage = () => {
     ).then((res) => {
       setData(res);
 
-      // 2. 검색이 완료된 후, URL 파라미터가 있다면 모달을 띄웁니다.
       if (shouldOpenModal && memberIdToOpen) {
-        // 검색 결과 DTO 목록에서 ID로 해당 회원을 찾습니다.
         const targetMember = res.dtoList.find(
           (m) => String(m.memberId) === memberIdToOpen
         );
@@ -89,18 +85,14 @@ const MemberListPage = () => {
         if (targetMember) {
           setSelectedMember(targetMember);
           setOpenModal(true);
-
-          // 3. 모달이 열린 후, URL에서 모달 관련 파라미터 제거하여 새로고침 시 모달이 다시 뜨는 것을 방지
           const newParams = Object.fromEntries(params.entries());
           delete newParams.openModal;
           delete newParams.memberIdToOpen;
-
-          // URL 정리 (기존 검색 필터는 유지)
           moveToList(newParams);
         }
       }
     });
-  }, [page, size, filterUser, filterPartner]); // 의존성 배열 유지
+  }, [page, size, filterUser, filterPartner]);
 
   const handleCategory = (e) => {
     setCategory(e.target.value);
@@ -116,7 +108,6 @@ const MemberListPage = () => {
     setFilterUser(false);
     setFilterPartner(false);
 
-    // 검색 실행 후 data 상태 업데이트 및 URL 이동
     const res = await executeSearchAndFilter(keyword, category, null, 1, size);
     setData(res);
 
@@ -145,16 +136,15 @@ const MemberListPage = () => {
     if (nextUser && !nextPartner) role = "ROLE_USER";
     else if (!nextUser && nextPartner) role = "ROLE_PARTNER";
 
-    // 필터 변경 후 data 상태 업데이트 및 URL 이동
     const res = await executeSearchAndFilter("", "name", role, 1, size);
     setData(res);
 
     moveToList({
       page: 1,
       size: size,
-      type: "name", // 필터 변경 시 검색 유형은 기본값으로 리셋
-      keyword: "", // 필터 변경 시 키워드는 비움
-      role: role || "", // 역할 파라미터 추가
+      type: "name",
+      keyword: "",
+      role: role || "",
     });
   };
 

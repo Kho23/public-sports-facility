@@ -98,18 +98,14 @@ const DailyUsePage = () => {
     });
   };
 
-  const submitHandler = async () => {
+  const handlePayment = () => {
     if (facility === 2) {
-      try {
-        await registerGymDailyUse({
-          date: selectedDate,
-          price: facilities[1].price,
-        });
-        alert("예약이 완료되었습니다.");
-      } catch (err) {
-        console.error("헬스장 예약 실패", err);
-      }
-      return;
+      return {
+        title: "헬스장 일일이용권",
+        date: selectedDate,
+        price: facilities[1].price,
+        productType: "GYM_DAILY_USE",
+      };
     }
 
     const sorted = [...selectedTime].sort();
@@ -118,19 +114,14 @@ const DailyUsePage = () => {
       Number(sorted[sorted.length - 1].slice(0, 2)) + 1
     ).padStart(2, "0")}:00`;
 
-    const finalData = {
+    return {
+      title: "일일이용권",
+      price: price,
+      productType: "DAILY_USE",
       startTime: `${selectedDate}T${startHour}`,
       endTime: `${selectedDate}T${endHour}`,
-      spaceId: selectedSpace,
-      price: price,
+      lessonId: selectedSpace,
     };
-
-    try {
-      await registerDailyUse(finalData);
-      alert("예약이 완료되었습니다.");
-    } catch (err) {
-      console.error("일일이용예약 실패", err);
-    }
   };
 
   return (
@@ -145,7 +136,7 @@ const DailyUsePage = () => {
         selectedDate={selectedDate}
         handleDateClick={handleDateClick}
         handleTimeClick={handleTimeClick}
-        submitHandler={submitHandler}
+        handlePayment={handlePayment}
         selectedTime={selectedTime}
         availableTime={availableTime}
         price={price}
@@ -153,7 +144,8 @@ const DailyUsePage = () => {
       {modalOpen && (
         <AlertModalComponent
           message={"연속된 시간만 선택 가능합니다."}
-          onClose={closeModal}
+          type="alert"
+          onConfirm={closeModal}
         />
       )}
     </>

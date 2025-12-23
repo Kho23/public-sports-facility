@@ -27,7 +27,6 @@ const MemberListPage = () => {
   const [filterPartner, setFilterPartner] = useState(false);
   const { page, size, moveToList, getQueryParams } = usePageMove();
 
-  // executeSearchAndFilter를 비동기 함수로 정의
   const executeSearchAndFilter = async (
     keyword,
     category,
@@ -54,22 +53,18 @@ const MemberListPage = () => {
     }
   };
 
-  // URL 쿼리 파라미터를 읽고 초기 검색 및 모달을 띄우는 useEffect
   useEffect(() => {
     const params = getQueryParams();
     const memberIdToOpen = params.get("memberIdToOpen");
     const shouldOpenModal = params.get("openModal") === "true";
 
-    // 필터 역할 설정 (체크박스 상태에 따라)
     let initialRole = null;
     if (filterUser && !filterPartner) initialRole = "ROLE_USER";
     else if (!filterUser && filterPartner) initialRole = "ROLE_PARTNER";
 
-    // 1. URL 파라미터를 기반으로 초기 검색 키워드 및 카테고리 설정
     const initialKeyword = params.get("keyword") || keyword;
     const initialCategory = params.get("type") || category;
 
-    // 이전에 설정된 상태값을 덮어쓰지 않도록 초기화 로직에 반영
     if (params.get("type") && params.get("keyword")) {
       setCategory(initialCategory);
       setKeyword(initialKeyword);

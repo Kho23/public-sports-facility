@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { getCookie } from "../../util/cookieUtil";
 import { getHistory } from "../../api/chatApi";
 import { connectSocket, disconnectSocket, publishMessage } from "../../api/socketApi";
-import ChatIconImage from "../../images/채팅 이모티콘.png"; // 👈 추가
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);//모달 오픈여부
@@ -261,7 +260,7 @@ const ChatWidget = () => {
       </div>
 
       {/* 2. 플로팅 버튼 */}
-      <button
+<button
         onClick={() => setIsOpen(!isOpen)}
         style={{
           width: "60px",
@@ -277,13 +276,14 @@ const ChatWidget = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "28px",
+          fontSize: "28px", // 🔥 폰트 크기로 아이콘 크기 조절
           transition: "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
         }}
         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
       >
-        {isOpen ? "✕" : <img src={ChatIconImage} className="w-10 h-10"></img>}
+        {/* 🔥 [수정] 이미지 태그 대신 이모지 텍스트를 바로 사용 */}
+        {isOpen ? "✕" : "🎧"} 
       </button>
     </div>
   );

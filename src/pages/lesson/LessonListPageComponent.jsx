@@ -132,18 +132,6 @@ const LessonListPageComponent = () => {
 
   // 기준 규격(max-w-6xl mx-auto p-6) 적용
   return (
-    // <div className="bg-white min-h-screen font-sans">
-    //   <div className="max-w-5xl mx-auto px-4 py-8">
-
-    //     {/* 네비게이션 & 타이틀 */}
-    //     <nav className="text-sm text-gray-500 mb-6">
-    //       홈 &gt; 수강신청 &gt; 강좌검색
-    //     </nav>
-
-    //     <div className="flex items-end justify-between mb-4">
-    //       <h1 className="text-3xl font-bold text-gray-900">수강신청</h1>
-    //     </div>
-
     <div className="max-w-6xl mx-auto p-6">
       <nav className="text-sm text-gray-500 mb-6">
         홈 &gt; 예약신청 &gt; 수강신청
@@ -207,20 +195,44 @@ const LessonListPageComponent = () => {
               <label className="text-xs font-bold text-gray-400 uppercase mb-2 block tracking-wider">
                 시간대
               </label>
-              <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-lg border border-gray-200">
-                <input
-                  type="time"
+    <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-lg border border-gray-200">
+                {/* 시작 시간 Select */}
+                <select
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none p-1"
-                />
+                  className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none p-1 cursor-pointer"
+                >
+                  <option value="">선택 안함</option>
+                  {/* 🔥 [수정] 00시 ~ 23시까지 (총 24시간) 생성 */}
+                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => {
+                    const timeString = `${hour < 10 ? `0${hour}` : hour}:00`;
+                    return (
+                      <option key={timeString} value={timeString}>
+                        {timeString}
+                      </option>
+                    );
+                  })}
+                </select>
+
                 <span className="text-gray-400 text-sm">~</span>
-                <input
-                  type="time"
+
+                {/* 종료 시간 Select */}
+                <select
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none p-1"
-                />
+                  className="bg-transparent text-sm font-medium text-gray-700 focus:outline-none p-1 cursor-pointer"
+                >
+                  <option value="">선택 안함</option>
+                  {/* 🔥 [수정] 00시 ~ 23시까지 (총 24시간) 생성 */}
+                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => {
+                    const timeString = `${hour < 10 ? `0${hour}` : hour}:00`;
+                    return (
+                      <option key={timeString} value={timeString}>
+                        {timeString}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
           </div>
@@ -248,15 +260,17 @@ const LessonListPageComponent = () => {
             <label className="text-xs font-bold text-gray-500 mb-1 block">
               검색어
             </label>
-            <Search className="absolute left-3 top-[2.1rem] transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요"
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="검색어를 입력하세요"
+                className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-900 focus:border-transparent outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            </div>
           </div>
 
           {/* 정렬 Select */}

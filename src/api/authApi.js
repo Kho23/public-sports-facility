@@ -70,3 +70,16 @@ export const duplicateId=async(id)=>{
     console.log("중복확인 완료")
     return res.data
 }
+
+export const sendJoinMail = async (email) => {
+    const res = await axios.get(`${API_HOST_URL}/join/email`, {params:{email:email}})
+    return res.data
+}
+
+export const verifyJoinCode = async (dto) => {
+    const res = await axios.post(`${API_HOST_URL}/join/verify`, {
+        memberEmail:dto.memberEmail,
+        authCode:dto.authCode
+    })
+    return res.data
+}

@@ -1,10 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { socialLoginSuccess } from "../../store/auth/authSlice";
+import ModalComponent from "../../components/alertModal/AlertModalComponent";
 import axios from "axios";
 
 const KakaoCallbackPage = () => {
+  const [alertModal, setAlertModal] = useState({
+    open: false,
+    type: "", // alert | confirm
+    message: "",
+    onConfirm: null,
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,20 +42,21 @@ const KakaoCallbackPage = () => {
           })
         );
 
-        console.log("KAKAO LOGIN RESPONSE 👉", res);
-
         localStorage.setItem("accessToken", res.data.accessToken);
-        alert("카카오 로그인 성공");
         navigate("/");
-      } catch (e) {
-        console.error("KAKAO LOGIN ERROR 👉", e);
+      } catch (err) {
+        console.error(err);
 
-        if (e.response) {
-          console.error("STATUS:", e.response.status);
-          console.error("DATA:", e.response.data);
+        if (err.response) {
+          console.error("STATUS:", err.response.status);
+          console.error("DATA:", err.response.data);
         }
 
-        alert("카카오 로그인 처리 중 오류");
+        setAlertModal({
+          open: true,
+          type: "alert",
+          message: "카카오 로그인 처리 중 오류",
+        });
         navigate("/auth/login");
       }
     };
@@ -56,7 +64,18 @@ const KakaoCallbackPage = () => {
     kakaoLogin();
   }, []);
 
-  return <div className="p-10 text-center">카카오 로그인 처리 중...</div>;
+  return (
+    <div className="p-10 text-center">
+      카카오 로그인 처리 중...
+      {alertModal.open && (
+        <ModalComponent
+          type={alertModal.type}
+          message={alertModal.message}
+          onConfirm={alertModal.onConfirm}
+        />
+      )}
+    </div>
+  );
 };
 
 export default KakaoCallbackPage;

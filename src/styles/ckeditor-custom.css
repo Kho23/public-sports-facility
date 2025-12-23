@@ -12,6 +12,11 @@
   padding: 1rem !important;
 }
 
+.ck-editor__editable_inline {
+  min-height: 400px;
+  max-height: 800px;
+}
+
 /* 제목 스타일 */
 .ck-content h1 {
   font-size: 28px !important;

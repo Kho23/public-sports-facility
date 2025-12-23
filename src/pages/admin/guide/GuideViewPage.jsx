@@ -5,33 +5,30 @@ import GuideViewComponent from "./components/GuideViewComponent";
 import { getCategory } from "../../../api/guideApi";
 
 const GuideViewPage = () => {
-  const [html, setHtml] = useState("");
-  const { category } = useParams();
-  const [categoryName, setCategoryName] = useState({
+  const categoryName = {
     TIME: "운영시간",
     RENT: "상품대여",
     CAR: "차량등록",
     PRICE: "요금안내",
     REFUND: "할인/환불/연기",
-  });
+  };
+
+  const [html, setHtml] = useState("");
   const [nowCategory, setNowCategory] = useState("");
   const [Createddate, setCreatedDate] = useState("");
   const [guideList, setGuideList] = useState({});
+  const { category } = useParams();
 
   useEffect(() => {
-    const f = async () => {
-      const res = await getCategory(category.toUpperCase());
-      console.log(res);
+    const changeCategory = async () => {
+      const upper = category.toUpperCase();
+
+      const res = await getCategory(upper);
       setGuideList(res);
       setCreatedDate(res.updatedDate.slice(0, 10));
       setHtml(res.html ?? "");
-    };
-    f();
-  }, [category]);
 
-  useEffect(() => {
-    const changeCategory = () => {
-      setNowCategory(categoryName[category.toUpperCase()]);
+      setNowCategory(categoryName[upper]);
     };
     changeCategory();
   }, [category]);

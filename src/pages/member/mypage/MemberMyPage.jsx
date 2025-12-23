@@ -20,11 +20,12 @@ const MemberMyPage = () => {
   }, []);
 
   useEffect(() => {
-    var member = getCookie("member");
-    if (isLoggedIn && member.memberId) {
+    const member = getCookie("member");
+    if (isLoggedIn && member?.loginId) {
       const f = async () => {
         try {
           const data = await getOne();
+          console.log("data2", data);
           setData(data);
         } catch (err) {
           console.error(err);

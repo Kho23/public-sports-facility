@@ -1,30 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { formatter, getOneNotice } from "../../api/noticeApi";
+import React from "react";
+import { Link } from "react-router-dom";
+import { formatter } from "../../api/noticeApi";
 
-const initState = {
-  content: "",
-  createdAt: "",
-  noticeId: 0,
-  title: "",
-  viewCount: 0,
-};
-
-const NoticeReadPageComponent = () => {
-  const { id } = useParams();
-  const [notice, setNotice] = useState(initState);
-  useEffect(() => {
-    const getOne = async () => {
-      try {
-        const data = await getOneNotice(id);
-        console.log(data);
-        setNotice(data);
-      } catch (error) {
-        console.log("백엔드 데이터 로드 중 오류 발생", error);
-      }
-    };
-    getOne();
-  }, [id]);
+const NoticeReadPageComponent = ({ notice }) => {
+  // 부모로부터 받은 notice 데이터를 구조 분해 할당하지 않고 
+  // 기존 코드 스타일(notice.title 등)을 유지하기 위해 매개변수에서 바로 받습니다.
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -35,7 +15,6 @@ const NoticeReadPageComponent = () => {
       {/* 공지 상세 헤더 */}
       <div className="border-t border-b border-gray-300 py-4 mb-6">
         <div className="flex items-center space-x-2 text-gray-700 mb-2">
-          {/* 공지 아이콘 */}
           <span className="px-2 py-1 bg-gray-700 text-white text-xs font-semibold rounded-full">
             공지
           </span>
@@ -48,7 +27,7 @@ const NoticeReadPageComponent = () => {
         </div>
       </div>
 
-      {/* 내용 영역 (이미지처럼 보이도록 스타일링) */}
+      {/* 내용 영역 */}
       <article className="min-h-[400px] border border-gray-300 bg-white p-8 mb-6">
         <div
           className="prose prose-gray max-w-none ck-content"
@@ -56,6 +35,7 @@ const NoticeReadPageComponent = () => {
         ></div>
       </article>
 
+      {/* 첨부파일 영역 */}
       {notice.fileList && notice.fileList.length > 0 && (
         <div className="border-t border-gray-300 pt-4 mt-6">
           <h3 className="font-semibold text-gray-800 mb-3">첨부파일</h3>
@@ -89,6 +69,7 @@ const NoticeReadPageComponent = () => {
           </ul>
         </div>
       )}
+
       <div className="border-t-2 border-black my-6"></div>
 
       <div className="flex justify-end mt-1">

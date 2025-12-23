@@ -1,243 +1,23 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { duplicateEmail, duplicateId, sendJoinMail, verifyJoinCode } from '../../api/authApi';
-import { registerAsync } from '../../store/auth/authSlice';
-
-const initState = {
-    memberLoginId: "",
-    memberPassword: "",
-    passwordConfirm: "",
-    memberName: "",
-    memberAddress: "",
-    memberEmail: "",
-    memberPhoneNumber: "",
-    memberBirthDate: "",
-    memberGender: "Male"
-}
-// 정규식 정의 (아이디, 비밀번호, 이메일 유효성 검사)
-const idRegex = /^[a-zA-Z0-9]{7,16}$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
-const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
-
-const RegisterPageComponent = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { isLoading, error } = useSelector(state => state.auth);
-
-    // 단계 관리
-    const [step, setStep] = useState(1);
-
-    // 회원정보 상태
-    const [registerInfo, setRegisterInfo] = useState(initState);
-
-    // 약관 동의 상태
-    const [agreements, setAgreements] = useState({
-        all: false,
-        terms: false,
-        privacy: false,
-        marketing: false
-    });
-
-    // 🔥 [추가] 중복 확인 상태 (true: 사용 가능 확인됨, false: 미확인)
-    const [duplicateCheck, setDuplicateCheck] = useState({
-        id: false,
-        email: false
-    });
-
-    const [validationErrors, setValidationErrors] = useState({ // 유효성검사 에러메세지 처리
-        memberLoginId: "",
-        memberPassword: "",
-        passwordConfirm: "",
-        memberEmail: ""
-    });
-
-    const [emailVerification, setEmailVerification] = useState({
-        sent: false,
-        verified: false,
-        code: ""
-    })
-
-    const [detailAddress, setDetailAddress] = useState("");
+import { duplicateEmail, duplicateId, sendJoinMail, verifyJoinCode } from '../../../api/authApi';
+import { registerAsync } from '../../../store/auth/authSlice';
 
 
-    const handleAddressSearch = () => {
-        new window.daum.Postcode({
-            oncomplete: (addressData) => {
-                setRegisterInfo((prev) => ({
-                    ...prev,
-                    memberAddress: addressData.address
-                }));
-                setDetailAddress("")
-            },
-        }).open();
-    };
-
-    const handleSendMail = async () => {
-        if (!registerInfo.memberEmail) {
-            alert("이메일을 입력해주세요.")
-            return;
-        }
-        if (!emailRegex.test(registerInfo.memberEmail)) {
-            alert("올바른 이메일 형식이 아닙니다.")
-            return;
-        }
-        try {
-            await sendJoinMail(registerInfo.memberEmail)
-            alert("인증번호가 발송되었습니다. 메일함을 확인해주세요.")
-            setEmailVerification(prev => ({ ...prev, sent: true, verified: false }))
-        } catch (error) {
-            alert(error.response?.data || "메일 전송에 실패했습니다.")
-        }
-    }
-
-    const handleVerifyCode = async () => {
-        if (!emailVerification.code) {
-            alert("인증번호를 입력해주세요.")
-            return;
-        }
-        try {
-            await verifyJoinCode({
-                memberEmail: registerInfo.memberEmail,
-                authCode: emailVerification.code
-            })
-            alert("이메일 인증이 완료되었습니다.")
-            setEmailVerification(prev => ({ ...prev, verified: true }))
-            setDuplicateCheck(prev => ({ ...prev, email: true }));
-        } catch (error) {
-            alert("인증번호가 일치하지 않습니다.");
-        }
-    }
-
-    // --- [Step 1] 약관 동의 로직 ---
-    const handleAgreementChange = (e) => {
-        const { name, checked } = e.target;
-        const nextAgreements = { ...agreements, [name]: checked };
-        if (nextAgreements.terms && nextAgreements.privacy && nextAgreements.marketing) {
-            nextAgreements.all = true;
-        } else {
-            nextAgreements.all = false;
-        }
-        setAgreements(nextAgreements);
-    };
-
-    const handleAllAgreementChange = (e) => {
-        const { checked } = e.target;
-        setAgreements({
-            all: checked,
-            terms: checked,
-            privacy: checked,
-            marketing: checked
-        });
-    };
-
-    const handleNextStep = () => {
-        if (!agreements.terms || !agreements.privacy) {
-            alert("필수 약관에 동의해주셔야 회원가입이 가능합니다.");
-            return;
-        }
-        setStep(2);
-        window.scrollTo(0, 0);
-    };
-
-    // --- [Step 2] 정보 입력 및 중복 체크 로직 ---
-
-    // 🔥 [추가] 아이디 중복 확인
-    const handleIdCheck = async () => {
-        if (!registerInfo.memberLoginId) {
-            alert("아이디를 입력해주세요.");
-            return;
-        }
-        try {
-            // 백엔드 API 호출 (true: 중복, false: 사용가능 가정)
-            const isDuplicate = await duplicateId(registerInfo.memberLoginId);
-
-            if (isDuplicate) {
-                alert("이미 사용 중인 아이디입니다.");
-                setDuplicateCheck(prev => ({ ...prev, id: false }));
-                setRegisterInfo(prev => ({ ...prev, memberLoginId: "" })); // 입력창 비우기
-            } else {
-                alert("사용 가능한 아이디입니다.");
-                setDuplicateCheck(prev => ({ ...prev, id: true }));
-            }
-        } catch (error) {
-            console.error(error);
-            alert("중복 확인 중 오류가 발생했습니다.");
-        }
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setRegisterInfo({ ...registerInfo, [name]: value })
-
-        if (name === "memberLoginId") {
-            setDuplicateCheck(prev => ({ ...prev, id: false }));
-        }
-        if (name === "memberEmail") {
-            setDuplicateCheck(prev => ({ ...prev, email: false }));
-        }
-        let errorMsg = ""
-        if (name == "memberLoginId") {
-            if (!idRegex.test(value)) {
-                errorMsg = "아이디는 영문, 숫자 포함 7~16자여야 합니다."
-            }
-        } else if (name == "memberPassword") {
-            if (!passwordRegex.test(value)) {
-                errorMsg = "비밀번호는 영문, 숫자, 특수문자 포함 8~16자여야 합니다."
-            }
-        } else if (name == "passwordConfirm") {
-            if (value != registerInfo.memberPassword) {
-                errorMsg = "비밀번호가 일치하지 않습니다."
-            }
-        } else if (name == "memberEmail") {
-            if (!emailRegex.test(value)) {
-                errorMsg = "이메일이 올바른 형식이 아닙니다."
-            }
-        }
-        setValidationErrors(prev => ({ ...prev, [name]: errorMsg }))
-
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // 🔥 [추가] 중복 확인 여부 검사
-        if (!duplicateCheck.id) {
-            alert("아이디 중복 확인을 해주세요.");
-            return;
-        }
-        if (!duplicateCheck.email) {
-            alert("이메일 중복 확인을 해주세요.");
-            return;
-        }
-
-        if (registerInfo.memberPassword !== registerInfo.passwordConfirm) {
-            alert("비밀번호가 일치하지 않습니다.");
-            return;
-        }
-        if (!emailVerification.verified) {
-            alert("이메일 인증을 완료해주세요.");
-            return;
-        }
-        const finalMemberInfo = {
-            ...registerInfo,
-            // 예: "서울시 강남구" + " " + "101호" -> "서울시 강남구 101호"
-            memberAddress: `${registerInfo.memberAddress} ${detailAddress}`.trim()
-        };
-
-        try {
-            const result = await dispatch(registerAsync(finalMemberInfo));
-            if (registerAsync.fulfilled.match(result)) {
-                alert("회원가입에 성공했습니다. 로그인 페이지로 이동합니다.");
-                navigate("/auth/login");
-            } else {
-                alert(result.payload || "입력 내용을 확인해주세요.");
-            }
-        } catch (error) {
-            console.error("회원가입 에러", error)
-            alert("오류가 발생했습니다.");
-        }
-    }
-    const today = new Date().toISOString().split("T")[0];
+const RegisterPageComponent = (props) => {
+    const {
+        step, setStep, registerInfo, detailAddress, setDetailAddress,
+        agreements, setAgreements, duplicateCheck, validationErrors,
+        emailVerification, setEmailVerification, handleChange,
+        handleIdCheck, handleSendMail, handleVerifyCode, handleSubmit,
+        isLoading, error,
+        handleNextStep,
+        handleAgreementChange,
+        handleAllAgreementChange,
+        handleAddressSearch,
+        today
+    } = props;
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-white pt-10 md:pt-20 pb-20">
@@ -295,7 +75,23 @@ const RegisterPageComponent = () => {
                                 <span className="ml-2 text-sm text-gray-800 font-medium"><span className="text-[#2b4075]">(필수)</span> 서비스 이용약관 동의</span>
                             </label>
                             <div className="h-32 overflow-y-auto border border-gray-200 p-3 text-xs text-gray-500 bg-white rounded leading-relaxed scrollbar-thin scrollbar-thumb-gray-300">
-                                (약관 내용 생략...)
+                                제1조 (목적)
+                                본 약관은 회사가 제공하는 서비스의 이용과 관련하여 회사와 회원의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+
+                                제2조 (용어의 정의)
+                                1. "서비스"라 함은 구현되는 단말기와 상관없이 회원이 이용할 수 있는 제반 서비스를 의미합니다.
+                                2. "회원"이라 함은 회사의 서비스에 접속하여 본 약관에 따라 회사와 이용계약을 체결하고 회사가 제공하는 서비스를 이용하는 고객을 말합니다.
+
+                                제3조 (약관의 게시와 개정)
+                                1. 회사는 본 약관의 내용을 회원이 쉽게 알 수 있도록 서비스 초기 화면에 게시합니다.
+                                2. 회사는 관련 법령을 위배하지 않는 범위에서 본 약관을 개정할 수 있습니다.
+
+                                제4조 (회원가입)
+                                1. 이용자는 회사가 정한 가입 양식에 따라 회원정보를 기입한 후 본 약관에 동의한다는 의사표시를 함으로서 회원가입을 신청합니다.
+                                2. 회사는 제1항과 같이 회원으로 가입할 것을 신청한 이용자 중 다음 각 호에 해당하지 않는 한 회원으로 등록합니다.
+
+                                제5조 (회원의 의무)
+                                회원은 관계법령, 본 약관의 규정, 이용안내 및 서비스와 관련하여 공지한 주의사항, 회사가 통지하는 사항 등을 준수하여야 합니다.
                             </div>
                         </div>
 
@@ -311,7 +107,25 @@ const RegisterPageComponent = () => {
                                 <span className="ml-2 text-sm text-gray-800 font-medium"><span className="text-[#2b4075]">(필수)</span> 개인정보 수집 및 이용 동의</span>
                             </label>
                             <div className="h-32 overflow-y-auto border border-gray-200 p-3 text-xs text-gray-500 bg-white rounded leading-relaxed scrollbar-thin scrollbar-thumb-gray-300">
-                                (약관 내용 생략...)
+                                1. 수집하는 개인정보 항목
+                                회사는 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은 개인정보를 수집하고 있습니다.
+                                - 수집항목 : 이름, 로그인ID, 비밀번호, 휴대전화번호, 이메일, 생년월일
+                                - 자동수집항목 : 접속 로그, 쿠키, 접속 IP 정보
+
+                                2. 개인정보의 수집 및 이용목적
+                                회사는 수집한 개인정보를 다음의 목적을 위해 활용합니다.
+                                - 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산
+                                - 회원 관리 : 회원제 서비스 이용에 따른 본인확인, 개인식별, 불량회원의 부정 이용 방지와 비인가 사용 방지
+                                - 민원 처리 : 가입 의사 확인, 연령 확인, 불만처리 등 민원처리, 고지사항 전달
+
+                                3. 개인정보의 보유 및 이용기간
+                                원칙적으로, 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 아래와 같이 관계법령에서 정한 일정한 기간 동안 회원정보를 보관합니다.
+                                - 보존 항목 : 로그인ID, 결제기록
+                                - 보존 근거 : 전자상거래등에서의 소비자보호에 관한 법률
+                                - 보존 기간 : 5년 (계약 또는 청약철회 등에 관한 기록)
+
+                                4. 동의 거부 권리 및 불이익
+                                귀하는 개인정보 수집 및 이용에 동의하지 않을 권리가 있으나, 동의를 거부할 경우 회원가입 및 서비스 이용에 제한이 있을 수 있습니다.
                             </div>
                         </div>
 
@@ -327,7 +141,17 @@ const RegisterPageComponent = () => {
                                 <span className="ml-2 text-sm text-gray-800 font-medium">(선택) 마케팅 정보 수신 동의</span>
                             </label>
                             <div className="h-24 overflow-y-auto border border-gray-200 p-3 text-xs text-gray-500 bg-white rounded leading-relaxed scrollbar-thin scrollbar-thumb-gray-300">
-                                (약관 내용 생략...)
+                                1. 마케팅 및 광고 활용 목적
+                                신규 서비스(제품) 개발 및 맞춤 서비스 제공, 이벤트 및 광고성 정보 제공 및 참여기회 제공, 접속 빈도 파악 또는 회원의 서비스 이용에 대한 통계 등을 목적으로 개인정보를 처리합니다.
+
+                                2. 수집 및 이용하는 개인정보 항목
+                                - 성명, 휴대전화번호, 이메일, 생년월일, 성별
+
+                                3. 보유 및 이용 기간
+                                - 회원 탈퇴 시 또는 동의 철회 시까지
+
+                                4. 동의 거부 권리 및 불이익
+                                귀하는 마케팅 정보 수신에 대한 동의를 거부할 권리가 있습니다. 동의를 거부하더라도 기본 서비스 이용에는 제한이 없으나, 이벤트 및 혜택 안내를 받으실 수 없습니다.
                             </div>
                         </div>
 
@@ -502,7 +326,7 @@ const RegisterPageComponent = () => {
                                 </button>
                             </div>
                             <div className="flex items-center border-b border-gray-300 py-2">
-                                 <span className="text-gray-400 w-8 mr-2 flex justify-center">
+                                <span className="text-gray-400 w-8 mr-2 flex justify-center">
                                     {/* 아이콘 (집 모양) */}
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                                 </span>
@@ -510,7 +334,7 @@ const RegisterPageComponent = () => {
                                     name="detailAddress"
                                     value={detailAddress}
                                     placeholder="상세주소"
-                                    onChange={(e)=>setDetailAddress(e.target.value)}
+                                    onChange={(e) => setDetailAddress(e.target.value)}
                                     className="flex-1 appearance-none bg-transparent border-none text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none cursor-pointer"
                                 />
                             </div>

@@ -98,7 +98,11 @@ const DailyUsePageComponent = ({
               center: "title",
               end: "next",
             }}
-            dateClick={facility ? handleDateClick : undefined}
+            dateClick={
+              facility === 2 || (facility && selectedSpace)
+                ? handleDateClick
+                : undefined
+            }
             dayCellContent={(arg) => arg.date.getDate()}
             validRange={{
               start: new Date().toISOString().split("T")[0],

@@ -67,7 +67,7 @@ const ProgramEditPage = () => {
         const res = await programModify(programId, formData);
         console.log(res);
         alert("수정 완료");
-        navigate(-1);
+        window.location.reload();
       } catch (error) {
         console.error("보내기 실패", error);
       }

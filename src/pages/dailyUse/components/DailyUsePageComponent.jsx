@@ -2,6 +2,7 @@ import "../../../styles/calendar.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import PaymentButton from "../../../components/payment/PaymentButton";
 
 const DailyUsePageComponent = ({
   facilities,
@@ -14,7 +15,7 @@ const DailyUsePageComponent = ({
   selectedDate,
   handleDateClick,
   handleTimeClick,
-  submitHandler,
+  handlePayment,
   selectedTime,
   availableTime,
 }) => {
@@ -194,12 +195,13 @@ const DailyUsePageComponent = ({
                     </span>
                   </div>
                 </div>
-                <button
+                {/* <button
                   className="w-full mt-4 bg-blue-900 text-white py-2 rounded"
                   onClick={submitHandler}
                 >
                   예약 진행
-                </button>
+                </button> */}
+                <PaymentButton info={handlePayment()} />
               </div>
             )
           ) : !space ? (
@@ -274,12 +276,7 @@ const DailyUsePageComponent = ({
               </div>
 
               {selectedTime && selectedTime.length > 0 && (
-                <button
-                  className="w-full mt-4 bg-blue-900 text-white py-2 rounded"
-                  onClick={submitHandler}
-                >
-                  예약 진행
-                </button>
+                <PaymentButton info={handlePayment()} />
               )}
             </div>
           )}

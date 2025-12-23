@@ -54,11 +54,11 @@ const PartnerMyComponent = ({ data }) => {
             </span>
           </Link>
         </li>
-
-        <li>
-          <Link
-            to="/partner/pwEditPage"
-            className="
+        {data.socialLogin == "LOCAL" && (
+          <li>
+            <Link
+              to="/partner/pwEditPage"
+              className="
               group block 
               bg-white hover:bg-blue-50 
               text-gray-800 font-semibold 
@@ -69,19 +69,19 @@ const PartnerMyComponent = ({ data }) => {
               flex items-center justify-between
               border border-gray-100 hover:border-blue-300
             "
-          >
-            <span className="flex items-center gap-3">
-              <span className="text-blue-500 group-hover:text-blue-700 transition">
-                <RiLockPasswordLine className="w-4 h-4 sm:w-7 sm:h-7 fill-blue-950" />
+            >
+              <span className="flex items-center gap-3">
+                <span className="text-blue-500 group-hover:text-blue-700 transition">
+                  <RiLockPasswordLine className="w-4 h-4 sm:w-7 sm:h-7 fill-blue-950" />
+                </span>
+                비밀번호 변경
               </span>
-              비밀번호 변경
-            </span>
-            <span className="text-gray-400 group-hover:text-blue-500 transition">
-              &gt;
-            </span>
-          </Link>
-        </li>
-
+              <span className="text-gray-400 group-hover:text-blue-500 transition">
+                &gt;
+              </span>
+            </Link>
+          </li>
+        )}
         <li>
           <Link
             to="/partner/myReservation"

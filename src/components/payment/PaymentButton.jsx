@@ -64,14 +64,5 @@ const PaymentButton = ({ info }) => {
         </button>
     );
   };
-  return (
-    <button
-      onClick={handlePayment}
-      disabled={!buyer}
-      className="px-8 py-3 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-700 transition h-[48px]"
-    >
-      {buyer ? `${info.price?.toLocaleString()}원 결제하기` : "로딩 중..."}
-    </button>
-  );
-};
+
 export default PaymentButton;

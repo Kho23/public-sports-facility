@@ -36,7 +36,11 @@ const MemberEditComponent = ({
               className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 transition"
               type="text"
               name="memberLoginId"
-              value={data.memberLoginId}
+              value={
+                data.socialLogin === "LOCAL"
+                  ? data.memberLoginId
+                  : "소셜 로그인"
+              }
               disabled
             />
           </li>

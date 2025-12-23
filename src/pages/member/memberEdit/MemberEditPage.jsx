@@ -21,6 +21,7 @@ const MemberEditPage = () => {
     const f = async () => {
       const data = await getOne();
       setData(data);
+      console.log("data", data);
       if (data.memberBirthDate)
         setUserBirth(data.memberBirthDate.substring(0, 10));
 

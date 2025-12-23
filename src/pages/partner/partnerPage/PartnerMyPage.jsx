@@ -22,7 +22,7 @@ const PartnerMyPage = () => {
 
   useEffect(() => {
     var member = getCookie("member");
-    if (isLoggedIn && member.memberId) {
+    if (isLoggedIn && member.loginId) {
       const f = async () => {
         try {
           const data = await getOne();

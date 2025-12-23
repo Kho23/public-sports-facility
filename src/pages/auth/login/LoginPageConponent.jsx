@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { login } from "../../api/authApi";
-import useCustomMove from "../../hooks/useCustomMove";
+import { login } from "../../../api/authApi";
+import useCustomMove from "../../../hooks/useCustomMove";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAsync } from "../../store/auth/authSlice";
-import SocialLogin from "./SocialLogin";
+import { loginAsync } from "../../../store/auth/authSlice";
+import SocialLogin from "../SocialLogin";
 
 const initData = {
   id: "",

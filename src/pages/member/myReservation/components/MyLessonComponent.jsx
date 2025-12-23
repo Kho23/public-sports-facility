@@ -1,55 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  cancelRegistration,
-  getRegistrationList,
-} from "../../../../api/memberApi";
+import React from "react";
 import { formatter } from "../../../../api/noticeApi";
 
-const initState = [
-  {
-    registrationId: 0,
-    lessonId: 0,
-    lessonTitle: "",
-    teacherName: "",
-    createdAt: "",
-    status: "",
-  },
-];
-
-const MyLessonComponent = () => {
-  const [registration, setRegistration] = useState([]);
-
-  useEffect(() => {
-    try {
-      const get = async () => {
-        const data = await getRegistrationList();
-        setRegistration(data);
-        if (data == null || data.length == 0) setRegistration(initState);
-        console.log(data);
-      };
-      get();
-    } catch (error) {
-      console.log(error);
-      alert("수강신청 목록 조회 중 오류 발생");
-    }
-  }, []);
-
-  // 삭제 핸들러 (사용자 확인 추가 권장)
-  const handleClickDelete = async (id) => {
-    if (!window.confirm("정말로 수강신청을 취소하시겠습니까?")) return; // 실수 방지용 확인창 추가
-
-    try {
-      const data = await cancelRegistration(id);
-      console.log(data);
-      alert("취소가 완료되었습니다.");
-      // 취소 후 목록을 새로고침하거나 상태를 업데이트하는 로직이 필요할 수 있습니다.
-      window.location.reload(); // 간단하게 새로고침 (혹은 state에서 filter로 제거)
-    } catch (error) {
-      alert("취소 중 오류가 발생했습니다.");
-      console.log("취소 중 오류 발생 = ", error);
-    }
-  };
-
+const MyLessonComponent = ({ registration, handleClickDelete }) => {
   return (
     <div className="flex flex-col items-center min-h-screen bg-white pt-10 md:pt-20">
       <div className="w-full max-w-4xl px-4 mb-8">
@@ -88,16 +40,12 @@ const MyLessonComponent = () => {
 
                 <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-2 sm:gap-4">
                   <div className="flex items-center">
-                    <span className="font-medium mr-2 text-gray-400">
-                      강사명
-                    </span>
+                    <span className="font-medium mr-2 text-gray-400">강사명</span>
                     <span>{i.teacherName}</span>
                   </div>
                   <span className="hidden sm:inline text-gray-300">|</span>
                   <div className="flex items-center">
-                    <span className="font-medium mr-2 text-gray-400">
-                      신청시간
-                    </span>
+                    <span className="font-medium mr-2 text-gray-400">신청시간</span>
                     <span className="font-mono text-gray-500">
                       {formatter(i)}
                     </span>
@@ -107,7 +55,6 @@ const MyLessonComponent = () => {
 
               {/* 상태 및 액션 버튼 영역 */}
               <div className="flex items-center gap-3">
-                {/* 상태 배지 */}
                 <span
                   className={`px-4 py-2 rounded-full text-sm font-bold border ${
                     i.status === "CANCELED"
@@ -117,14 +64,13 @@ const MyLessonComponent = () => {
                       : "bg-gray-50 text-gray-600 border-gray-200"
                   }`}
                 >
-                  {i.status == "CANCELED"
+                  {i.status === "CANCELED"
                     ? "취소됨"
-                    : i.status == "APPLIED"
+                    : i.status === "APPLIED"
                     ? "신청 완료"
                     : "상태 미정"}
                 </span>
 
-                {/* 취소 버튼: 상태가 '취소'가 아닐 때만 노출 */}
                 {i.status !== "CANCELED" && (
                   <button
                     onClick={() => handleClickDelete(i.registrationId)}
@@ -137,7 +83,6 @@ const MyLessonComponent = () => {
             </div>
           ))
         ) : (
-          /* 데이터 없을 때 */
           <div className="w-full border border-gray-300 bg-gray-50 p-12 text-center text-gray-500 rounded-sm">
             수강신청 목록이 없습니다.
           </div>

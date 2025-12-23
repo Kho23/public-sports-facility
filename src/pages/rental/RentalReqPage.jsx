@@ -4,8 +4,6 @@ import RentalReqComponent from "./components/RentalReqComponent";
 import { useNavigate } from "react-router-dom";
 import { findByFacilityId } from "../../api/dailyUseApi";
 import { getAvailableTime } from "../../api/commonApi";
-import { rentalRequest } from "../../api/rentalApi";
-import AlertModalComponent from "../../components/alertModal/AlertModalComponent";
 import ModalComponent from "../../components/alertModal/AlertModalComponent";
 
 const RentalReqPage = () => {
@@ -26,12 +24,13 @@ const RentalReqPage = () => {
   const [selectDate, setSelectDate] = useState(null);
   const [selectTime, setSelectTime] = useState([]);
   const [formData, setFormData] = useState({});
-  const navigate = useNavigate();
+  // const [paymentInfo, setPaymentInfo] = useState({});
 
   const priceCalc = () => {
     if (!selectTime) return 0;
 
     const selected = facilities.find((i) => i.id === facility);
+    if (!selected) return 0;
     const AMprice = selected.AMprice;
     const PMprice = selected.PMprice;
 
@@ -84,34 +83,6 @@ const RentalReqPage = () => {
   };
 
   const findFacilityFn = (id) => {
-    setFacility(id);
-    const f = async () => {
-      try {
-        const res = await findByFacilityId(id);
-        setGetSpace(res);
-      } catch (err) {
-        console.error("시설 조회 실패", err);
-        alert("해당 시설 조회 중 오류가 발생했습니다");
-      }
-    };
-    f();
-  };
-
-  const infoHandler = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const selectTimeFn = (i) => {
-    setSelectTime((j) => {
-      let final = j.includes(i) ? j.filter((t) => t !== i) : [...j, i];
-      return final.sort(
-        (a, b) => parseInt(a.slice(0, 2)) - parseInt(b.slice(0, 2))
-      );
-    });
-  };
-
-  const reservationHandler = () => {
     if (!formData.name) {
       setAlertModal({
         open: true,
@@ -147,46 +118,47 @@ const RentalReqPage = () => {
       });
       return;
     }
-    if (selectTime.length == 0) {
-      setAlertModal({
-        open: true,
-        type: "alert",
-        message: "시간을 선택해 주세요",
-        onConfirm: () => {
-          setAlertModal((i) => ({ ...i, open: false }));
-        },
-      });
-      return;
-    }
 
+    setFacility(id);
+    const f = async () => {
+      try {
+        const res = await findByFacilityId(id);
+        setGetSpace(res);
+      } catch (err) {
+        console.error("시설 조회 실패", err);
+        alert("해당 시설 조회 중 오류가 발생했습니다");
+      }
+    };
+    f();
+  };
+
+  const infoHandler = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const selectTimeFn = (i) => {
+    setSelectTime((j) => {
+      let final = j.includes(i) ? j.filter((t) => t !== i) : [...j, i];
+      return final.sort(
+        (a, b) => parseInt(a.slice(0, 2)) - parseInt(b.slice(0, 2))
+      );
+    });
+  };
+
+  const paymentHandler = () => {
     const first = selectTime[0].split("~")[0];
     const last = selectTime[selectTime.length - 1].split("~")[1];
 
-    const startTime = `${selectDate}T${first}`;
-    const endTime = `${selectDate}T${last}`;
-
-    const finalData = {
+    return {
       ...formData,
-      spaceId: space,
-      startTime: startTime,
-      endTime: endTime,
+      title: "시설 대관 비용",
+      productType: "RENTAL",
+      lessonId: space,
+      startTime: `${selectDate}T${first}`,
+      endTime: `${selectDate}T${last}`,
       price: priceCalc(),
     };
-
-    const f = async () => {
-      const res = await rentalRequest(finalData);
-    };
-    f();
-
-    setAlertModal({
-      open: true,
-      type: "alert",
-      message: "신청이 완료되었습니다",
-      onConfirm: () => {
-        setAlertModal((i) => ({ ...i, open: false }));
-        navigate("/");
-      },
-    });
   };
 
   return (
@@ -205,7 +177,8 @@ const RentalReqPage = () => {
         selectTime={selectTime}
         handleDateClick={handleDateClick}
         scheduleData={scheduleData}
-        reservationHandler={reservationHandler}
+        paymentHandler={paymentHandler}
+        formData={formData}
       />
       {alertModal.open && (
         <ModalComponent

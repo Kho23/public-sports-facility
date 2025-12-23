@@ -1,6 +1,7 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import PaymentButton from "../../../components/payment/PaymentButton";
 import "../../../styles/calendar.css";
 import { useState } from "react";
 
@@ -18,7 +19,7 @@ const RentalReqComponent = ({
   space,
   selectTimeFn,
   selectTime,
-  reservationHandler,
+  paymentHandler,
 }) => {
   const [viewData, setViewData] = useState({});
 
@@ -202,7 +203,6 @@ const RentalReqComponent = ({
               ※ 시설 파손 시 추가 요금이 부과될 수 있습니다.
             </p>
           </div>
-
           {!facility || !space ? (
             <p className="text-gray-500 text-sm mt-4">
               시설과 장소를 먼저 선택해주세요.
@@ -227,7 +227,6 @@ const RentalReqComponent = ({
                   ))}
                 </div>
               </div>
-
               <div className="mt-4">
                 <div className="border-t border-b border-gray-300 py-4 space-y-3">
                   <p className="text-lg font-bold text-gray-800 mb-1">
@@ -275,15 +274,8 @@ const RentalReqComponent = ({
                   <p>※ 결제 완료 후 예약이 확정됩니다.</p>
                 </div>
               </div>
-
-              {selectTime && (
-                <button
-                  type="button"
-                  onClick={reservationHandler}
-                  className="w-full mt-4 bg-blue-900 text-white text-sm font-semibold py-2.5 rounded-md hover:bg-blue-800 transition"
-                >
-                  예약 진행
-                </button>
+              {selectTime?.length > 0 && (
+                <PaymentButton info={paymentHandler()} />
               )}
             </div>
           )}

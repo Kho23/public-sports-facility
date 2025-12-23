@@ -36,6 +36,9 @@ const PaymentButton = ({ info }) => {
         if (rsp.success) {
           // 3. 백엔드 검증 요청 (헤더 설정 삭제함 -> 인터셉터가 처리)
           const requestData = {
+            name: info.name,
+            phoneNumber: info.phoneNumber,
+            memo: info.meno,
             paymentId: rsp.imp_uid,
             productType: info.productType,
             targetId: info.lessonId, // props로 받은 ID

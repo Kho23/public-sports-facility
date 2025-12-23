@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import PartnerRequestComponent from "./components/PartnerRequestComponent";
 import { useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { partnerReqFileRegister } from "../../../api/memberApi";
 import { getPartnerStatus } from "../../../api/partnerApi";
+import ModalComponent from "../../../components/alertModal/AlertModalComponent";
 
 const PartnerRequestPage = () => {
+  const [alertModal, setAlertModal] = useState({
+    open: false,
+    type: "", // alert | confirm
+    message: "",
+    onConfirm: null,
+  });
+
   const [partnerClass, setPartnerClass] = useState({
     수영: false,
     헬스: false,
@@ -45,8 +53,12 @@ const PartnerRequestPage = () => {
 
   useEffect(() => {
     const status = async () => {
-      const res = await getPartnerStatus();
-      setStatusCheck(res);
+      try {
+        const res = await getPartnerStatus();
+        setStatusCheck(res);
+      } catch (err) {
+        console.error("파트너 상태 조회 실패", err);
+      }
     };
     status();
 
@@ -94,10 +106,17 @@ const PartnerRequestPage = () => {
   };
 
   const cancelHandler = () => {
-    if (window.confirm("파트너 신청을 취소하시겠습니까?")) {
-      alert("신청이 취소되었습니다.");
-      navigate(`/member`);
-    }
+    setAlertModal({
+      open: true,
+      type: "confirm",
+      message: "파트너 신청을 취소하시겠습니까?",
+      onConfirm: async (i) => {
+        setAlertModal({ open: false });
+        if (i !== "ok") return;
+        alert("신청이 취소되었습니다");
+        navigate(`/member`);
+      },
+    });
   };
 
   const requestHandler = async () => {
@@ -134,21 +153,30 @@ const PartnerRequestPage = () => {
   };
 
   return (
-    <PartnerRequestComponent
-      partnerAgree={partnerAgree}
-      checkClassHandler={checkClassHandler}
-      checkAgreeHandler={checkAgreeHandler}
-      checkFileHandler={checkFileHandler}
-      checkAllAgreeHandler={checkAllAgreeHandler}
-      allChecked={allChecked}
-      resumeRef={resumeRef}
-      certRef={certRef}
-      bankRef={bankRef}
-      fileName={fileName}
-      cancelHandler={cancelHandler}
-      requestHandler={requestHandler}
-      statusCheck={statusCheck}
-    />
+    <div>
+      <PartnerRequestComponent
+        partnerAgree={partnerAgree}
+        checkClassHandler={checkClassHandler}
+        checkAgreeHandler={checkAgreeHandler}
+        checkFileHandler={checkFileHandler}
+        checkAllAgreeHandler={checkAllAgreeHandler}
+        allChecked={allChecked}
+        resumeRef={resumeRef}
+        certRef={certRef}
+        bankRef={bankRef}
+        fileName={fileName}
+        cancelHandler={cancelHandler}
+        requestHandler={requestHandler}
+        statusCheck={statusCheck}
+      />
+      {alertModal.open && (
+        <ModalComponent
+          type={alertModal.type}
+          message={alertModal.message}
+          onConfirm={alertModal.onConfirm}
+        />
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import GuideEditComponent from "./components/GuideEditComponent";
@@ -32,12 +31,14 @@ const GuideEditPage = () => {
   useEffect(() => {
     const changeCategory = async () => {
       const upper = category.toUpperCase();
-
-      const res = await getCategory(upper);
-      setSavedFile(res.uploadFiles);
-      setContent(res.html ?? "");
-
-      setcategoryFinalName(categoryName[upper]);
+      try {
+        const res = await getCategory(upper);
+        setSavedFile(res.uploadFiles);
+        setContent(res.html ?? "");
+        setcategoryFinalName(categoryName[upper]);
+      } catch (e) {
+        console.error(e);
+      }
     };
     changeCategory();
   }, [category]);
@@ -58,9 +59,9 @@ const GuideEditPage = () => {
     setFilelName(fileList);
   };
 
-  const saveHandler = async () => {
+  const saveHandler = () => {
     const formData = new FormData();
-    const guideUploadFile = guideFiles.current.files;
+    const guideUploadFile = guideFiles.current?.files;
     for (var i of guideUploadFile) {
       formData.append("files", i);
     }
@@ -75,7 +76,6 @@ const GuideEditPage = () => {
       onConfirm: async (i) => {
         setAlertModal({ open: false });
         if (i !== "ok") return;
-
         await upload(formData);
         window.location.reload();
       },

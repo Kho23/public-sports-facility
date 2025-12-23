@@ -1,4 +1,3 @@
-import React from "react";
 import { PiNoteDuotone } from "react-icons/pi";
 
 const PartnerRequestComponent = ({

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import SupportComponent from "./components/SupportComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import { supportGetList } from "../../../api/memberApi";
-import SupportDetailComponent from "./components/SupportDetailComponent";
 
 const SupportPage = () => {
   const navigate = useNavigate();
@@ -10,15 +9,16 @@ const SupportPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const res = await supportGetList();
-      setSupportList(res);
+      try {
+        const res = await supportGetList();
+        setSupportList(res);
+      } catch (err) {
+        console.error("목록 조회 실패", err);
+        alert("목록 조회 중 오류가 발생했습니다");
+      }
     };
     f();
   }, []);
-
-  useEffect(() => {
-    console.log("supportList", supportList);
-  }, [supportList]);
 
   const supportPageHandler = () => {
     navigate(`/member/support/write`);

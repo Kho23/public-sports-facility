@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import PwEditComponent from "./components/PwEditComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import { changePassword, getOne, register } from "../../../api/memberApi";
+import ModalComponent from "../../../components/alertModal/AlertModalComponent";
 
 const PwEditPage = () => {
+  const [alertModal, setAlertModal] = useState({
+    open: false,
+    type: "", // alert | confirm
+    message: "",
+    onConfirm: null,
+  });
   const [data, setData] = useState({});
   const [formCheck, setFormCheck] = useState(data);
   const [pwCorrect, setPwCorrect] = useState(false);
@@ -21,8 +28,13 @@ const PwEditPage = () => {
 
   useEffect(() => {
     const f = async () => {
-      const data = await getOne();
-      setData(data);
+      try {
+        const data = await getOne();
+        setData(data);
+      } catch (err) {
+        console.error("회원 정보 조회 실패", err);
+        alert("회원 정보를 불러오지 못했습니다");
+      }
     };
     f();
   }, []);
@@ -37,21 +49,42 @@ const PwEditPage = () => {
 
   const clickHandler = async (e) => {
     e.preventDefault();
-    try {
-      const res = await changePassword(formCheck);
-      alert("비밀번호 변경이 완료되었습니다");
-      navigate("/");
-    } catch (err) {
-      alert(err.response.data);
-    }
+
+    setAlertModal({
+      open: true,
+      type: "confirm",
+      message: "비밀번호를 변경하시겠습니까?",
+      onConfirm: async (i) => {
+        setAlertModal({ open: false });
+        if (i !== "ok") return;
+
+        try {
+          await changePassword(formCheck);
+          alert("비밀번호 변경이 완료되었습니다");
+          navigate("/");
+        } catch (err) {
+          console.error("비밀번호 변경 실패", err);
+          alert(err?.response?.data ?? "비밀번호 변경 중 오류가 발생했습니다");
+        }
+      },
+    });
   };
 
   return (
-    <PwEditComponent
-      changeHandler={changeHandler}
-      clickHandler={clickHandler}
-      pwCorrect={pwCorrect}
-    />
+    <div>
+      <PwEditComponent
+        changeHandler={changeHandler}
+        clickHandler={clickHandler}
+        pwCorrect={pwCorrect}
+      />
+      {alertModal.open && (
+        <ModalComponent
+          type={alertModal.type}
+          message={alertModal.message}
+          onConfirm={alertModal.onConfirm}
+        />
+      )}
+    </div>
   );
 };
 

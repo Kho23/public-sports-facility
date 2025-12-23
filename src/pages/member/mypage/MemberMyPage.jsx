@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MemberMyComponent from "./components/MemberMyComponent";
-import axios from "axios";
 import { getOne } from "../../../api/memberApi";
 import { useSelector } from "react-redux";
 import useCustomMove from "../../../hooks/useCustomMove";
@@ -25,7 +24,6 @@ const MemberMyPage = () => {
       const f = async () => {
         try {
           const data = await getOne();
-          console.log("data2", data);
           setData(data);
         } catch (err) {
           console.error(err);
@@ -35,7 +33,11 @@ const MemberMyPage = () => {
     }
   }, [isLoggedIn, memberId]);
 
-  return <MemberMyComponent data={data} />;
+  return (
+    <div>
+      <MemberMyComponent data={data} />
+    </div>
+  );
 };
 
 export default MemberMyPage;

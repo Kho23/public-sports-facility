@@ -6,12 +6,18 @@ const AttendanceListPage = () => {
   const [data, setData] = useState([]);
   const [titleForSearch, setTitleForSearch] = useState("");
 
-  useEffect(() => {
-    const f = async () => {
-      const res = await getMyLessons();
+  const fetchLessons = async (fn, message) => {
+    try {
+      const res = await fn();
       setData(res);
-    };
-    f();
+    } catch (err) {
+      console.error(message, err);
+      alert("오류가 발생했습니다");
+    }
+  };
+
+  useEffect(() => {
+    fetchLessons(getMyLessons, "전체 목록 조회 실패");
   }, []);
 
   const setSearchTitle = (e) => {
@@ -19,18 +25,19 @@ const AttendanceListPage = () => {
   };
 
   const searchHandler = async () => {
-    if (!titleForSearch.trim) {
-      const res = await getMyLessons();
-      setData(res);
+    if (!titleForSearch.trim()) {
+      fetchLessons(getMyLessons, "전체 목록 조회 실패");
+      return;
     }
 
-    const res = await getMySearchLesson(titleForSearch);
-    setData(res);
+    fetchLessons(
+      () => getMySearchLesson(titleForSearch),
+      "검색 목록 조회 실패"
+    );
   };
 
   const resetHandler = async () => {
-    const res = await getMyLessons();
-    setData(res);
+    fetchLessons(getMyLessons, "전체 목록 조회 실패");
   };
 
   return (

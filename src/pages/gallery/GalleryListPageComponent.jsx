@@ -1,72 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { getGalleryList, increaseViewCount } from '../../api/galleryApi'
-import { useSearchParams } from 'react-router-dom'
-import useCustomMove from '../../hooks/useCustomMove'
+import React from 'react'
 import PageComponent from '../../components/common/page/PageComponent'
 
-const GalleryListPageComponent = () => {
-  const [list, setList] = useState([])
-  const [searchParam, setSearchParam] = useSearchParams();
-
-  // 초기값 설정
-  const [searchingTitle, setSearchingTitle] = useState(() => searchParam.get("keyword") || "");
-  const [category, setCategory] = useState(() => searchParam.get("type") || "t");
-
-  const { moveToGalleryDetail } = useCustomMove()
-
-  const [pageData, setPageData] = useState({
-    pageNumList: [],
-    prev: false,
-    next: false,
-    current: 1,
-    totalCnt: 0,
-    prevPage: 0,
-    nextPage: 0
-  });
-
-  useEffect(() => {
-    const get = async () => {
-      try {
-        const paramObj = {
-          page: searchParam.get("page") || 1,
-          size: searchParam.get("size") || 10,
-          type: searchParam.get("type") || "t",
-          keyword: searchParam.get("keyword") || ""
-        };
-        const data = await getGalleryList(paramObj);
-
-        setList(data.dtoList)
-        setPageData({
-          pageNumList: data.pageNumList,
-          prev: data.prev,
-          next: data.next,
-          current: data.current,
-          prevPage: data.prevPage,
-          nextPage: data.nextPage,
-          totalCnt: data.totalCnt
-        });
-      } catch (error) {
-        console.log("갤러리 로드 중 오류 발생 ", error)
-      }
-    };
-    get()
-  }, [searchParam.toString()])
-
-  const handleClick = (id) => {
-    increaseViewCount(id);
-    moveToGalleryDetail(id);
-  }
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setSearchParam({ page: 1, size: 10, type: category, keyword: searchingTitle });
-  };
-
-  const handleSearchChange = (e) => setSearchingTitle(e.target.value);
-  const handleCategory = (e) => setCategory(e.target.value);
-
+const GalleryListPageComponent = ({
+  list,
+  searchingTitle,
+  category,
+  pageData,
+  handleClick,
+  handleSearchSubmit,
+  handleSearchChange,
+  handleCategory
+}) => {
   return (
-<div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6">
       <nav className="text-sm text-gray-500 mb-6">
         홈 &gt; 커뮤니티 &gt; 갤러리
       </nav>
@@ -75,7 +21,7 @@ const GalleryListPageComponent = () => {
       </div>
       <div className="border-b-2 border-gray-400 mb-6" />
 
-      {/* 2. 검색 폼 (공지사항과 동일) */}
+      {/* 검색 폼 */}
       <form
         onSubmit={handleSearchSubmit}
         className="flex justify-end items-center space-x-2 my-4 p-4 bg-gray-100 rounded-md"
@@ -106,17 +52,15 @@ const GalleryListPageComponent = () => {
         </button>
       </form>
 
-      {/* 3. 총 게시물 수 */}
+      {/* 총 게시물 수 */}
       <div className="text-sm mb-2">총 {pageData.totalCnt}건</div>
 
-      {/* 4. 갤러리 목록 (Grid 레이아웃) 혹은 결과 없음 메시지 */}
+      {/* 갤러리 목록 (Grid 레이아웃) 혹은 결과 없음 메시지 */}
       {(!list || list.length === 0) ? (
-        // [수정됨] 목록이 없을 때 표시되는 UI
         <div className="w-full border-t-2 border-gray-700 pt-20 pb-20 text-center text-gray-500">
           갤러리 목록이 존재하지 않습니다.
         </div>
       ) : (
-        // [수정됨] 목록이 있을 때 표시되는 Grid
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-t-2 border-gray-700 pt-6">
           {list.map(gallery => (
             <div
@@ -151,8 +95,7 @@ const GalleryListPageComponent = () => {
         </div>
       )}
 
-      {/* 5. 페이지네이션 컴포넌트 사용 */}
-      {/* 데이터가 있을 때만 페이지네이션을 보여주려면 조건을 추가해도 됩니다 */}
+      {/* 페이지네이션 */}
       {list && list.length > 0 && (
         <div className="mt-8">
           <PageComponent pageData={pageData} />

@@ -1,5 +1,4 @@
 import { Link } from "lucide-react";
-import React from "react";
 import { PiNoteDuotone } from "react-icons/pi";
 
 const RentalComponent = ({ data, cancelHandler }) => {

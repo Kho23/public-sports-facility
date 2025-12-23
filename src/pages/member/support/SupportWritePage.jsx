@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import SupportWriteComponent from "./components/SupportWriteComponent";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supportReqRegister } from "../../../api/memberApi";
 
 const SupportWritePage = () => {
@@ -42,14 +42,12 @@ const SupportWritePage = () => {
       formData.append("supportTitle", support.title);
       formData.append("supportContent", support.content);
 
-      for (let pair of formData.entries()) {
-        console.log("이거 확인!!", pair);
-      }
       try {
         await supportReqRegister(formData);
         alert("문의가 제출되었습니다. 빠른 시일 내에 답변드리겠습니다.");
         navigate(`/member`);
       } catch (err) {
+        console.error("제출 실패", err);
         alert("제출 중 오류가 발생했습니다");
       }
     } else if (support.title.length < 2 && support.content.length >= 5) {

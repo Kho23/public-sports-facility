@@ -6,50 +6,27 @@ import { findByFacilityId } from "../../api/dailyUseApi";
 import { getAvailableTime } from "../../api/commonApi";
 import { rentalRequest } from "../../api/rentalApi";
 import AlertModalComponent from "../../components/alertModal/AlertModalComponent";
+import ModalComponent from "../../components/alertModal/AlertModalComponent";
 
 const RentalReqPage = () => {
+  const [alertModal, setAlertModal] = useState({
+    open: false,
+    type: "", // alert | confirm
+    message: "",
+    onConfirm: null,
+  });
   const facilities = [
     { id: 5, name: "무용실", AMprice: "10000", PMprice: "15000" },
     { id: 4, name: "풋살장", AMprice: "20000", PMprice: "25000" },
   ];
-
   const [getSpace, setGetSpace] = useState([]);
-
   const [facility, setFacility] = useState(null);
   const [space, setSpace] = useState(null);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-
   const [scheduleData, setScheduleData] = useState([]);
-
   const [selectDate, setSelectDate] = useState(null);
   const [selectTime, setSelectTime] = useState([]);
-
   const [formData, setFormData] = useState({});
-
   const navigate = useNavigate();
-
-  const handleDateClick = (i) => {
-    setSelectTime([]);
-    setSelectDate(i.dateStr);
-    const f = async () => {
-      const res = await getAvailableTime(space, i.dateStr);
-      const list = res.map(
-        (j) =>
-          `${j.slice(0, 5)}` +
-          "~" +
-          `${String(Number(j.slice(0, 2)) + 1).padStart(2, "0")}` +
-          ":00"
-      );
-      setScheduleData(list);
-    };
-    f();
-  };
-
-  useEffect(() => {
-    console.log("scheduleData", scheduleData);
-  }, [scheduleData]);
 
   const priceCalc = () => {
     if (!selectTime) return 0;
@@ -67,6 +44,28 @@ const RentalReqPage = () => {
     ).length;
 
     return AMCount * AMprice + PMCount * PMprice;
+  };
+
+  const handleDateClick = (i) => {
+    setSelectTime([]);
+    setSelectDate(i.dateStr);
+    const f = async () => {
+      try {
+        const res = await getAvailableTime(space, i.dateStr);
+        const list = res.map(
+          (j) =>
+            `${j.slice(0, 5)}` +
+            "~" +
+            `${String(Number(j.slice(0, 2)) + 1).padStart(2, "0")}` +
+            ":00"
+        );
+        setScheduleData(list);
+      } catch (err) {
+        console.error("가능한 시간대 조회 실패", err);
+        alert("조회 중 오류가 발생했습니다");
+      }
+    };
+    f();
   };
 
   const timeCheck = (i) => {
@@ -87,8 +86,13 @@ const RentalReqPage = () => {
   const findFacilityFn = (id) => {
     setFacility(id);
     const f = async () => {
-      const res = await findByFacilityId(id);
-      setGetSpace(res);
+      try {
+        const res = await findByFacilityId(id);
+        setGetSpace(res);
+      } catch (err) {
+        console.error("시설 조회 실패", err);
+        alert("해당 시설 조회 중 오류가 발생했습니다");
+      }
     };
     f();
   };
@@ -101,36 +105,57 @@ const RentalReqPage = () => {
   const selectTimeFn = (i) => {
     setSelectTime((j) => {
       let final = j.includes(i) ? j.filter((t) => t !== i) : [...j, i];
-
       return final.sort(
         (a, b) => parseInt(a.slice(0, 2)) - parseInt(b.slice(0, 2))
       );
     });
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setModalMessage("");
-  };
-
   const reservationHandler = () => {
     if (!formData.name) {
-      setModalMessage("신청자 이름을 입력해 주세요");
-      setModalOpen(true);
+      setAlertModal({
+        open: true,
+        type: "alert",
+        message: "신청자 이름을 입력해 주세요",
+        onConfirm: () => {
+          setAlertModal((i) => ({ ...i, open: false }));
+        },
+      });
       return;
     }
 
     if (!formData.phoneNumber) {
-      alert("신청자 번호를 입력해 주세요");
+      setAlertModal({
+        open: true,
+        type: "alert",
+        message: "신청자 번호를 입력해 주세요",
+        onConfirm: () => {
+          setAlertModal((i) => ({ ...i, open: false }));
+        },
+      });
       return;
     }
 
     if (!timeCheck(selectTime)) {
-      alert("연속된 시간만 예약할 수 있습니다");
+      setAlertModal({
+        open: true,
+        type: "alert",
+        message: "연속된 시간만 예약할 수 있습니다",
+        onConfirm: () => {
+          setAlertModal((i) => ({ ...i, open: false }));
+        },
+      });
       return;
     }
     if (selectTime.length == 0) {
-      alert("시간을 선택해 주세요");
+      setAlertModal({
+        open: true,
+        type: "alert",
+        message: "시간을 선택해 주세요",
+        onConfirm: () => {
+          setAlertModal((i) => ({ ...i, open: false }));
+        },
+      });
       return;
     }
 
@@ -153,8 +178,15 @@ const RentalReqPage = () => {
     };
     f();
 
-    alert("신청이 완료되었습니다.");
-    navigate("/");
+    setAlertModal({
+      open: true,
+      type: "alert",
+      message: "신청이 완료되었습니다",
+      onConfirm: () => {
+        setAlertModal((i) => ({ ...i, open: false }));
+        navigate("/");
+      },
+    });
   };
 
   return (
@@ -175,8 +207,12 @@ const RentalReqPage = () => {
         scheduleData={scheduleData}
         reservationHandler={reservationHandler}
       />
-      {modalOpen && (
-        <AlertModalComponent message={modalMessage} onClose={closeModal} />
+      {alertModal.open && (
+        <ModalComponent
+          type={alertModal.type}
+          message={alertModal.message}
+          onConfirm={alertModal.onConfirm}
+        />
       )}
     </div>
   );

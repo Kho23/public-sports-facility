@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getOne, modify } from "../../../api/memberApi";
 import MemberEditComponent from "./components/MemberEditComponent";
+import ModalComponent from "../../../components/alertModal/AlertModalComponent";
 
 const MemberEditPage = () => {
-  const { id } = useParams();
+  const [alertModal, setAlertModal] = useState({
+    open: false,
+    type: "", // alert | confirm
+    message: "",
+    onConfirm: null,
+  });
+
   const [data, setData] = useState({});
   const [formCheck, setFormCheck] = useState(data);
   const [userGender, setUserGender] = useState([false, false]);
@@ -21,15 +28,13 @@ const MemberEditPage = () => {
     const f = async () => {
       const data = await getOne();
       setData(data);
-      console.log("data", data);
       if (data.memberBirthDate)
         setUserBirth(data.memberBirthDate.substring(0, 10));
-
       if (data.memberGender === "남자") setUserGender([true, false]);
       else setUserGender([false, true]);
     };
     f();
-  }, [id]);
+  }, []);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -48,26 +53,42 @@ const MemberEditPage = () => {
     }).open();
   };
 
-  const clickHandler = (e) => {
+  const clickHandler = async (e) => {
     e.preventDefault();
     if (isCheck(formCheck)) {
-      modify(data);
-      alert("수정이 완료되었습니다");
-      navigate("/");
+      setAlertModal({
+        open: true,
+        type: "confirm",
+        message: "내용을 수정하시겠습니까?",
+        onConfirm: async (i) => {
+          if (i !== "ok") return;
+          await modify(data);
+          navigate("/");
+        },
+      });
     } else {
       alert("필수 정보를 모두 입력해 주세요");
     }
   };
 
   return (
-    <MemberEditComponent
-      data={data}
-      openAddress={openAddress}
-      changeHandler={changeHandler}
-      clickHandler={clickHandler}
-      userGender={userGender}
-      userBirth={userBirth}
-    />
+    <div>
+      <MemberEditComponent
+        data={data}
+        openAddress={openAddress}
+        changeHandler={changeHandler}
+        clickHandler={clickHandler}
+        userGender={userGender}
+        userBirth={userBirth}
+      />
+      {alertModal.open && (
+        <ModalComponent
+          type={alertModal.type}
+          message={alertModal.message}
+          onConfirm={alertModal.onConfirm}
+        />
+      )}
+    </div>
   );
 };
 

@@ -12,7 +12,6 @@ const initState = {
 const ProgramEditPage = () => {
   const [data, setData] = useState(initState);
   const { programId } = useParams();
-  const navigate = useNavigate();
   const programFiles = useRef(null);
   const [newfileList, setNewFileList] = useState([]);
   const [deletedFileIds, setDeletedFileIds] = useState([]);

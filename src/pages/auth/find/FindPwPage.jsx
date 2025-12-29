@@ -52,7 +52,7 @@ const FindPwPage = () => {
       setStep(2)
       setTimer(180)
     } catch (error) {
-      alert("메일 발송 중 오류가 발생했습니다.")
+      alert("메일 발송 중 오류가 발생했습니다. "+error)
       console.log("메일 발송중 에러발생 에러내용: ", error)
     }
   }

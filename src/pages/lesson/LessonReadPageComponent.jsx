@@ -85,7 +85,7 @@ const LessonReadPageComponent = ({ lesson, isLoggedIn, navigate }) => {
           ) : lesson.registered ? (
             <button className="px-8 py-3 rounded-lg font-bold text-white bg-gray-400 cursor-not-allowed h-[48px]" disabled>신청 완료됨</button>
           ) : (
-            <PaymentButton info={{...lesson, productType:"LESSON"}} />
+            <PaymentButton info={{...lesson, productType:"LESSON", startTime:'', endTime:'',date:''}} />
           )}
         </div>
       </div>

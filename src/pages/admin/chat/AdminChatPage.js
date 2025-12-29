@@ -18,7 +18,7 @@ const AdminChatPage = () => {
   const chatContainerRef = useRef(null); //스크롤 맨 아래로 내리기 
 
   useEffect(() => {
-    currentRoomIdRef.current = currentRoomId; //현재 선택된 방 ID 로 스톰프 설정?
+    currentRoomIdRef.current = currentRoomId; //현재 선택된 방 ID 로 스톰프 설정
     if (chatContainerRef.current) {
       const { scrollHeight, clientHeight } = chatContainerRef.current;
       chatContainerRef.current?.scrollTo({

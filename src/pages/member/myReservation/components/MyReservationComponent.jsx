@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   PiBookOpenTextDuotone,
   PiBuildingDuotone,
   PiCalendarCheckDuotone,
 } from "react-icons/pi";
+import { useSelector } from "react-redux";
+import useCustomMove from "../../../../hooks/useCustomMove"
 
 const MyReservationComponent = () => {
+  const { isLoggedIn } = useSelector(state => state.auth)
+  const { moveToLogin } = useCustomMove()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert("로그인 후 이용 가능한 서비스입니다.")
+      moveToLogin()
+    }
+  }, [])
+
   const menus = [
     {
       id: 1,

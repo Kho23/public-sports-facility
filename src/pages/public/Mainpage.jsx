@@ -12,9 +12,11 @@ import NoticePreview from "./NoticePreview";
 import { useNavigate } from "react-router-dom";
 import img from "../../images/메인페이지배경.png";
 import LessonPreview from "./LessonPreview";
+import { useSelector } from "react-redux";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector(state => state.auth)
   const menuItems = [
     { title: "이용안내", icon: Info, link: "/guide/time" },
     { title: "프로그램 안내", icon: BookOpen, link: "/program/1" },
@@ -32,9 +34,18 @@ const MainPage = () => {
       title: "예약 내역 조회",
       icon: History,
       link: "/member/myReservation",
+      requireLogin: true,
     },
     { title: "FAQ", icon: HelpCircle, link: "/community/faq" },
   ];
+  const handleClick = (menu) => {
+    if (menu.requireLogin && !isLoggedIn) {
+      alert("로그인이 필요한 서비스입니다. 로그인 후 이용해주세요.")
+      return;
+    }
+    navigate(menu.link)
+
+  }
 
   return (
     <div className="relative w-full min-h-screen">
@@ -66,7 +77,7 @@ const MainPage = () => {
             {menuItems.map((item, index) => (
               <button
                 key={index}
-                onClick={() => navigate(item.link)}
+                onClick={() => handleClick(item)}
                 className="group flex flex-col items-center justify-center p-6 h-[160px]
                   bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-white/40
                   hover:bg-blue-900 hover:border-blue-800 hover:scale-105
@@ -88,7 +99,7 @@ const MainPage = () => {
 
           {/* 메인 컨텐츠 영역 */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {/* 왼쪽: 마감임박 강의목록 */}
             <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-white/40">
               <div className="px-6 py-5 border-b border-slate-200/60 flex justify-between items-center">
@@ -102,7 +113,7 @@ const MainPage = () => {
                   더보기 <ChevronRight size={16} />
                 </button>
               </div>
-              
+
               {/* 수정된 부분: 오른쪽 공지사항과 동일한 구조로 변경 */}
               <div className="h-[300px] overflow-hidden bg-white/50">
                 <div className="h-full overflow-y-auto custom-scrollbar p-2">

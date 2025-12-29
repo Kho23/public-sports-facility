@@ -49,9 +49,9 @@ const LessonListPageComponent = ({
             onClick={() => setCategory(cat.value)}
             className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all border
                 ${category === cat.value
-                  ? "bg-blue-900 text-white border-blue-900 shadow-md transform scale-105"
-                  : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50 hover:text-gray-700"
-                }`}
+                ? "bg-blue-900 text-white border-blue-900 shadow-md transform scale-105"
+                : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50 hover:text-gray-700"
+              }`}
           >
             {cat.label}
           </button>
@@ -73,9 +73,9 @@ const LessonListPageComponent = ({
                     onClick={() => handleSelectDay(day.value)}
                     className={`w-9 h-9 rounded-full text-sm font-bold transition-all border
                           ${days.includes(day.value)
-                              ? "bg-blue-100 text-blue-700 border-blue-200 ring-2 ring-blue-50"
-                              : "bg-white text-gray-400 border-gray-200 hover:border-gray-400 hover:text-gray-600"
-                          }`}
+                        ? "bg-blue-100 text-blue-700 border-blue-200 ring-2 ring-blue-50"
+                        : "bg-white text-gray-400 border-gray-200 hover:border-gray-400 hover:text-gray-600"
+                      }`}
                   >
                     {day.label}
                   </button>
@@ -151,8 +151,8 @@ const LessonListPageComponent = ({
               value={sortType}
               onChange={handleSortChange}
             >
-              <option value="LATEST">최신순</option>
-              <option value="FASTEST">개강일순</option>
+              <option value="FASTEST">최신등록순</option>
+              <option value="LATEST">개강임박순</option>
             </select>
           </div>
 
@@ -194,7 +194,6 @@ const LessonListPageComponent = ({
           </div>
         )}
       </div>
-
       <div className="mt-10 mb-20">
         <PageComponent pageData={pageData} />
       </div>

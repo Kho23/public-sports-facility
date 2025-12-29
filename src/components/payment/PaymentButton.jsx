@@ -5,10 +5,9 @@ import axios from "axios";
 const PaymentButton = ({ info }) => {
   const [buyer, setBuyer] = useState(null);
 
-  // 1. 초기화: 회원 정보 조회 & 포트원 SDK 로드
   useEffect(() => {
-    getOne()
-      .then((data) => setBuyer(data))
+    getOne() //로그인 유저 정보 확인 
+      .then((data) => setBuyer(data)) // 로그인 유저를 구매자로 설정
       .catch(console.error);
   }, []);
 
@@ -19,7 +18,7 @@ const PaymentButton = ({ info }) => {
     if (!buyer) return alert("회원 정보 로딩 중...");
 
     const { IMP } = window;
-    IMP.init("imp04278342"); // ★ 본인 식별코드 입력
+    IMP.init("imp04278342"); // 포트원 스토어 식별코드 입력
 
     // 2. 결제 요청
     IMP.request_pay(
@@ -27,11 +26,11 @@ const PaymentButton = ({ info }) => {
         pg: "html5_inicis",
         pay_method: "card",
         merchant_uid: `mid_${new Date().getTime()}`,
-        name: info.title, // props로 받은 강의명
+        name: info.title, // props로 받은 제품명
         amount: info.price, // props로 받은 가격
-        buyer_email: buyer.memberEmail || buyer.email,
-        buyer_name: buyer.memberName,
-        buyer_tel: buyer.memberPhoneNumber || buyer.phoneNumber,
+        buyer_email: buyer.memberEmail || buyer.email, //구매자 이메일
+        buyer_name: buyer.memberName, // 구매자 이름
+        buyer_tel: buyer.memberPhoneNumber || buyer.phoneNumber, //구매자 전화번호
       },
       async (rsp) => {
         if (rsp.success) {
@@ -50,13 +49,12 @@ const PaymentButton = ({ info }) => {
           };
 
           try {
-            // ★ 여기가 수정됨: 헤더 설정 없이 body만 보냄 
-            await axios.post("/api/payment/complete", requestData);
+            await axios.post("/api/payment/complete", requestData); //백엔드 결제 담당 컨트롤러로 결제 검증 요청 전송
             alert("수강신청 완료!");
             window.location.reload();
           } catch (error) {
             const msg = error.response?.data || "서버 응답 없음";
-            alert(`결제 검증 실패: ${msg}`);
+            alert(`결제 검증 실패: ${msg}`); //검증 중 에러 발생 시 메세지 표시
           }
         } else {
           alert(`결제 실패: ${rsp.error_msg}`);

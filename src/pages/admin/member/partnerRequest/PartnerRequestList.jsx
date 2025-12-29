@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getListPartnerRequest } from "../../../../api/adminApi";
 import useCustomMove from "../../../../hooks/useCustomMove";
 import usePageMove from "../../../../hooks/usePageMove";
-
-import PartnerRequestComponent from "./components/PartnerRequestComponent";
+import PartnerRequestListComponent from "./components/PartnerRequestListComponent";
 
 const initState = {
   dtoList: [],
@@ -79,7 +78,7 @@ const PartnerRequestList = () => {
 
   return (
     <>
-      <PartnerRequestComponent
+      <PartnerRequestListComponent
         data={data}
         statusFilter={statusFilter}
         handleFilterChange={handleFilterChange}

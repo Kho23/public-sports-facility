@@ -141,48 +141,50 @@ const AdminPageComponent = ({
               </h2>
             </div>
 
-            <div className="space-y-3">
-              {pendingApprovals.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors group cursor-pointer"
-                  onClick={() => moveToAdminApprovals(item.type, item.id)}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`text-xs font-bold px-2 py-1 rounded ${
-                        item.type === "강좌개설"
-                          ? "bg-purple-100 text-purple-600"
-                          : item.type === "대관신청"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}
-                    >
-                      {item.type}
-                    </span>
-                    <div>
-                      <p className="font-semibold text-gray-800">
-                        {item.title}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {item.name} · {item.date}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    className="bg-white border border-gray-200 text-sm font-medium px-4 py-2 rounded-lg text-gray-600 
-                  group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-500 transition-all"
-                  >
-                    검토하기
-                  </button>
+            <div className="space-y-3 min-h-[475px] flex flex-col justify-start">
+              {pendingApprovals.length === 0 ? (
+                <div className="text-center text-gray-400 text-sm">
+                  승인 대기중인 내역이 없습니다.
                 </div>
-              ))}
-            </div>
-          </div>
+              ) : (
+                pendingApprovals.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors group cursor-pointer"
+                    onClick={() => moveToAdminApprovals(item.type, item.id)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`text-xs font-bold px-2 py-1 rounded ${
+                          item.type === "강좌개설"
+                            ? "bg-purple-100 text-purple-600"
+                            : item.type === "대관신청"
+                            ? "bg-green-100 text-green-600"
+                            : "bg-blue-100 text-blue-600"
+                        }`}
+                      >
+                        {item.type}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-gray-800">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {item.name} · {item.date}
+                        </p>
+                      </div>
+                    </div>
 
-          {/* 업무 2: 통계 그래프 영역 */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-64 flex flex-col justify-center items-center text-gray-400">
-            <p>📊 주간 방문자 및 매출 통계 그래프 영역</p>
+                    <button
+                      className="bg-white border border-gray-200 text-sm font-medium px-4 py-2 rounded-lg text-gray-600 
+            group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-500 transition-all"
+                    >
+                      검토하기
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
 

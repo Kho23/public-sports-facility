@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getOneNotice } from "../../../../api/noticeApi";
 import { modifyNotice } from "../../../../api/adminApi";
 import { fileRegister } from "../../../../api/fileApi";
-
 import "../../../../styles/ckeditor-custom.css";
 import NoticeEditComponent from "./Components/NoticeEditComponent";
+import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const initstate = {
   noticeId: 0,
@@ -22,6 +22,12 @@ const NoticeEditPage = () => {
   const [fileList, setFileList] = useState([]);
   const [newfileList, setNewFileList] = useState([]);
   const [deletedFileIds, setDeletedFileIds] = useState([]);
+  const [modal, setModal] = useState({
+    open: false,
+    type: "",
+    message: "",
+    onConfirm: null,
+  });
 
   useEffect(() => {
     const f = async () => {
@@ -79,12 +85,8 @@ const NoticeEditPage = () => {
         };
 
         await modifyNotice(finalNoticeData);
-
-        alert("공지 수정완료");
-        navigate(-1);
       } catch (error) {
         console.error("수정 실패:", error);
-        alert("공지 수정에 실패했습니다.");
       }
     };
     f();
@@ -100,6 +102,34 @@ const NoticeEditPage = () => {
     setNewFileList((i) => i.filter((_, j) => j !== idx));
   };
 
+  const submitClickHandler = () => {
+    setModal({
+      open: true,
+      type: "confirm",
+      message: "공지를 수정하시겠습니까?",
+      onConfirm: (result) => {
+        if (result === "ok") {
+          submitHandler();
+        }
+        setModal({ ...modal, open: false });
+      },
+    });
+  };
+
+  const cancelClickHandler = () => {
+    setModal({
+      open: true,
+      type: "confirm",
+      message: "공지 수정을 취소하시겠습니까?",
+      onConfirm: (result) => {
+        if (result === "ok") {
+          navigate(-1);
+        }
+        setModal({ ...modal, open: false });
+      },
+    });
+  };
+
   return (
     <>
       <NoticeEditComponent
@@ -112,8 +142,16 @@ const NoticeEditPage = () => {
         fileChangeHandler={fileChangeHandler}
         deleteFileHandler={deleteFileHandler}
         deleteNewFileHandler={deleteNewFileHandler}
-        submitHandler={submitHandler}
+        submitClickHandler={submitClickHandler}
+        cancelClickHandler={cancelClickHandler}
       />
+      {modal.open && (
+        <ModalComponent
+          type={modal.type}
+          message={modal.message}
+          onConfirm={modal.onConfirm}
+        />
+      )}
     </>
   );
 };

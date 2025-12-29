@@ -2,13 +2,12 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerNotice } from "../../../../api/adminApi";
 import { fileRegister } from "../../../../api/fileApi";
-
-import "../../../../styles/ckeditor-custom.css";
 import NoticeAddComponent from "./Components/NoticeAddComponent";
+import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const initstate = {
-  content: "",
   title: "",
+  content: "",
 };
 
 const NoticeAddPage = () => {
@@ -16,6 +15,12 @@ const NoticeAddPage = () => {
   const noticeFileRef = useRef();
   const [noticeData, setNoticeData] = useState(initstate);
   const [fileList, setFileList] = useState([]);
+  const [modal, setModal] = useState({
+    open: false,
+    type: "",
+    message: "",
+    onConfirm: null,
+  });
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -23,64 +28,88 @@ const NoticeAddPage = () => {
   };
 
   const fileChangeHandler = (e) => {
-    const files = [...e.target.files];
-    setFileList(files);
+    setFileList([...e.target.files]);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const f = async () => {
-      try {
-        let addFiles = [];
-        if (fileList && fileList.length > 0) {
-          const formData = new FormData();
-          fileList.forEach((file) => {
-            formData.append("file", file);
-          });
-          const fileRes = await fileRegister(formData, "notice");
-          addFiles = fileRes.fileData.map((fileData, idx) => {
-            const savedName = fileData.imageUrl.substring(
-              fileData.imageUrl.lastIndexOf("/") + 1
-            );
-            return {
-              originalName: fileList[idx].name,
-              savedName: savedName,
-              filePath: fileData.imageUrl,
-              thumbnailPath: fileData.thumbnailUrl,
-            };
-          });
-          console.log("backend에 파일 내용 전달", fileRes);
-        }
+  const registerHandler = async () => {
+    try {
+      let addFiles = [];
 
-        const noticeDataWithFiles = {
-          ...noticeData,
-          fileList: addFiles,
-        };
-        const noticeRes = await registerNotice(noticeDataWithFiles);
+      if (fileList.length > 0) {
+        const formData = new FormData();
+        fileList.forEach((file) => formData.append("file", file));
 
-        console.log("backend에 공지 내용 전달", noticeRes);
+        const fileRes = await fileRegister(formData, "notice");
 
-        alert("공지 등록 완료");
-
-        navigate(-1);
-      } catch (error) {
-        console.error("backend 전달 실패", error);
+        addFiles = fileRes.fileData.map((fileData, idx) => ({
+          originalName: fileList[idx].name,
+          savedName: fileData.imageUrl.split("/").pop(),
+          filePath: fileData.imageUrl,
+          thumbnailPath: fileData.thumbnailUrl,
+        }));
       }
-    };
-    f();
+
+      await registerNotice({
+        ...noticeData,
+        fileList: addFiles,
+      });
+
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /** 추가 버튼 클릭 */
+  const submitClickHandler = () => {
+    setModal({
+      open: true,
+      type: "confirm",
+      message: "공지를 추가하시겠습니까?",
+      onConfirm: (result) => {
+        if (result === "ok") {
+          registerHandler();
+        }
+        setModal({ ...modal, open: false });
+      },
+    });
+  };
+
+  /** 취소 버튼 클릭 */
+  const cancelClickHandler = () => {
+    setModal({
+      open: true,
+      type: "confirm",
+      message: "공지 작성을 취소하시겠습니까?",
+      onConfirm: (result) => {
+        if (result === "ok") {
+          navigate(-1);
+        }
+        setModal({ ...modal, open: false });
+      },
+    });
   };
 
   return (
     <>
       <NoticeAddComponent
-        changeHandler={changeHandler}
         noticeData={noticeData}
         setNoticeData={setNoticeData}
+        changeHandler={changeHandler}
         fileList={fileList}
         noticeFileRef={noticeFileRef}
         fileChangeHandler={fileChangeHandler}
-        submitHandler={submitHandler}
+        submitClickHandler={submitClickHandler}
+        cancelClickHandler={cancelClickHandler}
       />
+
+      {modal.open && (
+        <ModalComponent
+          type={modal.type}
+          message={modal.message}
+          onConfirm={modal.onConfirm}
+        />
+      )}
     </>
   );
 };

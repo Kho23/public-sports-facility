@@ -4,7 +4,7 @@ import {
   changePartnerStatus,
   getOnePartnerRequest,
 } from "../../../../api/adminApi";
-import PartnerRequestListComponent from "./components/PartnerRequestListComponent";
+import PartnerRequestComponent from "./components/PartnerRequestComponent";
 const PartnerRequestPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -25,11 +25,9 @@ const PartnerRequestPage = () => {
     try {
       const res = await changePartnerStatus(id, status);
       console.log(res);
-      alert("완료~!");
       window.location.reload();
     } catch (err) {
       console.error(err);
-      alert("상태 변경 실패");
     }
   };
 
@@ -60,7 +58,7 @@ const PartnerRequestPage = () => {
   if (!data) return <div className="text-gray-500 p-8">로딩중...</div>;
   return (
     <>
-      <PartnerRequestListComponent
+      <PartnerRequestComponent
         data={data}
         renderStatus={renderStatus}
         statusChangeHandler={statusChangeHandler}

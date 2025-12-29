@@ -12,6 +12,7 @@ const ProgramEditComponent = ({
   programFiles,
   deleteHandler,
   newfileList,
+  cancelHandler,
 }) => {
   return (
     <div className="container mx-auto max-w-5xl p-4 md:p-8">
@@ -29,12 +30,12 @@ const ProgramEditComponent = ({
             >
               수정
             </button>
-            <Link
-              to={-1}
+            <button
+              onClick={cancelHandler}
               className="bg-gray-600 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
             >
               취소
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
 } from "../../../../api/adminApi";
 import usePageMove from "../../../../hooks/usePageMove";
 import ScheduleListComponent from "./ScheduleListComponent";
+import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const initState = {
   dtoList: [],
@@ -20,6 +21,7 @@ const initState = {
   totalPage: 0,
   current: 0,
 };
+
 const ScheduleListPage = () => {
   const [schedules, setSchedules] = useState(initState);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,19 +35,34 @@ const ScheduleListPage = () => {
     endDate: "",
   });
 
+  const [modal, setModal] = useState({
+    open: false,
+    message: "",
+    type: "alert",
+    onConfirm: null,
+  });
+
+  const openMessageModal = ({ message, type = "alert", onConfirm }) => {
+    setModal({ open: true, message, type, onConfirm });
+  };
+
+  const closeMessageModal = () => {
+    setModal({ ...modal, open: false });
+  };
+
   useEffect(() => {
     const f = async () => {
       try {
         const response = await getScheduleList({ page, size });
         setSchedules(response);
       } catch (err) {
-        console.error("스케줄 데이터 로딩 실패:", err);
+        openMessageModal({ message: "데이터 로딩 실패" });
       }
     };
     f();
   }, [page, size]);
 
-  const openModal = (schedule) => {
+  const openFormModal = (schedule) => {
     if (schedule) {
       setCurrentSchedule(schedule);
       setData({
@@ -66,36 +83,49 @@ const ScheduleListPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (scheduleId) => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      try {
-        await deleteSchedule(scheduleId);
-        alert("삭제되었습니다.");
-        window.location.reload();
-      } catch (err) {
-        alert("삭제 중 오류!");
-      }
-    }
+  const handleDelete = (scheduleId) => {
+    openMessageModal({
+      message: "정말 삭제하시겠습니까?",
+      type: "confirm",
+      onConfirm: async (result) => {
+        if (result === "ok") {
+          try {
+            await deleteSchedule(scheduleId);
+            openMessageModal({
+              message: "삭제되었습니다.",
+              onConfirm: () => window.location.reload(),
+            });
+          } catch {
+            openMessageModal({ message: "삭제 중 오류 발생" });
+          }
+        }
+      },
+    });
   };
 
   const handleSave = async () => {
     if (!data.title || !data.startDate || !data.endDate) {
-      alert("제목과 날짜는 반드시 입력해주세요.");
+      openMessageModal({ message: "제목과 날짜는 필수입니다." });
       return;
     }
+
     try {
       if (currentSchedule) {
         await updateSchedule(currentSchedule.scheduleId, data);
-        alert("수정 완료");
+        openMessageModal({
+          message: "수정 완료",
+          onConfirm: () => window.location.reload(),
+        });
       } else {
         await createSchedule(data);
-        alert("등록 완료");
+        openMessageModal({
+          message: "등록 완료",
+          onConfirm: () => window.location.reload(),
+        });
       }
       setIsModalOpen(false);
-      window.location.reload();
-    } catch (err) {
-      console.error("저장 실패:", err);
-      alert("저장 중 오류 발생");
+    } catch {
+      openMessageModal({ message: "저장 실패" });
     }
   };
 
@@ -105,20 +135,33 @@ const ScheduleListPage = () => {
   };
 
   return (
-    <ScheduleListComponent
-      openModal={openModal}
-      schedules={schedules}
-      page={page}
-      size={size}
-      handleDelete={handleDelete}
-      moveToList={moveToList}
-      isModalOpen={isModalOpen}
-      currentSchedule={currentSchedule}
-      handleChange={handleChange}
-      data={data}
-      setIsModalOpen={setIsModalOpen}
-      handleSave={handleSave}
-    />
+    <>
+      <ScheduleListComponent
+        openModal={openFormModal}
+        schedules={schedules}
+        page={page}
+        size={size}
+        handleDelete={handleDelete}
+        moveToList={moveToList}
+        isModalOpen={isModalOpen}
+        currentSchedule={currentSchedule}
+        handleChange={handleChange}
+        data={data}
+        setIsModalOpen={setIsModalOpen}
+        handleSave={handleSave}
+      />
+
+      {modal.open && (
+        <ModalComponent
+          message={modal.message}
+          type={modal.type}
+          onConfirm={(result) => {
+            modal.onConfirm?.(result);
+            closeMessageModal();
+          }}
+        />
+      )}
+    </>
   );
 };
 

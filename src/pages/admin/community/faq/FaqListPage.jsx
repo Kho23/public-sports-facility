@@ -2,30 +2,47 @@ import React, { useEffect, useState } from "react";
 import { getFaqList, getFaqCategory } from "../../../../api/faqApi";
 import { createFaq, updateFaq, deleteFaq } from "../../../../api/adminApi";
 import FaqListComponent from "./FaqListComponent";
+import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const FaqListPage = () => {
   const [faqs, setFaqs] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentFaq, setCurrentFaq] = useState(null);
+
   const [data, setData] = useState({
     faqCategoryId: "",
     question: "",
     answer: "",
   });
 
+  const [modal, setModal] = useState({
+    open: false,
+    message: "",
+    type: "alert",
+    onConfirm: null,
+  });
+
+  const openMessageModal = ({ message, type = "alert", onConfirm }) => {
+    setModal({ open: true, message, type, onConfirm });
+  };
+
+  const closeMessageModal = () => {
+    setModal({ ...modal, open: false });
+  };
+
   useEffect(() => {
-    const f = async () => {
+    const fetchData = async () => {
       try {
         const faqData = await getFaqList();
         const categoryData = await getFaqCategory();
         setFaqs(faqData);
         setCategories(categoryData);
-      } catch (err) {
-        console.error("데이터 로딩 실패:", err);
+      } catch {
+        openMessageModal({ message: "데이터 로딩 실패" });
       }
     };
-    f();
+    fetchData();
   }, []);
 
   const openModal = (faq) => {
@@ -39,7 +56,7 @@ const FaqListPage = () => {
     } else {
       setCurrentFaq(null);
       setData({
-        faqCategoryId: categories[0].faqCategoryId,
+        faqCategoryId: categories[0]?.faqCategoryId || "",
         question: "",
         answer: "",
       });
@@ -47,42 +64,54 @@ const FaqListPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (faqId) => {
-    if (window.confirm("정말로 이 FAQ를 삭제하시겠습니까?")) {
-      try {
-        await deleteFaq(faqId);
-        alert("삭제되었습니다.");
-        window.location.reload();
-      } catch (err) {
-        console.error("삭제 실패:", err);
-        alert("삭제 중 오류가 발생했습니다.");
-      }
-    }
+  const handleDelete = (faqId) => {
+    openMessageModal({
+      message: "정말로 이 FAQ를 삭제하시겠습니까?",
+      type: "confirm",
+      onConfirm: async (result) => {
+        if (result === "ok") {
+          try {
+            await deleteFaq(faqId);
+            openMessageModal({
+              message: "삭제되었습니다.",
+              onConfirm: () => window.location.reload(),
+            });
+          } catch {
+            openMessageModal({ message: "삭제 중 오류가 발생했습니다." });
+          }
+        }
+      },
+    });
   };
 
   const handleSave = async () => {
     if (!data.question || !data.answer) {
-      alert("질문과 답변을 모두 입력해주세요.");
+      openMessageModal({ message: "질문과 답변을 모두 입력해주세요." });
       return;
     }
+
     if (!data.faqCategoryId) {
-      alert("카테고리를 선택해주세요.");
+      openMessageModal({ message: "카테고리를 선택해주세요." });
       return;
     }
 
     try {
       if (currentFaq) {
         await updateFaq(currentFaq.faqId, data);
-        alert("수정되었습니다.");
+        openMessageModal({
+          message: "수정되었습니다.",
+          onConfirm: () => window.location.reload(),
+        });
       } else {
         await createFaq(data);
-        alert("등록되었습니다.");
+        openMessageModal({
+          message: "등록되었습니다.",
+          onConfirm: () => window.location.reload(),
+        });
       }
       setIsModalOpen(false);
-      window.location.reload();
-    } catch (err) {
-      console.error("저장 실패:", err);
-      alert("저장 중 오류가 발생했습니다.");
+    } catch {
+      openMessageModal({ message: "저장 중 오류가 발생했습니다." });
     }
   };
 
@@ -105,6 +134,17 @@ const FaqListPage = () => {
         setIsModalOpen={setIsModalOpen}
         handleSave={handleSave}
       />
+
+      {modal.open && (
+        <ModalComponent
+          message={modal.message}
+          type={modal.type}
+          onConfirm={(result) => {
+            modal.onConfirm?.(result);
+            closeMessageModal();
+          }}
+        />
+      )}
     </>
   );
 };

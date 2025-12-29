@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getOneNotice } from "../../../../api/noticeApi";
 import { deleteNotice } from "../../../../api/adminApi";
 import NoticeReadComponent from "./Components/NoticeReadComponent";
+import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const initState = {
   content: "",
@@ -16,6 +17,12 @@ const NoticeReadPage = () => {
   const { id } = useParams();
   const [notice, setNotice] = useState(initState);
   const navigate = useNavigate();
+  const [modal, setModal] = useState({
+    open: false,
+    type: "",
+    message: "",
+    onConfirm: null,
+  });
 
   useEffect(() => {
     const getOne = async () => {
@@ -31,17 +38,25 @@ const NoticeReadPage = () => {
   }, [id]);
 
   const deleteHandler = () => {
-    const f = async () => {
-      try {
-        const res = await deleteNotice(id);
-        console.log(res);
-        alert("삭제가 완료되었습니다.");
-        navigate(-1);
-      } catch (error) {
-        console.error("삭제 error", error);
-      }
-    };
-    f();
+    setModal({
+      open: true,
+      type: "confirm",
+      message: "공지를 삭제하시겠습니까?",
+      onConfirm: (result) => {
+        if (result === "ok") {
+          const f = async () => {
+            try {
+              await deleteNotice(id);
+              navigate(-1);
+            } catch (error) {
+              console.error("삭제 error", error);
+            }
+          };
+          f();
+        }
+        setModal({ ...modal, open: false });
+      },
+    });
   };
 
   return (
@@ -51,6 +66,13 @@ const NoticeReadPage = () => {
         id={id}
         deleteHandler={deleteHandler}
       />
+      {modal.open && (
+        <ModalComponent
+          type={modal.type}
+          message={modal.message}
+          onConfirm={modal.onConfirm}
+        />
+      )}
     </>
   );
 };

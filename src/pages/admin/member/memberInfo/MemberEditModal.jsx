@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { modifyMemberInfo } from "../../../../api/adminApi";
+import AlertModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const MemberEditModal = ({ member, onClose }) => {
   const [form, setForm] = useState({
@@ -13,6 +14,7 @@ const MemberEditModal = ({ member, onClose }) => {
     memberBirthDate: member.memberBirthDate?.split("T")[0],
     memberRole: member.memberRole,
   });
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,15 +25,12 @@ const MemberEditModal = ({ member, onClose }) => {
     try {
       const f = async () => {
         await modifyMemberInfo(form);
-        alert("회원정보수정 완료");
-        window.location.reload();
+        setModalOpen(true);
       };
       f();
     } catch (error) {
       console.error("정보수정 실패", error);
-      alert("회원정보수정 실패");
     }
-    onClose();
   };
 
   return (
@@ -171,6 +170,17 @@ const MemberEditModal = ({ member, onClose }) => {
           </button>
         </div>
       </div>
+      {modalOpen && (
+        <AlertModalComponent
+          message={"회원 정보가 수정되었습니다."}
+          type="alert"
+          onConfirm={() => {
+            setModalOpen(false);
+            onClose();
+            window.location.reload();
+          }}
+        />
+      )}
     </div>
   );
 };

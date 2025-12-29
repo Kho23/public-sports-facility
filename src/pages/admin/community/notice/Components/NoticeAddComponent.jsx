@@ -10,7 +10,8 @@ const NoticeAddComponent = ({
   fileList,
   noticeFileRef,
   fileChangeHandler,
-  submitHandler,
+  submitClickHandler,
+  cancelClickHandler,
 }) => {
   return (
     <div className="container mx-auto max-w-5xl p-4 md:p-8">
@@ -89,18 +90,17 @@ const NoticeAddComponent = ({
       {/* 버튼 영역 */}
       <div className="flex justify-end mt-8 gap-x-4">
         <button
-          type="submit"
-          onClick={submitHandler}
+          onClick={submitClickHandler}
           className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
         >
           추가
         </button>
-        <Link
-          to={-1}
+        <button
+          onClick={cancelClickHandler}
           className="bg-gray-700 text-white font-bold py-2 px-6 rounded hover:bg-gray-800 transition-colors"
         >
           취소
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -134,13 +134,22 @@ const PartnerRequestPage = () => {
       );
       formData.append("partnerClass", selectedClass);
 
-      try {
-        await partnerReqFileRegister(formData);
-        alert("신청이 완료되었습니다.");
-        navigate(`/member`);
-      } catch (err) {
-        alert("신청 중 오류가 발생했습니다.");
-      }
+      setAlertModal({
+        open: true,
+        type: "confirm",
+        message: "파트너 신청을 하시겠습니까?",
+        onConfirm: async (i) => {
+          setAlertModal({ open: false });
+          if (i !== "ok") return;
+          try {
+            await partnerReqFileRegister(formData);
+            alert("신청이 완료되었습니다.");
+            navigate(`/member`);
+          } catch (err) {
+            alert("신청 중 오류가 발생했습니다.");
+          }
+        },
+      });
     } else if (fileCheck && !classCheck && agreeCheck) {
       alert("강좌 분야는 최소 한 개 이상 체크해 주세요");
     } else if (!fileCheck && classCheck && agreeCheck) {

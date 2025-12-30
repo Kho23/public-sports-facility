@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PwEditComponent from "./components/PwEditComponent";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { changePassword, getOne, register } from "../../../api/memberApi";
 import ModalComponent from "../../../components/alertModal/AlertModalComponent";
 

@@ -107,18 +107,6 @@ const RentalReqPage = () => {
       return;
     }
 
-    if (!timeCheck(selectTime)) {
-      setAlertModal({
-        open: true,
-        type: "alert",
-        message: "연속된 시간만 예약할 수 있습니다",
-        onConfirm: () => {
-          setAlertModal((i) => ({ ...i, open: false }));
-        },
-      });
-      return;
-    }
-
     setFacility(id);
     const f = async () => {
       try {
@@ -147,6 +135,17 @@ const RentalReqPage = () => {
   };
 
   const paymentHandler = () => {
+    if (!timeCheck(selectTime)) {
+      setAlertModal({
+        open: true,
+        type: "alert",
+        message: "연속된 시간만 예약할 수 있습니다",
+        onConfirm: () => {
+          setAlertModal((i) => ({ ...i, open: false }));
+        },
+      });
+      return;
+    }
     const first = selectTime[0].split("~")[0];
     const last = selectTime[selectTime.length - 1].split("~")[1];
 

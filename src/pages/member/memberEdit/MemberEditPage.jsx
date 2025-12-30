@@ -59,11 +59,18 @@ const MemberEditPage = () => {
       setAlertModal({
         open: true,
         type: "confirm",
-        message: "내용을 수정하시겠습니까?",
+        message: "회원 정보를 수정하시겠습니까?",
         onConfirm: async (i) => {
+          setAlertModal({ open: false });
           if (i !== "ok") return;
-          await modify(data);
-          navigate("/");
+          try {
+            await modify(data);
+            alert("회원 정보가 수정되었습니다.");
+            navigate("/");
+          } catch (err) {
+            console.error("제출 실패", err);
+            alert("제출 중 오류가 발생했습니다");
+          }
         },
       });
     } else {

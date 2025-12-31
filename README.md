@@ -21,6 +21,9 @@
 
 ## 🏛️ System Architecture & ERD
 <img width="100%" alt="System Architecture" src="https://github.com/user-attachments/assets/f90fdbda-3bbe-42bc-9ab0-2d6a40fd742b" />
+<img width="2172" height="1238" alt="redd" src="https://github.com/user-attachments/assets/3057bb9a-802e-47a2-95a6-209a25515cfe" />
+
+
 
 <br>
 

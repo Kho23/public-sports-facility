@@ -13,35 +13,43 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://192.168.0.61:3000")
-                .allowedMethods("HEAD","GET","POST","PUT","DELETE","OPTIONS")
-                .allowedHeaders("Authorization", "Content-Type")
-                .maxAge(300)
-                .allowedHeaders("*");
-    }
     @Value("${com.semicolon.backend.upload}")
     private String uploadDir;
 
     @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins(
+                        "http://localhost:3000",
+                        "https://www.jeocenter.shop", "https://jeocenter.shop",
+                        "https://public-sports-facility.vercel.app",
+                        "https://public-sports-facility-git-main-lee-kunhos-projects.vercel.app",
+                        "https://public-sports-facility-pna1v7t17-lee-kunhos-projects.vercel.app"
+                )
+                .allowedMethods("HEAD","GET","POST","PUT","DELETE","OPTIONS")
+                .allowedHeaders("*") // 모든 헤더 허용
+                .maxAge(300)
+                .allowCredentials(true); // 쿠키 및 인증 정보(JWT 등) 전송 허용
+    }
+
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        String resourcePath = "file:"+uploadDir+"/";
-        //file 접두사가 있으면 실제 디스크 경로를 의미
-        registry.addResourceHandler("/upload/**") //프론트가 요청하는 URL
-                //위 링크로 요청이 들어오면 서버의 실제 파일 경로에서 파일을 찾아 반환해주겠다
-                .addResourceLocations(resourcePath);//서버의 실제 파일 경로
+        // file: 접두어를 붙여서 파일 시스템 경로임을 명시
+        String rootPath = "file:" + uploadDir + "/";
+
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations(rootPath);
+
+        // 하드코딩 된 경로를 변수로 변경
         registry.addResourceHandler("/download/**")
                 .addResourceLocations(
-                        "file:///C:/dev/upload/notice/",
-                        "file:///C:/dev/upload/bank/",
-                        "file:///C:/dev/upload/cert/",
-                        "file:///C:/dev/upload/resume/"
+                        rootPath + "notice/",
+                        rootPath + "bank/",
+                        rootPath + "cert/",
+                        rootPath + "resume/"
                 )
                 .setCachePeriod(3600);
     }

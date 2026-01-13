@@ -61,7 +61,7 @@ const Header = () => {
   }`;
   return (
     <header className={headerContainerClass} onMouseLeave={handleMouseLeave}>
-      {/* 1. 최상단 유틸리티 바 */}
+      {/* 최상단 유틸리티 바 */}
       <div className={topBarClass}>
         <div className="flex items-center tracking-wide mr-5">
           {isLoggedIn ? (
@@ -140,9 +140,8 @@ const Header = () => {
           )}
         </div>
       </div>
-      {/* 2. 메인 네비게이션바 */}
+      {/* 메인 네비게이션바 */}
       <nav className="relative flex items-center max-w-[1400px] mx-auto px-6 h-20">
-        {/* [로고] */}
         <div className="flex-none w-[200px]">
           <Link
             to="/"
@@ -192,10 +191,9 @@ const Header = () => {
             );
           })}
         </ul>
-        {/* [우측 여백] */}
         <div className="flex-none w-[200px] hidden xl:block"></div>
       </nav>
-      {/* 3. 메가 메뉴 패널 */}
+      {/* 메가 메뉴 패널 */}
       <div
         className={`absolute top-full left-0 w-full bg-white/90 z-40 border-t border-gray-200 overflow-hidden transition-all duration-300 ease-in-out shadow-2xl
     ${
@@ -206,7 +204,6 @@ const Header = () => {
   `}
       >
         <div className="max-w-[1400px] mx-auto px-6 h-full flex relative min-h-[320px]">
-          {/* 좌측 패널 - 배경 제거 */}
           <div className="absolute top-0 left-6 w-[200px] h-full py-10 border-gray-100 flex flex-col z-10 bg-none">
             <h2 className="text-3xl font-black text-slate-800 mb-4 tracking-tighter leading-tight break-keep">
               {hoveredMenuId
@@ -218,15 +215,10 @@ const Header = () => {
               <br />
               Happy Together
             </p>
-            <div className="mt-auto opacity-30">
-              <div className="w-10 h-10 bg-blue-900 rounded-full blur-xl absolute bottom-10 left-0"></div>
-            </div>
           </div>
 
-          {/* 우측 패널 - 배경 제거 */}
           <div className="absolute top-0 right-6 w-[200px] h-full border-l border-gray-100 hidden xl:block z-10 bg-none"></div>
 
-          {/* 중앙 컬럼 */}
           <div className="flex-1 flex ml-[200px] xl:mr-[200px]">
             {allMenuItems.map((menu) => {
               if (menu.hideInHeader) return null;

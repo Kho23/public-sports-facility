@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.partner.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,7 @@ public class Partner {
     @Column(name = "partner_request_no")
     private long requestNo;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;

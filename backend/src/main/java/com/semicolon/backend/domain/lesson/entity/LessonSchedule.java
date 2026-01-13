@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.lesson.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +23,7 @@ public class LessonSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lessonSchedule_id")
     private Long id;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;

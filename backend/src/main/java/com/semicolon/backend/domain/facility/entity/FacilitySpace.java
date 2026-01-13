@@ -1,6 +1,7 @@
 package com.semicolon.backend.domain.facility.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class FacilitySpace {
 
     @Column(name = "space_name",nullable = false,length = 100)
     private String spaceName;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facility_id",nullable = false)
     private Facility facility;

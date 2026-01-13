@@ -28,6 +28,9 @@ const AttendancePage = () => {
   });
 
   useEffect(() => {
+    if (selectDate == "") {
+      return;
+    }
     const f = async () => {
       try {
         const res = await getMyOneLesson(lessonNo);
@@ -43,6 +46,7 @@ const AttendancePage = () => {
             status: i.status,
           }))
         );
+        console.log("res", res);
       } catch (err) {
         console.error("출석 데이터 조회 실패", err);
         alert("출석 정보를 불러오는 중 오류가 발생했습니다.");
@@ -69,7 +73,25 @@ const AttendancePage = () => {
   }, [data.facilityType]);
 
   const selectDateHandler = (e) => {
-    setSelectDate(e.target.value);
+    const selectOne = e.target.value;
+    const date = new Date(selectOne + "T00:00:00");
+    const week = [
+      "일요일",
+      "월요일",
+      "화요일",
+      "수요일",
+      "목요일",
+      "금요일",
+      "토요일",
+    ];
+    const findDay = week[date.getDay()];
+
+    if (data?.days?.includes(findDay)) {
+      setSelectDate(e.target.value);
+    } else {
+      alert("선택한 날짜는 강의가 없는 요일입니다.");
+      setAttendance([]);
+    }
   };
 
   const setAttendanceHandler = (studentNo, e) => {
@@ -80,6 +102,11 @@ const AttendancePage = () => {
   };
 
   const submitHandler = async () => {
+    if (selectDate < data.startDate || selectDate > data.endDate) {
+      alert("정확한 날짜를 설정해 주세요");
+      return;
+    }
+
     try {
       await submitAttendance(attendance, lessonNo);
       setAlertModal({

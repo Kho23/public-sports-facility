@@ -1,4 +1,4 @@
-import { Link } from "lucide-react";
+import { Link } from "react-router-dom";
 import { PiNoteDuotone } from "react-icons/pi";
 
 const RentalComponent = ({ data, cancelHandler }) => {

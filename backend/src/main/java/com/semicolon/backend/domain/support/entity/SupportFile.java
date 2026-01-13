@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.support.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 import com.semicolon.backend.domain.partner.entity.Partner;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class SupportFile {
     @Column(name = "support_upload_date", nullable = false)
     private LocalDateTime uploadDate;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "support_no")
     private Support support;

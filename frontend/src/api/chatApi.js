@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCookie } from '../util/cookieUtil';
 
-const API_HOST_URL = 'http://localhost:8080/chat';
+const API_HOST_URL = '/chat';
 
 const getAuthHeader = () => {
     const memberInfo = getCookie("member");

@@ -16,6 +16,20 @@ const ProgramListPageComponent = ({ data, programId }) => {
         <div className="border-b-2 border-gray-400 mb-6" />
 
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 min-h-[300px]">
+          {data && (
+            <div className="mt-5 space-y-10">
+              {data?.uploadFiles?.map((i) => (
+                <div key={i.fileId} className="max-w-[900px] mx-auto mb-10">
+                  <img
+                    alt={i.fileName}
+                    src={`/${i.filePath.slice(7)}`}
+                    className="w-full h-auto rounded-lg object-cover"
+                  />
+                  <p className=" text-center text-sm text-gray-600"></p>
+                </div>
+              ))}
+            </div>
+          )}
           <article
             className="
                 prose max-w-none 
@@ -27,23 +41,6 @@ const ProgramListPageComponent = ({ data, programId }) => {
               "
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
-          {data && (
-            <div className="mt-10 space-y-10">
-              {data?.uploadFiles?.map((i) => (
-                <div
-                  key={i.fileId}
-                  className="max-w-[500px] bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm"
-                >
-                  <img
-                    alt={i.fileName}
-                    src={`http://localhost:8080/${i.filePath.slice(7)}`}
-                    className="w-full h-auto rounded-lg object-cover mb-2"
-                  />
-                  <p className="mt-3 text-center text-sm text-gray-600"></p>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </main>
     </div>

@@ -8,6 +8,7 @@ import com.semicolon.backend.domain.guide.entity.GuideUpload;
 import com.semicolon.backend.domain.guide.service.GuideService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value; // [추가]
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,10 @@ import org.springframework.web.bind.annotation.*;
 public class GuideController {
 
     private final GuideService service;
+
+    // [추가] 설정 파일에서 경로 가져오기
+    @Value("${com.semicolon.backend.upload}")
+    private String uploadDir;
 
     @GetMapping("/{category}")
     public ResponseEntity<?> get (@PathVariable GuideCategory category){
@@ -37,6 +42,7 @@ public class GuideController {
 
     @GetMapping("/view/{fileName}")
     public Resource view (@PathVariable String fileName) {
-        return new FileSystemResource("C:/dev/upload/guide/" + fileName);
+        // [수정] 하드코딩 제거하고 변수 사용
+        return new FileSystemResource(uploadDir + "/guide/" + fileName);
     }
 }

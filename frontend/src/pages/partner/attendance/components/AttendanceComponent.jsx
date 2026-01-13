@@ -68,7 +68,6 @@ const AttendanceComponent = ({
         <input
           type="date"
           name="attendanceDate"
-          value={selectDate}
           min={data?.startDate}
           max={data?.endDate}
           onChange={(e) => selectDateHandler(e)}

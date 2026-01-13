@@ -42,7 +42,7 @@ const MyLessonDetailComponent = ({ modalOpen, closeModal, getOneData }) => {
                   <span className="font-semibold text-gray-900 mr-1 text-lg block border-l-4 pl-2 border-blue-900">
                     설명
                   </span>
-                  {getOneData.descriptions}
+                  {getOneData.description}
                 </p>
 
                 <p className="text-gray-800 leading-relaxed whitespace-pre-line">

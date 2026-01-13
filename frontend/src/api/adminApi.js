@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_SERVER_HOST = "http://localhost:8080/api";
+const API_SERVER_HOST = "/api";
 
 export const programModify = async (programId, data) => {
   console.log("주소확인", programId);

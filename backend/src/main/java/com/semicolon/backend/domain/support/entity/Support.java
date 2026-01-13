@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.support.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 
 import jakarta.persistence.*;
@@ -25,7 +26,7 @@ public class Support {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "support_no")
     private long supportNo;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;

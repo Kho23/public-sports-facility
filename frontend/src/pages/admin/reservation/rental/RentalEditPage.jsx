@@ -7,6 +7,8 @@ import ModalComponent from "../../../../components/alertModal/AlertModalComponen
 const RentalEditPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
+
+  // 알림/확인 모달 상태 관리
   const [modal, setModal] = useState({
     open: false,
     type: "",
@@ -14,11 +16,12 @@ const RentalEditPage = () => {
     onConfirm: null,
   });
 
+  // 페이지 진입 시 대관 신청 상세 정보 조회
   useEffect(() => {
     const f = async () => {
       try {
-        const res = await getOneRental(id);
-        setData(res);
+        const res = await getOneRental(id); // 대관 신청 단건 조회 API 호출
+        setData(res); // 조회 결과 상태에 저장
       } catch (err) {
         console.error("대관 신청 상세 조회 실패:", err);
       }
@@ -26,6 +29,7 @@ const RentalEditPage = () => {
     f();
   }, [id]);
 
+  // 승인 / 반려 버튼 클릭 시 상태 변경 처리
   const statusChangeHandler = (status) => {
     setModal({
       open: true,
@@ -39,7 +43,7 @@ const RentalEditPage = () => {
         if (result !== "ok") return;
 
         try {
-          await changeRentalStatus(id, status);
+          await changeRentalStatus(id, status); // 대관 신청 상태 변경 API 호출
           window.location.reload();
         } catch (err) {
           console.error(err);
@@ -48,6 +52,7 @@ const RentalEditPage = () => {
     });
   };
 
+  // 대관 신청 상태에 따른 화면 표시용 텍스트 처리
   const renderStatus = (status) => {
     switch (status) {
       case "PENDING":

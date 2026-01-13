@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getLessonList = async (lessonNo, date) => {
   const res = await axios.get(
-    `http://localhost:8080/api/attendance/getMemberList/${lessonNo}`,
+    `/api/attendance/getMemberList/${lessonNo}`,
     { params: { date } }
   );
   return res.data;
@@ -10,7 +10,7 @@ export const getLessonList = async (lessonNo, date) => {
 
 export const submitAttendance = async (attendance, lessonNo) => {
   const res = await axios.post(
-    `http://localhost:8080/api/attendance/save/${lessonNo}`,
+    `/api/attendance/save/${lessonNo}`,
     attendance
   );
   return res.data;

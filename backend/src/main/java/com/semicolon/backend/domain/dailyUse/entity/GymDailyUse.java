@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.dailyUse.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 import com.semicolon.backend.domain.payment.entity.Payment;
 import jakarta.persistence.*;
@@ -34,7 +35,7 @@ public class GymDailyUse {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GymDailyUseStatus status;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;

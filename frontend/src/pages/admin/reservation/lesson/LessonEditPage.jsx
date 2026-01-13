@@ -6,9 +6,11 @@ import ModalComponent from "../../../../components/alertModal/AlertModalComponen
 
 const LessonEditPage = () => {
   const { id } = useParams();
+  // 강의 상세 정보 저장
   const [data, setData] = useState(null);
+  // 승인 시 입력받을 강의 가격
   const [price, setPrice] = useState(0);
-
+  // 알림/확인 모달 상태 관리
   const [modal, setModal] = useState({
     open: false,
     type: "",
@@ -16,11 +18,12 @@ const LessonEditPage = () => {
     onConfirm: null,
   });
 
+  // 페이지 진입 시 강의 상세 정보 조회
   useEffect(() => {
     const f = async () => {
       try {
         const res = await getOneLesson(id);
-        setData(res);
+        setData(res); // 조회된 강의 데이터 저장
       } catch (err) {
         console.error("조회 실패", err);
       }
@@ -28,7 +31,9 @@ const LessonEditPage = () => {
     f();
   }, [id]);
 
+  // 승인 / 반려 처리 핸들러
   const statusChangeHandler = (status) => {
+    // 승인 상태인데 가격이 입력되지 않은 경우 경고 모달 표시
     if (status === "ACCEPTED" && price == 0) {
       setModal({
         open: true,
@@ -39,6 +44,7 @@ const LessonEditPage = () => {
       return;
     }
 
+    // 승인 또는 반려 확인 모달 표시
     setModal({
       open: true,
       type: "confirm",
@@ -54,7 +60,7 @@ const LessonEditPage = () => {
           await changeLessonStatus({
             id,
             status,
-            price: status === "ACCEPTED" ? price : 0,
+            price: status === "ACCEPTED" ? price : 0, // 승인일 경우만 가격 전달
           });
           window.location.reload();
         } catch (err) {
@@ -64,6 +70,7 @@ const LessonEditPage = () => {
     });
   };
 
+  // 강의 상태 값에 따른 화면 표시용 텍스트 처리
   const renderStatus = (status) => {
     switch (status) {
       case "PENDING":

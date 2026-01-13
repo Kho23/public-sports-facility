@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SupportComponent from "./components/SupportComponent";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supportGetList } from "../../../api/memberApi";
 
 const SupportPage = () => {
@@ -24,8 +24,8 @@ const SupportPage = () => {
     navigate(`/member/support/write`);
   };
 
-  const detailPageHandler = () => {
-    navigate(`/member/support/detail`);
+  const detailPageHandler = (id) => {
+    navigate(`/member/support/detail/${id}`);
   };
 
   return (

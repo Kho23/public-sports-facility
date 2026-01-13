@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 import com.semicolon.backend.domain.registration.entity.Registration;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class Payment {
     private String buyerEmail;
 
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

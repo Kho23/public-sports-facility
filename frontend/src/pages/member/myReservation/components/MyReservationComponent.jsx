@@ -6,18 +6,18 @@ import {
   PiCalendarCheckDuotone,
 } from "react-icons/pi";
 import { useSelector } from "react-redux";
-import useCustomMove from "../../../../hooks/useCustomMove"
+import useCustomMove from "../../../../hooks/useCustomMove";
 
 const MyReservationComponent = () => {
-  const { isLoggedIn } = useSelector(state => state.auth)
-  const { moveToLogin } = useCustomMove()
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { moveToLogin } = useCustomMove();
 
   useEffect(() => {
     if (!isLoggedIn) {
-      alert("로그인 후 이용 가능한 서비스입니다.")
-      moveToLogin()
+      alert("로그인 후 이용 가능한 서비스입니다.");
+      moveToLogin();
     }
-  }, [])
+  }, []);
 
   const menus = [
     {
@@ -25,14 +25,14 @@ const MyReservationComponent = () => {
       title: "수강신청 목록",
       path: "/member/myReservation/lesson",
       icon: <PiBookOpenTextDuotone className="text-5xl text-blue-900" />,
-      description: "신청하신 교육/강좌 예약 현황을 확인하세요.",
+      description: "신청하신 강좌 예약 현황을 확인하세요.",
     },
     {
       id: 2,
       title: "대관신청 목록",
       path: "/member/myReservation/rental",
       icon: <PiBuildingDuotone className="text-5xl text-blue-900" />,
-      description: "공간/시설 대관 신청 내역을 확인하세요.",
+      description: "시설 대관 신청 내역을 확인하세요.",
     },
     {
       id: 3,
@@ -55,7 +55,7 @@ const MyReservationComponent = () => {
             key={i.id}
             to={i.path}
             className="
-              bg-white border border-gray-200 rounded-2xl shadow-sm p-8
+              bg-white border border-gray-200 rounded-2xl shadow-sm p-6
               flex flex-col items-center text-center
               hover:shadow-xl hover:border-blue-300 hover:-translate-y-1
               transition-all duration-200 cursor-pointer

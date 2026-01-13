@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_HOST_URL = "http://localhost:8080/api/lesson"
+const API_HOST_URL = "/api/lesson"
 
 export const getLessonList = async(param) => {
     const {data} = await axios.get(`${API_HOST_URL}`,{params:param})
@@ -16,7 +16,7 @@ export const getOneLesson = async (id) => {
 
 
 export const checkRegistration = async (id) => {
-  const {data} = await axios.get(`http://localhost:8080/api/registration/check/${id}`)
+  const {data} = await axios.get(`/api/registration/check/${id}`)
   console.log("중복 수강신청 체크=",data)
   return data
 }

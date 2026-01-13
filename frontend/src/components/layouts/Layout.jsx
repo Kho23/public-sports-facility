@@ -26,9 +26,7 @@ const Layout = () => {
   }
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {/* 서브 페이지 헤더 */}
       <Header />
-      {/* 본문 영역 */}
       <div className={contentWrapperClasses}>
         <Sidebar />
         <main className="flex-1 bg-white p-6 lg:pl-8 min-h-[600px]">

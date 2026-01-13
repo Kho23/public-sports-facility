@@ -12,14 +12,14 @@ const AdminHeader = () => {
   };
 
   return (
-    <header className="bg-white text-black shadow-md border-b border-gray-300">
+    <header className="bg-[#2d3236] text-white shadow-md">
       <div className="flex justify-between items-center px-8 py-5">
         {/* 왼쪽 영역 */}
         <div className="flex items-center gap-3">
-          <MdOutlineManageAccounts className="w-10 h-10 fill-black" />
+          <MdOutlineManageAccounts className="w-10 h-10 fill-white" />
           <Link
             to={"/admin"}
-            className="text-2xl font-bold text-black tracking-wide"
+            className="text-2xl font-bold text-white tracking-wide"
           >
             JE:O CENTER [관리자페이지]
           </Link>

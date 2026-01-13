@@ -7,6 +7,7 @@ import com.semicolon.backend.domain.support.dto.SupportUploadDTO;
 import com.semicolon.backend.domain.support.service.SupportService;
 import com.semicolon.backend.global.pageable.PageRequestDTO;
 import com.semicolon.backend.global.pageable.PageResponseDTO;
+import org.springframework.beans.factory.annotation.Value; // [추가]
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.FileSystemResource;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,10 @@ public class SupportController {
 
     private final SupportService service;
     private final MemberService memberService;
+
+    // [추가] 설정 파일에서 경로 가져오기
+    @Value("${com.semicolon.backend.upload}")
+    private String uploadDir;
 
     @PostMapping("/write")
     public ResponseEntity<String> memberSupportReq (@ModelAttribute SupportDTO supportDTO, @AuthenticationPrincipal String loginIdFromToken){
@@ -47,7 +52,8 @@ public class SupportController {
 
     @GetMapping("/view/{fileName}")
     public Resource view(@PathVariable String fileName) {
-        return new FileSystemResource("C:/dev/upload/supportFiles/" + fileName);
+        // [수정] 하드코딩 제거하고 변수 사용
+        return new FileSystemResource(uploadDir + "/supportFiles/" + fileName);
     }
 
     @GetMapping("/all")

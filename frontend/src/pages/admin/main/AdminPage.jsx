@@ -11,17 +11,25 @@ import useCustomMove from "../../../hooks/useCustomMove";
 import AdminPageComponent from "./AdminPageComponent";
 
 const AdminPage = () => {
+  // 상단 회원 검색 입력값
   const [search, setSearch] = useState("");
+  // 회원 검색 결과 목록
   const [searchResult, setSearchResult] = useState([]);
+  // 승인 대기 중인 회원 목록
   const [pendingApprovals, setPendingApprovals] = useState([]);
+  // 대시보드 통계 수치 데이터
   const [counts, setCounts] = useState({});
+  // 오늘 및 예정된 일정 목록
   const [schedule, setSchedule] = useState([]);
+  // 검색 로딩 상태
   const [loading, setLoading] = useState(false);
   const { moveToList } = usePageMove();
   const { moveToAdminApprovals } = useCustomMove();
 
+  // 검색어 변경 시 관리자 메인 회원 검색 처리
   useEffect(() => {
     const keyword = search.trim();
+    // 검색어가 2자리 미만이면 검색하지 않음
     if (keyword.length < 2) {
       setSearchResult([]);
       setLoading(false);
@@ -38,12 +46,14 @@ const AdminPage = () => {
     }
   }, [search]);
 
+  // 관리자 메인 페이지 최초 진입 시 필요한 데이터 조회
   useEffect(() => {
     const f = async () => {
       try {
         const res = await adminApprovals();
         const sch = await adminScheduleList();
         const cnt = await adminCounts();
+        // 일정, 승인 대기, 통계 데이터 세팅
         setSchedule(sch);
         setPendingApprovals(res);
         setCounts(cnt);
@@ -54,6 +64,7 @@ const AdminPage = () => {
     f();
   }, []);
 
+  // 검색 결과에서 회원 클릭 시 해당 회원 상세 정보 페이지로 이동
   const handleMemberClick = (member) => {
     moveToList(
       {
@@ -66,10 +77,12 @@ const AdminPage = () => {
       },
       "/admin/member/memberInfo"
     );
+    // 검색 상태 초기화
     setSearch("");
     setSearchResult([]);
   };
 
+  // 대시보드 상단 통계 카드 데이터
   const stats = [
     {
       title: "신규 회원 (오늘)",

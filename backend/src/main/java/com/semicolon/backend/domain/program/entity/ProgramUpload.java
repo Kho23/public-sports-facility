@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.program.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.guide.entity.Guide;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ public class ProgramUpload {
     private String fileName;
     private String filePath;
     private String savedName;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pno")
     private Program program;

@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.lesson.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.facility.entity.FacilitySpace;
 import com.semicolon.backend.domain.member.entity.Member;
 import jakarta.annotation.Nullable;
@@ -46,7 +47,7 @@ public class Lesson {
     private long minPeople;
     @Column(name = "lesson_maxPeople")
     private long maxPeople;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id")
     private Member partnerId;
@@ -54,7 +55,7 @@ public class Lesson {
     @Enumerated(EnumType.STRING)
     @Column(name = "lesson_status")
     private LessonStatus lessonStatus;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FACILITY_SPACE_ID")
     private FacilitySpace facilitySpace;

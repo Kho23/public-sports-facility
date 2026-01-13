@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.support.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class SupportResponse {
     @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "support_no")
     private Support support;

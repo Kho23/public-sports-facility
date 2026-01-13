@@ -5,16 +5,14 @@ import { fileRegister } from "../../../../api/fileApi";
 import NoticeAddComponent from "./Components/NoticeAddComponent";
 import ModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
-const initstate = {
-  title: "",
-  content: "",
-};
-
 const NoticeAddPage = () => {
   const navigate = useNavigate();
   const noticeFileRef = useRef();
-  const [noticeData, setNoticeData] = useState(initstate);
+  // 공지 제목, 내용을 관리하는 상태
+  const [noticeData, setNoticeData] = useState({ title: "", content: "" });
+  // 첨부 파일 목록을 관리하는 상태
   const [fileList, setFileList] = useState([]);
+  // 알림/확인 모달 상태 관리
   const [modal, setModal] = useState({
     open: false,
     type: "",
@@ -22,25 +20,30 @@ const NoticeAddPage = () => {
     onConfirm: null,
   });
 
+  // 제목, 내용 입력 시 noticeData를 업데이트
   const changeHandler = (e) => {
     const { name, value } = e.target;
     setNoticeData({ ...noticeData, [name]: value });
   };
 
+  // 파일 선택 시 파일 목록을 상태에 저장
   const fileChangeHandler = (e) => {
     setFileList([...e.target.files]);
   };
 
+  // 공지 등록 처리 함수
   const registerHandler = async () => {
     try {
       let addFiles = [];
 
+      // 첨부 파일이 있을 경우 파일 업로드 처리
       if (fileList.length > 0) {
         const formData = new FormData();
         fileList.forEach((file) => formData.append("file", file));
 
         const fileRes = await fileRegister(formData, "notice");
 
+        // 업로드된 파일 정보를 공지 등록용 형식으로 변환
         addFiles = fileRes.fileData.map((fileData, idx) => ({
           originalName: fileList[idx].name,
           savedName: fileData.imageUrl.split("/").pop(),
@@ -49,19 +52,20 @@ const NoticeAddPage = () => {
         }));
       }
 
+      // 공지 등록 API 호출
       await registerNotice({
         ...noticeData,
         fileList: addFiles,
       });
-
       navigate(-1);
     } catch (err) {
       console.error(err);
     }
   };
 
-  /** 추가 버튼 클릭 */
+  //추가 버튼 클릭
   const submitClickHandler = () => {
+    // 공지 등록 여부를 묻는 확인 모달 표시
     setModal({
       open: true,
       type: "confirm",
@@ -75,8 +79,9 @@ const NoticeAddPage = () => {
     });
   };
 
-  /** 취소 버튼 클릭 */
+  // 취소 버튼 클릭
   const cancelClickHandler = () => {
+    // 공지 작성 취소 여부를 묻는 확인 모달 표시
     setModal({
       open: true,
       type: "confirm",

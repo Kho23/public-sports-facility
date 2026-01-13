@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_HOST_URL = "http://localhost:8080/api/auth"
+export const API_HOST_URL = "/api/auth"
 
 export const login = async (id, password) => {
     const res = await axios.post(`${API_HOST_URL}/login`, { 'loginId': id, 'password': password })

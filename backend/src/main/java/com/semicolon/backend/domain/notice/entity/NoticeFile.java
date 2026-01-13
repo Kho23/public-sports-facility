@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.notice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class NoticeFile {
     @Column(name = "thumbnail_path", length = 500)
     private String thumbnailPath;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id", nullable = false)
     private Notice notice;

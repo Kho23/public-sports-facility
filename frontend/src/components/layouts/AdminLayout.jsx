@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import AdminHeader from "./AdminHeader";
 import AdminSidebar from "./AdminSidebar";
@@ -35,7 +35,7 @@ const AdminLayout = () => {
       <AdminHeader />
       <div className={`flex flex-1 flex-col}`}>
         <AdminSidebar />
-        <main className="flex-1 bg-white text-gray-800 p-6">
+        <main className="flex-1 bg-white text-gray-800">
           <Outlet />
         </main>
       </div>

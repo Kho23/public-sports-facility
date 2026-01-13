@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_HOST_URL = "http://localhost:8080/api/community/gallery";
+const API_HOST_URL = "/api/community/gallery";
 
 export const register = async (dto) => {
   const res = await axios.post(`${API_HOST_URL}/admin`, dto);
@@ -13,7 +13,7 @@ export const fileRegister = async (file) => {
   for (let i = 0; i < file.length; i++) {
     formData.append("file", file[i]);
   }
-  const res = await axios.post(`http://localhost:8080/api/upload/gallery`, formData);
+  const res = await axios.post(`/api/upload/gallery`, formData);
   return res.data;
 };
 
@@ -46,7 +46,7 @@ export const deleteGallery = async (id) => {
 }
 
 export const deleteFile = async (id) => {
-  const res = await axios.delete(`http://localhost:8080/api/upload/gallery/${id}`)
+  const res = await axios.delete(`/api/upload/gallery/${id}`)
   console.log("갤러리 파일 삭제 완료")
   return res.data
 }

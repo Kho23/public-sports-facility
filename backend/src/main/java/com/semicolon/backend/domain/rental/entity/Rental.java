@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.rental.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.facility.entity.FacilitySpace;
 import com.semicolon.backend.domain.member.entity.Member;
 import com.semicolon.backend.domain.payment.entity.Payment;
@@ -33,10 +34,12 @@ public class Rental {
         @Column(name = "end_time", nullable = false)
         private LocalDateTime endTime;
 
+        @JsonIgnore
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "member_id", nullable = false)
         private Member member;
 
+        @JsonIgnore
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "space_id", nullable = false)
         private FacilitySpace space;

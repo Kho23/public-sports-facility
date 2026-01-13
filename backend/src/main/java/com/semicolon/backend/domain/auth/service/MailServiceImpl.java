@@ -39,13 +39,12 @@ public class MailServiceImpl implements MailService{
         MimeMessage message = sender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(SENDER_EMAIL);
-            helper.setTo(email);
-            // ▼ 제목 변경
-            helper.setSubject("[semicolon] 회원가입 인증번호입니다.");
-            helper.setText("<h1>인증번호: " + authNumber + "</h1>", true);
-            sender.send(message);
-            return authNumber;
+            helper.setFrom(SENDER_EMAIL); //발송 이메일 주소
+            helper.setTo(email); // 받는 이메일 주소
+            helper.setSubject("[semicolon] 회원가입 인증번호입니다."); //제목
+            helper.setText("<h1>인증번호: " + authNumber + "</h1>", true); //내용
+            sender.send(message); //메일 실제 발송
+            return authNumber; //인증을 위헤 인증번호 반환
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

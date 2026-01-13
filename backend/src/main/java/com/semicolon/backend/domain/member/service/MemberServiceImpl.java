@@ -47,6 +47,9 @@ public class MemberServiceImpl implements MemberService {
         if (requestDTO.getMemberAddress() != null) {
             member.setMemberAddress(requestDTO.getMemberAddress());
         }
+        if (requestDTO.getMemberDetailAddress() != null) {
+            member.setMemberDetailAddress(requestDTO.getMemberDetailAddress());
+        }
         if (requestDTO.getMemberPhoneNumber() != null) {
             member.setMemberPhoneNumber(requestDTO.getMemberPhoneNumber());
         }
@@ -99,9 +102,11 @@ public class MemberServiceImpl implements MemberService {
         member.setMemberEmail(requestDTO.getMemberEmail());
         member.setMemberPhoneNumber(requestDTO.getMemberPhoneNumber());
         member.setMemberAddress(requestDTO.getMemberAddress());
+        member.setMemberDetailAddress(requestDTO.getMemberDetailAddress());
         member.setMemberGender(requestDTO.getMemberGender());
         member.setMemberBirthDate(requestDTO.getMemberBirthDate());
         member.setMemberRole(requestDTO.getMemberRole());
+        member.setMemberDetailAddress(requestDTO.getMemberDetailAddress());
 
         repository.save(member);
     }

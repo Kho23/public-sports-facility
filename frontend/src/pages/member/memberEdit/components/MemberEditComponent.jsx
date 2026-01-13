@@ -25,7 +25,9 @@ const MemberEditComponent = ({
               className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 text-gray-500 transition"
               type="text"
               name="memberRole"
-              value={data.memberRole}
+              value={
+                data.memberRole == "ROLE_USER" ? "일반 회원" : "파트너 회원"
+              }
               disabled
             />
           </li>
@@ -146,6 +148,13 @@ const MemberEditComponent = ({
                 주소 찾기
               </button>
             </div>
+            <input
+              className="w-full border mt-2 border-gray-300 rounded-lg p-3 transition duration-150 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              type="text"
+              name="memberDetailAddress"
+              value={data.memberDetailAddress}
+              onChange={changeHandler}
+            />
           </li>
         </ul>
       </form>

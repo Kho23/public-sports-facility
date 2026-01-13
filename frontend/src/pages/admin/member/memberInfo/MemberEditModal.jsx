@@ -3,6 +3,7 @@ import { modifyMemberInfo } from "../../../../api/adminApi";
 import AlertModalComponent from "../../../../components/alertModal/AlertModalComponent";
 
 const MemberEditModal = ({ member, onClose }) => {
+  // 전달받은 회원 정보를 기반으로 수정 폼 초기값 설정
   const [form, setForm] = useState({
     memberId: member.memberId,
     memberName: member.memberName,
@@ -10,21 +11,28 @@ const MemberEditModal = ({ member, onClose }) => {
     memberEmail: member.memberEmail,
     memberPhoneNumber: member.memberPhoneNumber,
     memberAddress: member.memberAddress,
+    memberDetailAddress: member.memberDetailAddress,
     memberGender: member.memberGender,
     memberBirthDate: member.memberBirthDate?.split("T")[0],
     memberRole: member.memberRole,
   });
+
+  // 수정 완료 알림 모달 열림 여부
   const [modalOpen, setModalOpen] = useState(false);
 
+  // 입력값 변경 시 form 상태 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 회원 정보 수정 요청 처리
   const handleSubmit = () => {
     try {
       const f = async () => {
+        // 회원 정보 수정 API 호출
         await modifyMemberInfo(form);
+        // 수정 완료 알림 모달 표시
         setModalOpen(true);
       };
       f();
@@ -104,8 +112,21 @@ const MemberEditModal = ({ member, onClose }) => {
             <input
               className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
               name="memberAddress"
-              placeholder="상세 주소"
+              placeholder="주소"
               value={form.memberAddress}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col sm:col-span-2">
+            <label className="text-sm font-medium text-gray-600 mb-1">
+              주소
+            </label>
+            <input
+              className="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+              name="memberAddress"
+              placeholder="상세 주소"
+              value={form.memberDetailAddress}
               onChange={handleChange}
             />
           </div>
@@ -170,6 +191,7 @@ const MemberEditModal = ({ member, onClose }) => {
           </button>
         </div>
       </div>
+
       {modalOpen && (
         <AlertModalComponent
           message={"회원 정보가 수정되었습니다."}

@@ -22,7 +22,6 @@ const GuideViewPage = () => {
   useEffect(() => {
     const changeCategory = async () => {
       const upper = category.toUpperCase();
-
       const res = await getCategory(upper);
       setGuideList(res);
       setCreatedDate(res.updatedDate.slice(0, 10));

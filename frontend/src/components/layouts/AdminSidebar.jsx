@@ -13,7 +13,7 @@ const AdminSidebar = () => {
 
   return (
     <div className="w-64 min-h-screen bg-[#3A4149] text-gray-100">
-      <nav className="flex flex-col py-4">
+      <nav className="flex flex-col">
         {adminAllMenuItems.map((menu) => (
           <div key={menu.id}>
             {/* 1차 메뉴 */}

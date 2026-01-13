@@ -18,22 +18,31 @@ const MemberEditPage = () => {
   const [userBirth, setUserBirth] = useState("");
   const navigate = useNavigate();
 
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+
   const isCheck = () => {
+    // 필수 입력값(이메일, 전화번호)이 모두 입력되었는지 확인하는 함수
     const { memberEmail, memberPhoneNumber } = formCheck;
     if (memberEmail === "" || memberPhoneNumber === "") return false;
     else return true;
-  };
+  }; // 둘 중 하나라도 비어 있으면 false 반환, 모두 입력되어 있으면 true 반환
 
   useEffect(() => {
-    const f = async () => {
-      const data = await getOne();
-      setData(data);
-      if (data.memberBirthDate)
+    // 회원 정보를 서버에서 불러오는 비동기 함수
+    (async () => {
+      const data = await getOne(); // 회원 정보 조회 API 호출
+      setData(data); // 해당 회원 정보 상태 저장
+      if (data.memberBirthDate) {
+        // 생년월일이 존재하면 yyyy-mm-dd 형식으로 가공하여 저장
         setUserBirth(data.memberBirthDate.substring(0, 10));
-      if (data.memberGender === "남자") setUserGender([true, false]);
-      else setUserGender([false, true]);
-    };
-    f();
+      }
+      if (data.memberGender === "남자") {
+        setUserGender([true, false]);
+      } else {
+        setUserGender([false, true]);
+      } // 성별 값에 따라 라디오 버튼 상태 설정
+    })();
+    console.log("data", data);
   }, []);
 
   const changeHandler = (e) => {
@@ -55,6 +64,10 @@ const MemberEditPage = () => {
 
   const clickHandler = async (e) => {
     e.preventDefault();
+    if (!emailRegex.test(data.memberEmail)) {
+      alert("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
     if (isCheck(formCheck)) {
       setAlertModal({
         open: true,

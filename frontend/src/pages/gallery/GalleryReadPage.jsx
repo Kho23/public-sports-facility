@@ -30,7 +30,7 @@ const GalleryReadPage = () => {
     <div>
       {/* 렌더링에 필요한 상태와 함수를 props로 전달 */}
       <GalleryReadPageComponent 
-        gallery={gallery} 
+        gallery={gallery}
         moveToList={moveToList} 
       />
     </div>

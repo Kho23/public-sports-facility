@@ -6,36 +6,38 @@ import SupportDetailComponent from "./components/SupportDetailComponent";
 
 const SupportDetailPage = () => {
   const { no } = useParams();
-  const [data, setData] = useState({});
-  const [response, setResponse] = useState({
-    content: "",
-  });
 
+  // 문의 상세 정보 상태
+  const [data, setData] = useState({});
+  // 관리자 답변 입력 상태
+  const [response, setResponse] = useState({ content: "" });
+
+  // 문의 상세 정보 가져오기
   useEffect(() => {
-    const f = async () => {
+    const fetchData = async () => {
       try {
         const res = await supportGetOne(no);
-        console.log(res);
         setData(res);
       } catch (error) {
-        console.log("백엔드 데이터 로드 중 오류 발생", error);
+        console.error("문의 상세 조회 실패:", error);
       }
     };
-    f();
+    fetchData();
   }, [no]);
 
+  // 관리자 답변 등록
   const addResponseHandler = () => {
     const f = async () => {
       try {
         const res = await registerSupportResponse(no, response);
-        console.log(res);
+        // 기존 문의 데이터에 새로 등록된 답변 추가
         setData((prev) => ({
           ...prev,
           response: [...prev.response, res],
         }));
         setResponse({ content: "" });
       } catch (error) {
-        console.log("백엔드 데이터 로드 중 오류 발생", error);
+        console.error("답변 등록 실패:", error);
       }
     };
     f();
@@ -43,14 +45,12 @@ const SupportDetailPage = () => {
   };
 
   return (
-    <>
-      <SupportDetailComponent
-        data={data}
-        response={response}
-        setResponse={setResponse}
-        addResponseHandler={addResponseHandler}
-      />
-    </>
+    <SupportDetailComponent
+      data={data}
+      response={response}
+      setResponse={setResponse}
+      addResponseHandler={addResponseHandler}
+    />
   );
 };
 

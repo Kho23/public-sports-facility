@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_HOST_URL = "http://localhost:8080/api/community/faq"
+const API_HOST_URL = "/api/community/faq"
 
 export const getFaqList = async () => {
     const res = await axios.get(`${API_HOST_URL}/list`)

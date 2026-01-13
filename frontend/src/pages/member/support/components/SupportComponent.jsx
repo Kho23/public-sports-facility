@@ -31,10 +31,14 @@ const SupportComponent = ({
                 </tr>
               </thead>
 
-              <tbody onClick={detailPageHandler}>
+              <tbody>
                 {supportList.map((i, idx) => {
                   return (
-                    <tr className="border-b border-gray-200 hover:bg-blue-50 transition duration-150 cursor-pointer">
+                    <tr
+                      key={i.supportNo}
+                      onClick={() => detailPageHandler(i.supportNo)}
+                      className="border-b border-gray-200 hover:bg-blue-50 transition duration-150 cursor-pointer"
+                    >
                       <td className="p-4 text-sm font-medium text-gray-700">
                         {idx + 1}
                       </td>

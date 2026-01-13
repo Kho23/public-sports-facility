@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.chat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +22,7 @@ public class Chat {
     @Column(nullable = false)
     private String message;
     @JoinColumn(nullable = false, name = "sender_id")
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Member sender;
     @Column(nullable = false)

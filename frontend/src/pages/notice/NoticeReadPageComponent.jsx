@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatter } from "../../api/noticeApi";
-
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://api.jeocenter.shop";
 const NoticeReadPageComponent = ({ notice }) => {
   // 부모로부터 받은 notice 데이터를 구조 분해 할당하지 않고 
   // 기존 코드 스타일(notice.title 등)을 유지하기 위해 매개변수에서 바로 받습니다.
@@ -41,25 +41,24 @@ const NoticeReadPageComponent = ({ notice }) => {
           <h3 className="font-semibold text-gray-800 mb-3">첨부파일</h3>
           <ul className="space-y-2">
             {notice.fileList.map((file) => (
-              <li
-                key={file.id}
-                className="bg-gray-100 px-3 py-2 rounded-md flex justify-between items-center hover:bg-gray-200 transition-colors"
-              >
+              <li key={file.id} className="...">
                 <span className="text-gray-800 text-sm font-medium">
                   {file.originalName}
                 </span>
                 <div className="flex gap-2">
+                  {/* [수정] filePath 앞에 백엔드 도메인을 붙여줍니다. */}
                   <a
-                    href={`http://localhost:8080${file.filePath}`}
+                    href={`${API_BASE_URL}${file.filePath}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
+                    className="..."
                   >
                     미리보기
                   </a>
+                  {/* [수정] 다운로드 경로도 백엔드 도메인이 포함되도록 수정합니다. */}
                   <a
-                    href={`http://localhost:8080/download/${file.savedName}`}
-                    className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
+                    href={`${API_BASE_URL}/api/community/notice/download/${file.savedName}`}
+                    className="..."
                   >
                     다운로드
                   </a>

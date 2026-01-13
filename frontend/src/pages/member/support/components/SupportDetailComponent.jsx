@@ -48,13 +48,14 @@ const SupportDetailComponent = ({ supportList, toListHandler }) => {
           <p className="whitespace-pre-wrap mb-6">
             {supportList.supportContent}
           </p>
-
           <p className="font-bold text-lg mb-3 text-blue-700"></p>
-          <img
-            alt={supportList.fileName?.[0]}
-            src={`http://localhost:8080/api/member/support/view/s_${supportList.savedName?.[0]}`}
-            className="max-w-md w-full h-auto rounded-lg shadow"
-          />
+          {supportList.fileName?.length > 0 && (
+            <img
+              alt={supportList.fileName?.[0]}
+              src={`/api/member/support/view/s_${supportList.savedName?.[0]}`}
+              className="max-w-md w-full h-auto rounded-lg shadow"
+            />
+          )}
         </div>
       </div>
 

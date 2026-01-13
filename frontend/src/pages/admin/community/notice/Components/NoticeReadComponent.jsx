@@ -58,7 +58,7 @@ const NoticeReadComponent = ({ notice, id, deleteHandler }) => {
                 </span>
                 <div className="flex gap-2">
                   <a
-                    href={`http://localhost:8080${file.filePath}`}
+                    href={`${file.filePath}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
@@ -66,7 +66,7 @@ const NoticeReadComponent = ({ notice, id, deleteHandler }) => {
                     미리보기
                   </a>
                   <a
-                    href={`http://localhost:8080/download/${file.savedName}`}
+                    href={`/download/${file.savedName}`}
                     className="text-white text-xs px-3 py-1 bg-gray-700 rounded hover:bg-gray-800 transition-colors"
                   >
                     다운로드

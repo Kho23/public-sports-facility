@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.registration.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.lesson.entity.Lesson;
 import com.semicolon.backend.domain.lesson.entity.LessonStatus;
 import com.semicolon.backend.domain.member.entity.Member;
@@ -21,11 +22,11 @@ public class Registration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "registration_id")
     private Long registrationId;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member; //누가 신청했는가
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson; //어떤 강의를 신청했는가

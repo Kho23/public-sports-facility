@@ -28,7 +28,7 @@ const KakaoCallbackPage = () => {
     const kakaoLogin = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:8080/api/auth/kakao/login",
+          "/api/auth/kakao/login",
           {
             code,
           }

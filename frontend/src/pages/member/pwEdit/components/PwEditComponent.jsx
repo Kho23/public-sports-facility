@@ -20,7 +20,7 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
               type="password"
               name="memberCurrentPassword"
               onChange={changeHandler}
-              placeholder="영문/숫자/특수문자 포함"
+              placeholder="현재 비밀번호를 입력해 주세요"
             />
           </div>
         </li>
@@ -35,7 +35,7 @@ const PwEditComponent = ({ changeHandler, clickHandler, pwCorrect }) => {
               type="password"
               name="memberPassword"
               onChange={changeHandler}
-              placeholder="영문/숫자/특수문자 포함"
+              placeholder="비밀번호는 영문, 숫자, 특수문자 포함 8~16자여야 합니다.(. 제외)"
             />
           </div>
         </li>

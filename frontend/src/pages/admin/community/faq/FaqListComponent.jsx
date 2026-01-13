@@ -14,7 +14,6 @@ const FaqListComponent = ({
 }) => {
   return (
     <div className="container mx-auto max-w-full p-2 md:p-4">
-      {/* --- 헤더 영역 --- */}
       <div className="flex justify-between items-end mb-6 pb-4 border-b-2 border-gray-800">
         <h1 className="text-3xl mb-3 font-bold">자주 묻는 질문 관리</h1>
         <button
@@ -27,7 +26,6 @@ const FaqListComponent = ({
 
       <div className="text-sm mb-2">총 {faqs.length}건</div>
 
-      {/* --- 테이블 영역 --- */}
       <table className="w-full text-center border-t-2 border-gray-700 table-fixed">
         <thead className="bg-gray-50 border-b">
           <tr>
@@ -51,26 +49,22 @@ const FaqListComponent = ({
               <tr key={faq.faqId} className="border-b hover:bg-gray-50">
                 <td className="p-3 text-sm text-gray-600">{idx + 1}</td>
 
-                {/* 카테고리 */}
                 <td className="p-3 text-sm text-gray-600">
                   <span className="px-2 py-1 bg-gray-200 rounded text-xs font-semibold">
                     {faq.categoryName}
                   </span>
                 </td>
 
-                {/* 질문 */}
                 <td className="p-3 text-sm text-gray-700 text-left truncate font-medium">
                   {faq.question}
                 </td>
 
-                {/* 답변 (말줄임) */}
                 <td className="p-3 text-sm text-gray-500 text-left">
                   <div className="line-clamp-1 text-ellipsis overflow-hidden">
                     {faq.answer}
                   </div>
                 </td>
 
-                {/* 관리 버튼 */}
                 <td className="p-3">
                   <div className="flex justify-center space-x-2">
                     <button
@@ -93,7 +87,6 @@ const FaqListComponent = ({
         </tbody>
       </table>
 
-      {/* --- 모달 (등록/수정 폼) --- */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
@@ -102,7 +95,6 @@ const FaqListComponent = ({
             </h2>
 
             <div className="space-y-4">
-              {/* 카테고리 선택 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   카테고리
@@ -121,7 +113,6 @@ const FaqListComponent = ({
                 </select>
               </div>
 
-              {/* 질문 입력 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   질문 (Q)
@@ -137,7 +128,6 @@ const FaqListComponent = ({
                 />
               </div>
 
-              {/* 답변 입력 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   답변 (A)
@@ -154,7 +144,6 @@ const FaqListComponent = ({
               </div>
             </div>
 
-            {/* 모달 버튼 */}
             <div className="flex justify-end mt-6 space-x-2">
               <button
                 onClick={() => setIsModalOpen(false)}

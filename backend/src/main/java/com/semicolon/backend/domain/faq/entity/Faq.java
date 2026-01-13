@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.faq.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class Faq {
 //    @Column(name = "category",nullable = false)
 //    private String category;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "faq_category_id",nullable = false)
     private FaqCategory faqCategory;
     @Column(name = "created_at", nullable = false)

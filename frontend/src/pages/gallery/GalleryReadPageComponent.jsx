@@ -1,4 +1,5 @@
 import React from "react";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://api.jeocenter.shop";
 
 const GalleryReadPageComponent = ({ gallery, moveToList }) => {
   // 데이터 로딩 중 처리
@@ -40,7 +41,7 @@ const GalleryReadPageComponent = ({ gallery, moveToList }) => {
             gallery.images.map((image) => (
               <img
                 key={image.imageUrl}
-                src={image.imageUrl}
+                src={`${API_BASE_URL.trim()}${image.imageUrl.trim()}`}
                 alt={gallery.title}
                 className="w-full max-w-4xl mx-auto my-4 rounded-lg shadow-md"
               />

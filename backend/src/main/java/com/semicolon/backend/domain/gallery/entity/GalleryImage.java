@@ -1,5 +1,6 @@
 package com.semicolon.backend.domain.gallery.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semicolon.backend.domain.gallery.dto.GalleryDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class GalleryImage {
 
     @Column(name ="thumbnail_url", nullable = false)
     private String thumbnailUrl;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;

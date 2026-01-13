@@ -4,6 +4,7 @@ import useCustomMove from "../../../../hooks/useCustomMove";
 import usePageMove from "../../../../hooks/usePageMove";
 import NoticeListComponent from "./Components/NoticeListComponent";
 
+// 공지 목록 및 페이징 정보를 담기 위한 초기 상태
 const initState = {
   dtoList: [],
   pageNumList: [],
@@ -16,13 +17,20 @@ const initState = {
   totalPage: 0,
   current: 0,
 };
+
 const NoticeListPage = () => {
+  // 공지 목록 및 페이징 데이터를 관리
   const [notices, setNotices] = useState(initState);
+  // 검색 타입(카테고리)을 관리
   const [category, setCategory] = useState("t");
+  // 검색 키워드를 관리
   const [keyword, setKeyword] = useState("");
+  // 페이지 번호, 사이즈 및 목록 이동을 위한 커스텀 훅
   const { page, size, moveToList } = usePageMove();
+  // 공지 상세 페이지 이동을 위한 커스텀 훅
   const { moveToAdminNoticeDetail } = useCustomMove();
 
+  // 페이지 번호 또는 페이지 사이즈 변경 시 공지 목록 조회
   useEffect(() => {
     const getData = async () => {
       try {
@@ -40,6 +48,7 @@ const NoticeListPage = () => {
     getData();
   }, [page, size]);
 
+  // 검색 버튼 클릭 시 검색 조건에 맞는 공지 목록 조회
   const searchSubmitHandler = async (e) => {
     e.preventDefault();
     try {

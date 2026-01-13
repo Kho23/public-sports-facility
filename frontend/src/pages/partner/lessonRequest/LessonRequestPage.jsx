@@ -37,21 +37,26 @@ const LessonRequestPage = () => {
     { id: "무용", name: "DANCE", facilityId: 5 },
   ];
 
+  // 현재 페이지 단계 (1 ~ 3)
   const [page, setPage] = useState(1);
 
+  // 사용자 정보
   const [data, setData] = useState({});
+  // 파트너가 등록한 강좌 분야
   const [partnerClass, setPartnerClass] = useState([]);
+  // 선택한 시설의 공간 목록
   const [getSpace, setGetSpace] = useState([]);
+  // 기간 + 요일 기준 예약 가능 시간 (공간별)
   const [availableTimes, setAvailableTimes] = useState([]);
-
+  // 실제로 선택 가능한 공통 시간대
   const [timesForCheck, setTimesForCheck] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const f = async () => {
-      const res = await getOne();
-      const res2 = await getPartnerClassList();
+      const res = await getOne(); // 로그인 사용자 정보 조회
+      const res2 = await getPartnerClassList(); // 파트너가 등록한 강좌 분야 조회
       setData(res);
       setPartnerClass(res2);
     };
@@ -59,6 +64,7 @@ const LessonRequestPage = () => {
   }, []);
 
   useEffect(() => {
+    // 강좌 분야 선택 시 해당 시설 ID를 기준으로 공간 목록 조회
     if (!className || !form.facilityType) return;
     const result = className.find((i) => i.name == form.facilityType);
     if (!result) return;
@@ -71,6 +77,7 @@ const LessonRequestPage = () => {
   }, [form.facilityType]);
 
   useEffect(() => {
+    // 기간+요일 선택 시 서버에 가능한 시간 목록 조회
     if (!form.facilityType) return;
     if (!form.startDate || !form.endDate) return;
     if (form.days.length === 0) return;
@@ -93,6 +100,19 @@ const LessonRequestPage = () => {
   }, [form.facilityType, form.startDate, form.endDate, form.days]);
 
   useEffect(() => {
+    if (!form.startDate) return;
+
+    const start = new Date(form.startDate).setHours(0, 0, 0, 0);
+    const today = new Date().setHours(0, 0, 0, 0);
+
+    if (start <= today) {
+      console.log("today", today);
+      alert("시작일은 오늘보다 이후여야 합니다");
+      setForm((i) => ({
+        ...i,
+        startDate: "",
+      }));
+    }
     if (form.startDate && form.endDate && form.endDate < form.startDate) {
       alert("종료일은 시작일보다 이후여야 합니다");
       setForm((i) => ({

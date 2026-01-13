@@ -1,6 +1,8 @@
 import React from 'react'
 import PageComponent from '../../components/common/page/PageComponent'
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://api.jeocenter.shop";
+
 const GalleryListPageComponent = ({
   list,
   searchingTitle,
@@ -72,7 +74,7 @@ const GalleryListPageComponent = ({
               <div className="w-full h-48 overflow-hidden bg-gray-200">
                 {gallery.images && gallery.images.length > 0 ? (
                   <img
-                    src={gallery.images[0].thumbnailUrl}
+                    src={`${API_BASE_URL.trim()}`+gallery.images[0].thumbnailUrl}
                     alt={gallery.title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
                   />

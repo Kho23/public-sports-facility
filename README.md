@@ -1,72 +1,79 @@
-# 🏟️ [프로젝트명: 예 - PlaySpot] : 공공 체육시설 예약 서비스
+# 🏟️ PlaySpot — 공공 체육시설 예약 서비스
 
-> **"시민들의 건강한 여가 생활을 위한, 쉽고 공정한 체육시설 통합 예약 플랫폼"**
->
-> **개발 기간:** 202X.XX.XX ~ 202X.XX.XX
-> **팀 구성:** Backend 2명, Frontend 2명 (본인 역할: **Backend & Infra**)
+국비지원 과정 팀 프로젝트입니다. 공공 체육시설의 강좌 수강신청, 대관, 일일 이용 예약과 결제를 한곳에서 처리하는 웹 서비스입니다.
 
-<br/>
-
-## 📖 프로젝트 소개 (Introduction)
-기존 공공 체육시설 예약 시스템의 복잡한 UI와 불안정한 예약 프로세스를 개선하기 위해 개발했습니다.
-단순한 예약 기능을 넘어, **대용량 트래픽 상황에서의 동시성 제어**와 **사용자 편의성을 고려한 검색 필터** 구현에 집중했습니다.
+- **개발 기간:** 2025.10 ~ 2025.12
+- **팀 구성:** 3명 (도메인별로 나누어 각자 백엔드·프론트엔드를 함께 개발)
+- **내 담당:** 결제 검증, 수강신청, 실시간 상담 채팅, JWT 인증 공통 모듈, 커뮤니티(공지·FAQ·갤러리), 관리자 통계, EC2 배포
 
 <br/>
 
-## 🛠️ Tech Stack
+## 🛠️ 기술 스택
 
-| 구분 | 기술 스택 |
+| 구분 | 기술 |
 | :-- | :-- |
-| **Backend** | <img src="https://img.shields.io/badge/Java 17-007396?logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot 3.x-6DB33F?logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?logo=springsecurity&logoColor=white"> <img src="https://img.shields.io/badge/JPA (Hibernate)-59666C?logo=hibernate&logoColor=white"> |
-| **Database** | <img src="https://img.shields.io/badge/MySQL 8.0-4479A1?logo=mysql&logoColor=white"> |
-| **Frontend** | <img src="https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white"> <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?logo=tailwindcss&logoColor=white"> |
-| **Tools** | <img src="https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white"> <img src="https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white"> |
+| Backend | Java 17, Spring Boot 3.5, Spring Security, Spring Data JPA, WebSocket(STOMP), JWT |
+| Database | MySQL |
+| Frontend | React 19, Redux Toolkit, React Router, Tailwind CSS, axios, Recharts |
+| 결제 | PortOne(아임포트) |
+| 배포 | AWS EC2, GitHub Actions |
 
 <br/>
 
-## 🏛️ System Architecture & ERD
-**RDB 설계의 정규화 원칙**을 준수하며, 예약 시스템의 핵심인 '시설-예약-사용자' 간의 관계를 효율적으로 모델링했습니다.
+## 👨‍💻 담당 기능
 
-*(여기에 ERD 이미지 캡처해서 넣으세요. `![ERD](./assets/erd.png)` 형태)*
+### 1. 결제 검증과 자동 환불
+- 프론트에서 PortOne SDK로 결제한 뒤, 서버가 PortOne API로 결제 정보를 **다시 조회해서 검증**
+- 결제 상태가 '완료'인지, 결제 금액이 실제 상품 가격과 같은지 확인
+- 금액이 다르면 위변조로 판단해 **즉시 결제 취소**
+- 이미 처리된 결제 번호는 거절해서 **중복 처리 방지**
+- 결제 후 예약 생성에 실패하면 **자동 환불**
+- 강좌 · 대관 · 일일 이용 · 헬스장 일일 이용, 4가지 상품 유형 처리
+
+### 2. 수강신청
+- 신청 시 모집 상태, 중복 신청, 정원 확인. 정원이 차면 강좌 자동 마감
+- 신청 취소(본인 확인), 내 수강 내역 조회 (fetch join으로 강좌 정보를 함께 조회)
+- 강좌 검색 필터, 페이지네이션
+
+### 3. 실시간 상담 채팅 (사용자 ↔ 관리자)
+- WebSocket + STOMP 기반 1:1 채팅
+- STOMP 연결(CONNECT) 시점에 JWT를 검증해서 로그인한 사용자만 접속
+- 메시지 DB 저장, 관리자용 채팅방 목록·대화 내역 조회
+
+### 4. 인증 공통 모듈
+- JWT 발급·검증 유틸, 요청마다 토큰을 검사하는 필터, Spring Security 설정
+- 로그인 · 회원가입 · 아이디/비밀번호 찾기(메일 발송) — 팀원과 분담
+
+### 5. 커뮤니티
+- 공지사항 · FAQ(카테고리별 조회) · 갤러리 CRUD
+- 갤러리 이미지 업로드, 관리자 페이지 페이지네이션
+
+### 6. 관리자 통계
+- 연령·성별 회원 통계, 강좌별 수강 통계, 일일 이용 통계를 Recharts 차트로 시각화
+
+### 7. 배포
+- AWS EC2에 서버를 띄우고 도메인을 연결해 실제 서비스로 운영
+- GitHub Actions로 `main` 브랜치에 push하면 자동으로 빌드·배포되도록 구성
 
 <br/>
 
-## 👨‍💻 My Contribution (담당 역할)
-**Backend Core & API Design**
-* **RESTful API 설계:** 자원 중심의 URL 설계 및 `ResponseEntity`를 활용한 명확한 응답 상태 코드 관리.
-* **DB 모델링:** 회원, 시설, 예약, 결제 테이블 설계 및 연관관계 매핑 (JPA).
-* **Git 전략 수립:** Frontend/Backend 리포지토리 분리 운영 후, `Git Subtree`를 활용하여 모노레포(Monorepo) 형태로 통합 및 이관 작업 주도.
+## 🔍 돌아보며 — 지금 다시 본다면 고칠 점
+
+1. **수강신청 정원 초과 가능성**
+   현재 "신청 인원을 센 다음 저장"하는 구조라, 여러 명이 동시에 신청하면 정원을 넘길 수 있습니다. 비관적 락이나 조건부 UPDATE로 막아야 합니다.
+2. **배포 방식**
+   빌드할 때 테스트를 건너뛰고(`-x test`), 이전 버전 JAR를 지워서 롤백할 수 없으며, 재시작하는 동안 서비스가 멈춥니다.
+3. **결제 검증 트랜잭션**
+   외부 결제 API 호출이 DB 트랜잭션 안에 있어서, 응답을 기다리는 동안 DB 커넥션을 계속 붙잡습니다.
+4. **테스트 코드 부재**
+   자동화된 테스트가 없어 수정할 때마다 직접 확인해야 했습니다.
 
 <br/>
 
-## 💥 Troubleshooting & Tech Insights
-*(건호님이 물어보셨던 내용을 바탕으로 작성한 '기술적 고민' 예시입니다. 실제로 적용한 것 위주로 남기세요.)*
+## 📂 폴더 구조
 
-### 1. 협업을 위한 Git Repository 전략 변경 (Git Subtree)
-* **상황:** 초기 개발 시 프론트/백엔드 레포지토리를 분리하여 개발했으나, 프로젝트 완료 후 포트폴리오 관리 및 배포 편의성을 위해 통합이 필요해짐.
-* **문제:** 단순 파일 복사(`Ctrl+C/V`)로 합칠 경우, 팀원들의 소중한 **Commit History(기여도, 코드 변경 이력)**가 모두 사라지는 문제 발생.
-* **해결:** `Git Subtree` 기능을 활용하여 기존 레포지토리의 커밋 로그를 유지한 채 `backend/`, `frontend/` 폴더 구조로 병합 성공.
-* **배운점:** Git의 내부 구조와 브랜치 병합 전략에 대한 이해도 향상.
-
-### 2. 예약 동시성 이슈 제어 (Concurrency Control)
-* **상황:** 인기 체육시설 예약 시, 다수의 사용자가 동시에 '예약하기'를 누를 경우 **중복 예약(Over-booking)**이 발생할 위험 확인.
-* **해결:**
-    * Java의 `synchronized` 키워드는 다중 서버 환경에서 한계가 있음을 인지.
-    * DB 레벨에서의 **비관적 락(Pessimistic Lock)**을 도입하여, 트랜잭션이 끝날 때까지 해당 예약 슬롯(Row)에 접근하지 못하도록 제어.
-* **결과:** JMeter 부하 테스트 결과, 데이터 무결성 100% 보장.
-
-### 3. JPA N+1 문제 해결 (Performance)
-* **상황:** '내 예약 내역' 조회 시, 예약된 시설 정보를 가져오기 위해 예약 개수만큼 추가 쿼리가 발생하는 N+1 문제 확인.
-* **해결:** `Fetch Join`을 적용하여 한 번의 쿼리로 연관된 엔티티를 함께 조회하도록 최적화.
-
-<br/>
-
-## 📂 Folder Structure
-```bash
+```
 root
-├── backend/      # Spring Boot Server Application
-│   ├── src/main/java
-│   └── build.gradle
-└── frontend/     # React Client Application
-    ├── src/
-    └── package.json
+├── backend/    # Spring Boot
+└── frontend/   # React
+```
